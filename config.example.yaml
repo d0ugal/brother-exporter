@@ -1,16 +1,16 @@
 server:
   host: "0.0.0.0"
-  port: 8080
+  port: 8092
 
 logging:
   level: "info"
-  format: "json"
+  format: "text"
 
 metrics:
   collection:
     default_interval: "30s"
 
 printer:
-  host: "192.168.1.100"  # Replace with your Brother printer IP
-  community: "public"    # SNMP community string
-  type: "laser"          # "laser" or "ink"
+  host: "192.168.1.100"
+  community: "public"
+  type: "laser"
