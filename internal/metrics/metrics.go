@@ -1,0 +1,359 @@
+package metrics
+
+import (
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promauto"
+)
+
+// Registry holds all the metrics for the Brother printer exporter
+type Registry struct {
+	// Version info metric
+	VersionInfo *prometheus.GaugeVec
+
+	// Printer connection metrics
+	PrinterConnectionStatus *prometheus.GaugeVec
+	PrinterConnectionErrors *prometheus.CounterVec
+
+	// Printer information
+	PrinterInfo *prometheus.GaugeVec
+
+	// Printer status
+	PrinterStatus *prometheus.GaugeVec
+
+	// Toner/Cartridge levels (for laser printers)
+	TonerLevel  *prometheus.GaugeVec
+	TonerStatus *prometheus.GaugeVec
+
+	// Ink levels (for inkjet printers)
+	InkLevel  *prometheus.GaugeVec
+	InkStatus *prometheus.GaugeVec
+
+	// Drum levels (for laser printers)
+	DrumLevel  *prometheus.GaugeVec
+	DrumStatus *prometheus.GaugeVec
+
+	// Paper tray status
+	PaperTrayStatus *prometheus.GaugeVec
+
+	// Page counters
+	PageCountTotal *prometheus.CounterVec
+	PageCountBlack *prometheus.CounterVec
+	PageCountColor *prometheus.CounterVec
+
+	// Individual color page counters
+	PageCountCyan    *prometheus.CounterVec
+	PageCountMagenta *prometheus.CounterVec
+	PageCountYellow  *prometheus.CounterVec
+
+	// Duplex printing
+	PageCountDuplex *prometheus.CounterVec
+
+	// Maintenance component life remaining (pages)
+	BeltUnitRemainingPages        *prometheus.GaugeVec
+	FuserUnitRemainingPages       *prometheus.GaugeVec
+	LaserUnitRemainingPages       *prometheus.GaugeVec
+	PaperFeedingKitRemainingPages *prometheus.GaugeVec
+
+	// Maintenance component life remaining (percentage)
+	BeltUnitRemainingPercent        *prometheus.GaugeVec
+	FuserUnitRemainingPercent       *prometheus.GaugeVec
+	LaserUnitRemainingPercent       *prometheus.GaugeVec
+	PaperFeedingKitRemainingPercent *prometheus.GaugeVec
+
+	// Maintenance counters
+	MaintenanceCount *prometheus.CounterVec
+
+	// Metric information for UI
+	metricInfo []MetricInfo
+}
+
+// MetricInfo contains information about a metric for the UI
+type MetricInfo struct {
+	Name         string
+	Help         string
+	Labels       []string
+	ExampleValue string
+}
+
+// addMetricInfo adds metric information to the registry
+func (r *Registry) addMetricInfo(name, help string, labels []string) {
+	r.metricInfo = append(r.metricInfo, MetricInfo{
+		Name:         name,
+		Help:         help,
+		Labels:       labels,
+		ExampleValue: "",
+	})
+}
+
+// NewRegistry creates a new metrics registry
+func NewRegistry() *Registry {
+	r := &Registry{}
+
+	r.VersionInfo = promauto.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "brother_exporter_info",
+			Help: "Information about the Brother printer exporter",
+		},
+		[]string{"version", "commit", "build_date"},
+	)
+	r.addMetricInfo("brother_exporter_info", "Information about the Brother printer exporter", []string{"version", "commit", "build_date"})
+
+	r.PrinterConnectionStatus = promauto.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "brother_printer_connection_status",
+			Help: "Brother printer connection status (1 = connected, 0 = disconnected)",
+		},
+		[]string{"host"},
+	)
+	r.addMetricInfo("brother_printer_connection_status", "Brother printer connection status (1 = connected, 0 = disconnected)", []string{"host"})
+
+	r.PrinterConnectionErrors = promauto.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "brother_printer_connection_errors_total",
+			Help: "Total number of Brother printer connection errors",
+		},
+		[]string{"host", "error_type"},
+	)
+	r.addMetricInfo("brother_printer_connection_errors_total", "Total number of Brother printer connection errors", []string{"host", "error_type"})
+
+	r.PrinterInfo = promauto.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "brother_printer_info",
+			Help: "Information about the Brother printer",
+		},
+		[]string{"host", "model", "serial", "firmware", "type"},
+	)
+	r.addMetricInfo("brother_printer_info", "Information about the Brother printer", []string{"host", "model", "serial", "firmware", "type"})
+
+	r.PrinterStatus = promauto.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "brother_printer_status",
+			Help: "Brother printer status (1 = ready, 0 = not ready)",
+		},
+		[]string{"host", "status"},
+	)
+	r.addMetricInfo("brother_printer_status", "Brother printer status (1 = ready, 0 = not ready)", []string{"host", "status"})
+
+	r.TonerLevel = promauto.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "brother_toner_level_percent",
+			Help: "Brother printer toner level as a percentage",
+		},
+		[]string{"host", "color"},
+	)
+	r.addMetricInfo("brother_toner_level_percent", "Brother printer toner level as a percentage", []string{"host", "color"})
+
+	r.TonerStatus = promauto.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "brother_toner_status",
+			Help: "Brother printer toner status (1 = ok, 0 = low/empty)",
+		},
+		[]string{"host", "color", "status"},
+	)
+	r.addMetricInfo("brother_toner_status", "Brother printer toner status (1 = ok, 0 = low/empty)", []string{"host", "color", "status"})
+
+	r.InkLevel = promauto.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "brother_ink_level_percent",
+			Help: "Brother printer ink level as a percentage",
+		},
+		[]string{"host", "color"},
+	)
+	r.addMetricInfo("brother_ink_level_percent", "Brother printer ink level as a percentage", []string{"host", "color"})
+
+	r.InkStatus = promauto.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "brother_ink_status",
+			Help: "Brother printer ink status (1 = ok, 0 = low/empty)",
+		},
+		[]string{"host", "color", "status"},
+	)
+	r.addMetricInfo("brother_ink_status", "Brother printer ink status (1 = ok, 0 = low/empty)", []string{"host", "color", "status"})
+
+	r.DrumLevel = promauto.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "brother_drum_level_percent",
+			Help: "Brother printer drum level as a percentage",
+		},
+		[]string{"host", "color"},
+	)
+	r.addMetricInfo("brother_drum_level_percent", "Brother printer drum level as a percentage", []string{"host", "color"})
+
+	r.DrumStatus = promauto.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "brother_drum_status",
+			Help: "Brother printer drum status (1 = ok, 0 = low/empty)",
+		},
+		[]string{"host", "color", "status"},
+	)
+	r.addMetricInfo("brother_drum_status", "Brother printer drum status (1 = ok, 0 = low/empty)", []string{"host", "color", "status"})
+
+	r.PaperTrayStatus = promauto.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "brother_paper_tray_status",
+			Help: "Brother printer paper tray status (1 = ok, 0 = empty/error)",
+		},
+		[]string{"host", "tray", "status"},
+	)
+	r.addMetricInfo("brother_paper_tray_status", "Brother printer paper tray status (1 = ok, 0 = empty/error)", []string{"host", "tray", "status"})
+
+	r.PageCountTotal = promauto.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "brother_page_count_total",
+			Help: "Total number of pages printed",
+		},
+		[]string{"host"},
+	)
+	r.addMetricInfo("brother_page_count_total", "Total number of pages printed", []string{"host"})
+
+	r.PageCountBlack = promauto.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "brother_page_count_black_total",
+			Help: "Total number of black pages printed",
+		},
+		[]string{"host"},
+	)
+	r.addMetricInfo("brother_page_count_black_total", "Total number of black pages printed", []string{"host"})
+
+	r.PageCountColor = promauto.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "brother_page_count_color_total",
+			Help: "Total number of color pages printed",
+		},
+		[]string{"host"},
+	)
+	r.addMetricInfo("brother_page_count_color_total", "Total number of color pages printed", []string{"host"})
+
+	// Individual color page counters
+	r.PageCountCyan = promauto.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "brother_page_count_cyan_total",
+			Help: "Total number of cyan pages printed",
+		},
+		[]string{"host"},
+	)
+	r.addMetricInfo("brother_page_count_cyan_total", "Total number of cyan pages printed", []string{"host"})
+
+	r.PageCountMagenta = promauto.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "brother_page_count_magenta_total",
+			Help: "Total number of magenta pages printed",
+		},
+		[]string{"host"},
+	)
+	r.addMetricInfo("brother_page_count_magenta_total", "Total number of magenta pages printed", []string{"host"})
+
+	r.PageCountYellow = promauto.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "brother_page_count_yellow_total",
+			Help: "Total number of yellow pages printed",
+		},
+		[]string{"host"},
+	)
+	r.addMetricInfo("brother_page_count_yellow_total", "Total number of yellow pages printed", []string{"host"})
+
+	// Duplex printing
+	r.PageCountDuplex = promauto.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "brother_page_count_duplex_total",
+			Help: "Total number of duplex pages printed",
+		},
+		[]string{"host"},
+	)
+	r.addMetricInfo("brother_page_count_duplex_total", "Total number of duplex pages printed", []string{"host"})
+
+	// Maintenance component life remaining (pages)
+	r.BeltUnitRemainingPages = promauto.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "brother_belt_unit_remaining_pages",
+			Help: "Belt unit remaining life in pages",
+		},
+		[]string{"host"},
+	)
+	r.addMetricInfo("brother_belt_unit_remaining_pages", "Belt unit remaining life in pages", []string{"host"})
+
+	r.FuserUnitRemainingPages = promauto.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "brother_fuser_unit_remaining_pages",
+			Help: "Fuser unit remaining life in pages",
+		},
+		[]string{"host"},
+	)
+	r.addMetricInfo("brother_fuser_unit_remaining_pages", "Fuser unit remaining life in pages", []string{"host"})
+
+	r.LaserUnitRemainingPages = promauto.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "brother_laser_unit_remaining_pages",
+			Help: "Laser unit remaining life in pages",
+		},
+		[]string{"host"},
+	)
+	r.addMetricInfo("brother_laser_unit_remaining_pages", "Laser unit remaining life in pages", []string{"host"})
+
+	r.PaperFeedingKitRemainingPages = promauto.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "brother_paper_feeding_kit_remaining_pages",
+			Help: "Paper feeding kit remaining life in pages",
+		},
+		[]string{"host"},
+	)
+	r.addMetricInfo("brother_paper_feeding_kit_remaining_pages", "Paper feeding kit remaining life in pages", []string{"host"})
+
+	// Maintenance component life remaining (percentage)
+	r.BeltUnitRemainingPercent = promauto.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "brother_belt_unit_remaining_percent",
+			Help: "Belt unit remaining life as a percentage",
+		},
+		[]string{"host"},
+	)
+	r.addMetricInfo("brother_belt_unit_remaining_percent", "Belt unit remaining life as a percentage", []string{"host"})
+
+	r.FuserUnitRemainingPercent = promauto.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "brother_fuser_unit_remaining_percent",
+			Help: "Fuser unit remaining life as a percentage",
+		},
+		[]string{"host"},
+	)
+	r.addMetricInfo("brother_fuser_unit_remaining_percent", "Fuser unit remaining life as a percentage", []string{"host"})
+
+	r.LaserUnitRemainingPercent = promauto.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "brother_laser_unit_remaining_percent",
+			Help: "Laser unit remaining life as a percentage",
+		},
+		[]string{"host"},
+	)
+	r.addMetricInfo("brother_laser_unit_remaining_percent", "Laser unit remaining life as a percentage", []string{"host"})
+
+	r.PaperFeedingKitRemainingPercent = promauto.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "brother_paper_feeding_kit_remaining_percent",
+			Help: "Paper feeding kit remaining life as a percentage",
+		},
+		[]string{"host"},
+	)
+	r.addMetricInfo("brother_paper_feeding_kit_remaining_percent", "Paper feeding kit remaining life as a percentage", []string{"host"})
+
+	r.MaintenanceCount = promauto.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "brother_maintenance_count_total",
+			Help: "Total number of maintenance operations",
+		},
+		[]string{"host", "type"},
+	)
+	r.addMetricInfo("brother_maintenance_count_total", "Total number of maintenance operations", []string{"host", "type"})
+
+	return r
+}
+
+// GetMetricsInfo returns information about all metrics for the UI
+func (r *Registry) GetMetricsInfo() []MetricInfo {
+	return r.metricInfo
+}
+
+// GetRegistry returns the Prometheus registry
+func (r *Registry) GetRegistry() *prometheus.Registry {
+	return prometheus.DefaultRegisterer.(*prometheus.Registry)
+}
