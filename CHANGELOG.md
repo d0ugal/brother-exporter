@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 1.0.0 (2025-09-10)
+
+
+### Features
+
+* initial Brother printer exporter implementation ([0a6195c](https://github.com/d0ugal/brother-exporter/commit/0a6195c18c78c196b1220352f1eee3ca17c825b8))
+
 ## [Unreleased]
 
 ### Features
