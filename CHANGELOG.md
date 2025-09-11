@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.2](https://github.com/d0ugal/brother-exporter/compare/v1.0.1...v1.0.2) (2025-09-11)
+
+
+### Bug Fixes
+
+* Add default renovate config ([1a2c9cd](https://github.com/d0ugal/brother-exporter/commit/1a2c9cdc8e56c1e86f9365cad76dd429c305d56f))
+* remove stale comment ([88c0fd4](https://github.com/d0ugal/brother-exporter/commit/88c0fd4c2b8f9b25a14553895878eb9119c8d635))
+
 ## [1.0.1](https://github.com/d0ugal/brother-exporter/compare/v1.0.0...v1.0.1) (2025-09-11)
 
 
