@@ -2,88 +2,7 @@
 
 A Prometheus exporter for Brother printers that collects metrics via SNMP.
 
-## Features
-
-- **Printer Information**: Model, serial number, firmware version
-- **Printer Status**: Ready, printing, warmup, error states
-- **Consumable Levels**: Toner/ink levels and status for all colors
-- **Drum Levels**: Drum life remaining (laser printers)
-- **Paper Tray Status**: Paper availability and status
-- **Page Counters**: Total, black, and color page counts
-- **Connection Monitoring**: SNMP connection status and error tracking
-
-## Supported Printer Types
-
-- **Laser Printers**: Monitors toner levels, drum levels, and page counters
-- **Inkjet Printers**: Monitors ink levels and page counters
-
-## Installation
-
-### Build from Source
-
-```bash
-git clone <repository-url>
-cd brother-exporter
-make build
-```
-
-### Configuration
-
-Create a configuration file `config.yaml`:
-
-```yaml
-server:
-  host: "0.0.0.0"
-  port: 8080
-
-logging:
-  level: "info"
-  format: "json"
-
-metrics:
-  collection:
-    default_interval: "30s"
-
-printer:
-  host: "192.168.1.100"  # Your Brother printer IP
-  community: "public"    # SNMP community string
-  type: "laser"          # "laser" or "ink"
-```
-
-### Environment Variables
-
-You can also configure the exporter using environment variables:
-
-```bash
-export BROTHER_EXPORTER_PRINTER_HOST="192.168.1.100"
-export BROTHER_EXPORTER_PRINTER_TYPE="laser"
-export BROTHER_EXPORTER_PRINTER_COMMUNITY="public"
-export BROTHER_EXPORTER_SERVER_PORT="8080"
-```
-
-## Usage
-
-### Run with Configuration File
-
-```bash
-./brother-exporter -config config.yaml
-```
-
-### Run with Environment Variables
-
-```bash
-./brother-exporter -config-from-env
-```
-
-### Docker
-
-```bash
-docker run -d \
-  -p 8080:8080 \
-  -e BROTHER_EXPORTER_PRINTER_HOST="192.168.1.100" \
-  -e BROTHER_EXPORTER_PRINTER_TYPE="laser" \
-  brother-exporter
-```
+**Image**: `ghcr.io/d0ugal/brother-exporter:latest`
 
 ## Metrics
 
@@ -115,6 +34,116 @@ docker run -d \
 - `brother_page_count_black_total` - Black pages printed
 - `brother_page_count_color_total` - Color pages printed
 
+### Endpoints
+- `GET /`: HTML dashboard with service status and metrics information
+- `GET /metrics`: Prometheus metrics endpoint
+- `GET /health`: Health check endpoint
+
+## Quick Start
+
+### Docker Compose
+
+```yaml
+version: '3.8'
+services:
+  brother-exporter:
+    image: ghcr.io/d0ugal/brother-exporter:latest
+    ports:
+      - "8080:8080"
+    environment:
+      - BROTHER_EXPORTER_PRINTER_HOST=192.168.1.100
+      - BROTHER_EXPORTER_PRINTER_TYPE=laser
+      - BROTHER_EXPORTER_PRINTER_COMMUNITY=public
+    restart: unless-stopped
+```
+
+1. Update the printer IP address in the environment variables
+2. Run: `docker-compose up -d`
+3. Access metrics: `curl http://localhost:8080/metrics`
+
+## Configuration
+
+Create a `config.yaml` file to configure the printer connection:
+
+```yaml
+server:
+  host: "0.0.0.0"
+  port: 8080
+
+logging:
+  level: "info"
+  format: "json"
+
+metrics:
+  collection:
+    default_interval: "30s"
+
+printer:
+  host: "192.168.1.100"  # Your Brother printer IP
+  community: "public"    # SNMP community string
+  type: "laser"          # "laser" or "ink"
+```
+
+## Deployment
+
+### Docker Compose (Environment Variables)
+
+```yaml
+version: '3.8'
+services:
+  brother-exporter:
+    image: ghcr.io/d0ugal/brother-exporter:latest
+    ports:
+      - "8080:8080"
+    environment:
+      - BROTHER_EXPORTER_PRINTER_HOST=192.168.1.100
+      - BROTHER_EXPORTER_PRINTER_TYPE=laser
+      - BROTHER_EXPORTER_PRINTER_COMMUNITY=public
+    restart: unless-stopped
+```
+
+### Kubernetes
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: brother-exporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: brother-exporter
+  template:
+    metadata:
+      labels:
+        app: brother-exporter
+    spec:
+      containers:
+      - name: brother-exporter
+        image: ghcr.io/d0ugal/brother-exporter:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: BROTHER_EXPORTER_PRINTER_HOST
+          value: "192.168.1.100"
+        - name: BROTHER_EXPORTER_PRINTER_TYPE
+          value: "laser"
+        - name: BROTHER_EXPORTER_PRINTER_COMMUNITY
+          value: "public"
+```
+
+## Prometheus Integration
+
+Add to your `prometheus.yml`:
+
+```yaml
+scrape_configs:
+  - job_name: 'brother-exporter'
+    static_configs:
+      - targets: ['brother-exporter:8080']
+```
+
 ## SNMP Requirements
 
 The Brother printer must have SNMP enabled with the following settings:
@@ -130,30 +159,6 @@ The Brother printer must have SNMP enabled with the following settings:
 3. Enable SNMP
 4. Set the community string (default: "public")
 5. Save settings
-
-## Troubleshooting
-
-### Connection Issues
-
-1. **Check SNMP is enabled** on the printer
-2. **Verify community string** matches configuration
-3. **Test SNMP connectivity**:
-   ```bash
-   snmpwalk -v2c -c public 192.168.1.100 1.3.6.1.2.1.1.1.0
-   ```
-
-### No Metrics
-
-1. **Check printer type** configuration (laser vs ink)
-2. **Verify OID support** - some older printers may not support all OIDs
-3. **Check logs** for SNMP errors
-
-### Common SNMP OIDs
-
-- System Description: `1.3.6.1.2.1.1.1.0`
-- Printer Status: `1.3.6.1.2.1.25.3.2.1.5.1`
-- Toner Levels: `1.3.6.1.2.1.43.11.1.1.9.1.x`
-- Page Counters: `1.3.6.1.2.1.43.10.2.1.4.1.1`
 
 ## Development
 
@@ -180,6 +185,23 @@ make lint
 ```bash
 make fmt
 ```
+
+## Troubleshooting
+
+### Connection Issues
+
+1. **Check SNMP is enabled** on the printer
+2. **Verify community string** matches configuration
+3. **Test SNMP connectivity**:
+   ```bash
+   snmpwalk -v2c -c public 192.168.1.100 1.3.6.1.2.1.1.1.0
+   ```
+
+### No Metrics
+
+1. **Check printer type** configuration (laser vs ink)
+2. **Verify OID support** - some older printers may not support all OIDs
+3. **Check logs** for SNMP errors
 
 ## License
 
