@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.1](https://github.com/d0ugal/brother-exporter/compare/v1.0.0...v1.0.1) (2025-09-11)
+
+
+### Bug Fixes
+
+* delete binary ([e001786](https://github.com/d0ugal/brother-exporter/commit/e001786cab57ebf39c99026b634365b66a690eb7))
+* renovate name ([3eee5a5](https://github.com/d0ugal/brother-exporter/commit/3eee5a5dcd5ecc0abc97c6e4eaa6622e2b4a90ec))
+
 ## 1.0.0 (2025-09-10)
 
 
