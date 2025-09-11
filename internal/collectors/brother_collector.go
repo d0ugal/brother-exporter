@@ -12,6 +12,7 @@ import (
 	"github.com/d0ugal/brother-exporter/internal/config"
 	"github.com/d0ugal/brother-exporter/internal/metrics"
 	"github.com/gosnmp/gosnmp"
+	"github.com/prometheus/client_golang/prometheus"
 )
 
 // convertToInt converts various SNMP value types to int using Go generics
@@ -29,6 +30,84 @@ func convertToInt[T any](value T, context string) (int, bool) {
 	default:
 		slog.Debug("Unexpected type for "+context, "type", fmt.Sprintf("%T", v), "value", v)
 		return 0, false
+	}
+}
+
+// bytesToHexString converts a byte slice to a hex string, excluding the last byte (checksum)
+func bytesToHexString(bytes []uint8) string {
+	if len(bytes) == 0 {
+		return ""
+	}
+
+	var builder strings.Builder
+	builder.Grow((len(bytes) - 1) * 2) // Pre-allocate capacity for efficiency
+
+	for i := 0; i < len(bytes)-1; i++ {
+		builder.WriteString(fmt.Sprintf("%02x", bytes[i]))
+	}
+
+	return builder.String()
+}
+
+// splitIntoChunks splits a string into chunks of the specified size
+func splitIntoChunks(s string, chunkSize int) []string {
+	if chunkSize <= 0 {
+		return []string{s}
+	}
+
+	chunks := make([]string, 0, (len(s)+chunkSize-1)/chunkSize)
+
+	for i := 0; i < len(s); i += chunkSize {
+		end := i + chunkSize
+		if end > len(s) {
+			end = len(s)
+		}
+		chunks = append(chunks, s[i:end])
+	}
+
+	return chunks
+}
+
+// collectColorLevelsWithStatus collects level and status metrics for each color using the specified OID base
+func (bc *BrotherCollector) collectColorLevelsWithStatus(oidBase string, colors []string, levelMetric, statusMetric *prometheus.GaugeVec, context string) {
+	for i, color := range colors {
+		oid := fmt.Sprintf("%s.%d", oidBase, i+1)
+
+		result, err := bc.client.Get([]string{oid})
+		if err != nil {
+			slog.Debug("Failed to get "+context, "color", color, "oid", oid, "error", err)
+			continue
+		}
+
+		if len(result.Variables) > 0 {
+			level, ok := convertToInt(result.Variables[0].Value, context)
+			if !ok {
+				continue
+			}
+
+			// Convert to percentage and cap at 100
+			percentage := float64(level)
+			if percentage > 100 {
+				percentage = 100
+			}
+
+			// Set level metric
+			levelMetric.WithLabelValues(bc.config.Printer.Host, color).Set(percentage)
+
+			// Set status based on level
+			status := "ok"
+			statusValue := 1.0
+
+			if percentage < 10 {
+				status = "low"
+				statusValue = 0.0
+			} else if percentage == 0 {
+				status = "empty"
+				statusValue = 0.0
+			}
+
+			statusMetric.WithLabelValues(bc.config.Printer.Host, color, status).Set(statusValue)
+		}
 	}
 }
 
@@ -363,25 +442,11 @@ func (bc *BrotherCollector) collectBrotherMaintenanceData() error {
 	}
 
 	// Convert bytes to hex string (excluding last byte which is checksum)
-	hexString := ""
-	for i := 0; i < len(bytes)-1; i++ {
-		hexString += fmt.Sprintf("%02x", bytes[i])
-	}
-
+	hexString := bytesToHexString(bytes)
 	slog.Debug("Brother maintenance hex data", "hex", hexString, "length", len(hexString))
 
 	// Split into 14-character chunks (CHUNK_SIZE from Python library)
-	chunkSize := 14
-	chunks := make([]string, 0)
-
-	for i := 0; i < len(hexString); i += chunkSize {
-		end := i + chunkSize
-		if end > len(hexString) {
-			end = len(hexString)
-		}
-
-		chunks = append(chunks, hexString[i:end])
-	}
+	chunks := splitIntoChunks(hexString, 14)
 
 	slog.Debug("Brother maintenance chunks", "chunks", chunks)
 
@@ -526,25 +591,11 @@ func (bc *BrotherCollector) collectBrotherCountersData() error {
 	}
 
 	// Convert bytes to hex string (excluding last byte which is checksum)
-	hexString := ""
-	for i := 0; i < len(bytes)-1; i++ {
-		hexString += fmt.Sprintf("%02x", bytes[i])
-	}
-
+	hexString := bytesToHexString(bytes)
 	slog.Debug("Brother counters hex data", "hex", hexString, "length", len(hexString))
 
 	// Split into 14-character chunks (CHUNK_SIZE from Python library)
-	chunkSize := 14
-	chunks := make([]string, 0)
-
-	for i := 0; i < len(hexString); i += chunkSize {
-		end := i + chunkSize
-		if end > len(hexString) {
-			end = len(hexString)
-		}
-
-		chunks = append(chunks, hexString[i:end])
-	}
+	chunks := splitIntoChunks(hexString, 14)
 
 	slog.Debug("Brother counters chunks", "chunks", chunks)
 
@@ -671,25 +722,11 @@ func (bc *BrotherCollector) collectBrotherNextCareData() error {
 	}
 
 	// Convert bytes to hex string (excluding last byte which is checksum)
-	hexString := ""
-	for i := 0; i < len(bytes)-1; i++ {
-		hexString += fmt.Sprintf("%02x", bytes[i])
-	}
-
+	hexString := bytesToHexString(bytes)
 	slog.Debug("Brother nextcare hex data", "hex", hexString, "length", len(hexString))
 
 	// Split into 14-character chunks (CHUNK_SIZE from Python library)
-	chunkSize := 14
-	chunks := make([]string, 0)
-
-	for i := 0; i < len(hexString); i += chunkSize {
-		end := i + chunkSize
-		if end > len(hexString) {
-			end = len(hexString)
-		}
-
-		chunks = append(chunks, hexString[i:end])
-	}
+	chunks := splitIntoChunks(hexString, 14)
 
 	slog.Debug("Brother nextcare chunks", "chunks", chunks)
 
@@ -754,99 +791,11 @@ func (bc *BrotherCollector) collectBrotherNextCareData() error {
 
 // collectLaserMetrics collects metrics specific to laser printers
 func (bc *BrotherCollector) collectLaserMetrics() error {
-	// Collect toner levels
-	for i, color := range LaserColors {
-		oid := fmt.Sprintf("%s.%d", OIDTonerLevelBase, i+1)
+	// Collect toner levels and status
+	bc.collectColorLevelsWithStatus(OIDTonerLevelBase, LaserColors, bc.metrics.TonerLevel, bc.metrics.TonerStatus, "toner level")
 
-		result, err := bc.client.Get([]string{oid})
-		if err != nil {
-			slog.Debug("Failed to get toner level", "color", color, "oid", oid, "error", err)
-			continue
-		}
-
-		if len(result.Variables) > 0 {
-			level, ok := convertToInt(result.Variables[0].Value, "toner level")
-			if !ok {
-				continue
-			}
-
-			// Convert to percentage (assuming max level is 100)
-			percentage := float64(level)
-			if percentage > 100 {
-				percentage = 100
-			}
-
-			bc.metrics.TonerLevel.WithLabelValues(
-				bc.config.Printer.Host,
-				color,
-			).Set(percentage)
-
-			// Set status based on level
-			status := "ok"
-			statusValue := 1.0
-
-			if percentage < 10 {
-				status = "low"
-				statusValue = 0.0
-			} else if percentage == 0 {
-				status = "empty"
-				statusValue = 0.0
-			}
-
-			bc.metrics.TonerStatus.WithLabelValues(
-				bc.config.Printer.Host,
-				color,
-				status,
-			).Set(statusValue)
-		}
-	}
-
-	// Collect drum levels
-	for i, color := range LaserColors {
-		oid := fmt.Sprintf("%s.%d", OIDDrumLevelBase, i+1)
-
-		result, err := bc.client.Get([]string{oid})
-		if err != nil {
-			slog.Debug("Failed to get drum level", "color", color, "oid", oid, "error", err)
-			continue
-		}
-
-		if len(result.Variables) > 0 {
-			level, ok := convertToInt(result.Variables[0].Value, "drum level")
-			if !ok {
-				continue
-			}
-
-			// Convert to percentage
-			percentage := float64(level)
-			if percentage > 100 {
-				percentage = 100
-			}
-
-			bc.metrics.DrumLevel.WithLabelValues(
-				bc.config.Printer.Host,
-				color,
-			).Set(percentage)
-
-			// Set status based on level
-			status := "ok"
-			statusValue := 1.0
-
-			if percentage < 10 {
-				status = "low"
-				statusValue = 0.0
-			} else if percentage == 0 {
-				status = "empty"
-				statusValue = 0.0
-			}
-
-			bc.metrics.DrumStatus.WithLabelValues(
-				bc.config.Printer.Host,
-				color,
-				status,
-			).Set(statusValue)
-		}
-	}
+	// Collect drum levels and status
+	bc.collectColorLevelsWithStatus(OIDDrumLevelBase, LaserColors, bc.metrics.DrumLevel, bc.metrics.DrumStatus, "drum level")
 
 	return nil
 }
