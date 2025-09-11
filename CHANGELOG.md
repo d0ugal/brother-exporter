@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.3](https://github.com/d0ugal/brother-exporter/compare/v1.0.2...v1.0.3) (2025-09-11)
+
+
+### Bug Fixes
+
+* correct page count collection to use standard MIB OIDs ([1ed8232](https://github.com/d0ugal/brother-exporter/commit/1ed8232f63e51954a514734c834a9b2aa38b949f))
+* ignore the binary ([c099634](https://github.com/d0ugal/brother-exporter/commit/c099634fbc76a25a275818ed4da79ee978ca30f6))
+
 ## [1.0.2](https://github.com/d0ugal/brother-exporter/compare/v1.0.1...v1.0.2) (2025-09-11)
 
 
