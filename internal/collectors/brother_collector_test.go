@@ -17,14 +17,11 @@ func TestBrotherCollector_Constants(t *testing.T) {
 	assert.NotEmpty(t, OIDPrinterStatus)
 	assert.NotEmpty(t, OIDBrotherConsumableInfo)
 	assert.NotEmpty(t, OIDBrotherConsumableLevel)
-	assert.NotEmpty(t, OIDBrotherPageCount)
 	assert.NotEmpty(t, OIDBrotherStatus)
 	assert.NotEmpty(t, OIDBrotherFirmware)
 	assert.NotEmpty(t, OIDTonerLevelBase)
 	assert.NotEmpty(t, OIDDrumLevelBase)
 	assert.NotEmpty(t, OIDPaperTrayStatusBase)
-	assert.NotEmpty(t, OIDPageCountTotal)
-	assert.NotEmpty(t, OIDPageCountColor)
 }
 
 func TestBrotherCollector_ColorMappings(t *testing.T) {

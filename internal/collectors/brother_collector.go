@@ -62,6 +62,7 @@ func splitIntoChunks(s string, chunkSize int) []string {
 		if end > len(s) {
 			end = len(s)
 		}
+
 		chunks = append(chunks, s[i:end])
 	}
 
@@ -138,7 +139,6 @@ const (
 	// Brother-specific consumable OIDs (these work better than standard MIB)
 	OIDBrotherConsumableInfo  = "1.3.6.1.4.1.2435.2.3.9.4.2.1.5.5.1.0"  // Consumable info
 	OIDBrotherConsumableLevel = "1.3.6.1.4.1.2435.2.3.9.4.2.1.5.5.4.0"  // Consumable level (104%)
-	OIDBrotherPageCount       = "1.3.6.1.4.1.2435.2.3.9.4.2.1.5.5.6.0"  // Page count (10209)
 	OIDBrotherStatus          = "1.3.6.1.4.1.2435.2.3.9.4.2.1.5.5.7.0"  // Status (1)
 	OIDBrotherFirmware        = "1.3.6.1.4.1.2435.2.3.9.4.2.1.5.5.17.0" // Firmware version
 
@@ -146,10 +146,6 @@ const (
 	OIDTonerLevelBase      = "1.3.6.1.2.1.43.11.1.1.9.1"
 	OIDDrumLevelBase       = "1.3.6.1.2.1.43.11.1.1.8.1"
 	OIDPaperTrayStatusBase = "1.3.6.1.2.1.43.8.2.1.10.1"
-
-	// Page counters
-	OIDPageCountTotal = "1.3.6.1.2.1.43.10.2.1.4.1.1"          // Standard total pages
-	OIDPageCountColor = "1.3.6.1.4.1.2435.2.3.9.4.2.1.5.5.9.0" // Brother color pages
 )
 
 // Color mappings for Brother printers
@@ -244,12 +240,6 @@ func (bc *BrotherCollector) collectMetrics() {
 			slog.Error("Failed to collect Brother nextcare data", "error", err)
 			bc.metrics.PrinterConnectionErrors.WithLabelValues(bc.config.Printer.Host, "nextcare_metrics").Inc()
 		}
-	}
-
-	// Collect page counters using standard MIB (Brother-specific OIDs give wrong values)
-	if err := bc.collectPageCounters(); err != nil {
-		slog.Error("Failed to collect page counters", "error", err)
-		bc.metrics.PrinterConnectionErrors.WithLabelValues(bc.config.Printer.Host, "page_counters").Inc()
 	}
 
 	// Collect paper tray status
@@ -599,106 +589,7 @@ func (bc *BrotherCollector) collectBrotherCountersData() error {
 
 	slog.Debug("Brother counters chunks", "chunks", chunks)
 
-	// Extract page counts using the Brother-specific format
-	pageCounts := make(map[string]int)
-
-	// Brother counters mappings (from const.py)
-	countersMap := map[string]string{
-		"00": "page_counter",
-		"01": "bw_counter",
-		"02": "color_counter",
-		"06": "duplex_unit_pages_counter",
-		"12": "black_counter",
-		"13": "cyan_counter",
-		"14": "magenta_counter",
-		"15": "yellow_counter",
-		"16": "image_counter",
-	}
-
-	// Process each chunk
-	for _, chunk := range chunks {
-		if len(chunk) < 2 {
-			continue
-		}
-
-		// First 2 hex chars are the type code
-		typeCode := chunk[:2]
-
-		// Check if this is a counter we care about
-		if counterType, exists := countersMap[typeCode]; exists {
-			if len(chunk) >= 10 {
-				// Last 8 hex chars contain the value (as per Python library)
-				valueHex := chunk[len(chunk)-8:]
-
-				value, err := strconv.ParseInt(valueHex, 16, 64)
-				if err != nil {
-					slog.Debug("Failed to parse hex value", "hex", valueHex, "error", err)
-					continue
-				}
-
-				// For counters, use the raw value (not divided by 100)
-				if value >= 0 && value < 10000000 { // Reasonable page count range
-					switch counterType {
-					case "page_counter":
-						pageCounts["total"] = int(value)
-					case "bw_counter":
-						pageCounts["bw"] = int(value)
-					case "color_counter":
-						pageCounts["color"] = int(value)
-					}
-
-					slog.Debug("Found counter", "type", counterType, "value_hex", valueHex, "value", value)
-				}
-			}
-		}
-	}
-
-	// Update page count metrics (only if we have data from Brother counters)
-	// Note: This should only run if the standard page counters failed
-	if len(pageCounts) > 0 {
-		for countType, count := range pageCounts {
-			switch countType {
-			case "total":
-				bc.metrics.PageCountTotal.WithLabelValues(bc.config.Printer.Host).Add(float64(count))
-			case "bw":
-				bc.metrics.PageCountBlack.WithLabelValues(bc.config.Printer.Host).Add(float64(count))
-			case "color":
-				bc.metrics.PageCountColor.WithLabelValues(bc.config.Printer.Host).Add(float64(count))
-			}
-		}
-	}
-
-	// Update individual color page counters
-	for _, chunk := range chunks {
-		if len(chunk) < 2 {
-			continue
-		}
-
-		typeCode := chunk[:2]
-		if len(chunk) >= 10 {
-			valueHex := chunk[len(chunk)-8:]
-
-			value, err := strconv.ParseInt(valueHex, 16, 64)
-			if err != nil {
-				continue
-			}
-
-			if value >= 0 && value < 10000000 {
-				switch typeCode {
-				case "13": // Cyan counter
-					bc.metrics.PageCountCyan.WithLabelValues(bc.config.Printer.Host).Add(float64(value))
-				case "14": // Magenta counter
-					bc.metrics.PageCountMagenta.WithLabelValues(bc.config.Printer.Host).Add(float64(value))
-				case "15": // Yellow counter
-					bc.metrics.PageCountYellow.WithLabelValues(bc.config.Printer.Host).Add(float64(value))
-				case "06": // Duplex counter
-					bc.metrics.PageCountDuplex.WithLabelValues(bc.config.Printer.Host).Add(float64(value))
-				}
-			}
-		}
-	}
-
-	slog.Debug("Brother counters data collected", "page_counts", pageCounts)
+	slog.Debug("Brother counters data collected (page count metrics removed)")
 
 	return nil
 }
@@ -855,38 +746,6 @@ func (bc *BrotherCollector) collectInkjetMetrics() error {
 				color,
 				status,
 			).Set(statusValue)
-		}
-	}
-
-	return nil
-}
-
-// collectPageCounters collects page count metrics
-func (bc *BrotherCollector) collectPageCounters() error {
-	// Use standard MIB OIDs for accurate page counts (Brother OIDs are incorrect)
-	oids := []string{
-		OIDPageCountTotal, // Standard MIB total page count (this gives correct value: 788)
-	}
-
-	result, err := bc.client.Get(oids)
-	if err != nil {
-		return fmt.Errorf("failed to get page counters: %w", err)
-	}
-
-	for i, variable := range result.Variables {
-		if variable.Value != nil {
-			count, ok := convertToInt(variable.Value, "page counter")
-			if !ok {
-				continue
-			}
-
-			switch i {
-			case 0: // Standard MIB total page count
-				// For counters, we need to track the difference from last collection
-				// For now, just add the current value (this will accumulate, but shows the right total)
-				bc.metrics.PageCountTotal.WithLabelValues(bc.config.Printer.Host).Add(float64(count))
-				slog.Debug("Added total page count", "count", count)
-			}
 		}
 	}
 
