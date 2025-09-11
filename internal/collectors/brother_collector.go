@@ -14,6 +14,24 @@ import (
 	"github.com/gosnmp/gosnmp"
 )
 
+// convertToInt converts various SNMP value types to int using Go generics
+// This eliminates the duplicated type switch statements throughout the code
+func convertToInt[T any](value T, context string) (int, bool) {
+	switch v := any(value).(type) {
+	case int:
+		return v, true
+	case uint:
+		return int(v), true
+	case int64:
+		return int(v), true
+	case uint64:
+		return int(v), true
+	default:
+		slog.Debug("Unexpected type for "+context, "type", fmt.Sprintf("%T", v), "value", v)
+		return 0, false
+	}
+}
+
 // BrotherCollector collects metrics from Brother printers via SNMP
 type BrotherCollector struct {
 	config  *config.Config
@@ -247,18 +265,8 @@ func (bc *BrotherCollector) collectPrinterStatus() error {
 	}
 
 	if len(result.Variables) > 0 {
-		var status int
-		switch v := result.Variables[0].Value.(type) {
-		case int:
-			status = v
-		case uint:
-			status = int(v)
-		case int64:
-			status = int(v)
-		case uint64:
-			status = int(v)
-		default:
-			slog.Debug("Unexpected type for printer status", "type", fmt.Sprintf("%T", v), "value", v)
+		status, ok := convertToInt(result.Variables[0].Value, "printer status")
+		if !ok {
 			return nil
 		}
 
@@ -757,18 +765,8 @@ func (bc *BrotherCollector) collectLaserMetrics() error {
 		}
 
 		if len(result.Variables) > 0 {
-			var level int
-			switch v := result.Variables[0].Value.(type) {
-			case int:
-				level = v
-			case uint:
-				level = int(v)
-			case int64:
-				level = int(v)
-			case uint64:
-				level = int(v)
-			default:
-				slog.Debug("Unexpected type for toner level", "color", color, "type", fmt.Sprintf("%T", v), "value", v)
+			level, ok := convertToInt(result.Variables[0].Value, "toner level")
+			if !ok {
 				continue
 			}
 
@@ -814,18 +812,8 @@ func (bc *BrotherCollector) collectLaserMetrics() error {
 		}
 
 		if len(result.Variables) > 0 {
-			var level int
-			switch v := result.Variables[0].Value.(type) {
-			case int:
-				level = v
-			case uint:
-				level = int(v)
-			case int64:
-				level = int(v)
-			case uint64:
-				level = int(v)
-			default:
-				slog.Debug("Unexpected type for drum level", "color", color, "type", fmt.Sprintf("%T", v), "value", v)
+			level, ok := convertToInt(result.Variables[0].Value, "drum level")
+			if !ok {
 				continue
 			}
 
@@ -885,18 +873,8 @@ func (bc *BrotherCollector) collectInkjetMetrics() error {
 		}
 
 		if len(result.Variables) > 0 {
-			var level int
-			switch v := result.Variables[0].Value.(type) {
-			case int:
-				level = v
-			case uint:
-				level = int(v)
-			case int64:
-				level = int(v)
-			case uint64:
-				level = int(v)
-			default:
-				slog.Debug("Unexpected type for ink level", "color", color, "type", fmt.Sprintf("%T", v), "value", v)
+			level, ok := convertToInt(result.Variables[0].Value, "ink level")
+			if !ok {
 				continue
 			}
 
@@ -948,18 +926,8 @@ func (bc *BrotherCollector) collectPageCounters() error {
 
 	for i, variable := range result.Variables {
 		if variable.Value != nil {
-			var count int
-			switch v := variable.Value.(type) {
-			case int:
-				count = v
-			case uint:
-				count = int(v)
-			case int64:
-				count = int(v)
-			case uint64:
-				count = int(v)
-			default:
-				slog.Debug("Unexpected type for page counter", "type", fmt.Sprintf("%T", v), "value", v)
+			count, ok := convertToInt(variable.Value, "page counter")
+			if !ok {
 				continue
 			}
 
@@ -988,18 +956,8 @@ func (bc *BrotherCollector) collectPaperTrayStatus() error {
 	}
 
 	if len(result.Variables) > 0 {
-		var status int
-		switch v := result.Variables[0].Value.(type) {
-		case int:
-			status = v
-		case uint:
-			status = int(v)
-		case int64:
-			status = int(v)
-		case uint64:
-			status = int(v)
-		default:
-			slog.Debug("Unexpected type for paper tray status", "type", fmt.Sprintf("%T", v), "value", v)
+		status, ok := convertToInt(result.Variables[0].Value, "paper tray status")
+		if !ok {
 			return nil
 		}
 
