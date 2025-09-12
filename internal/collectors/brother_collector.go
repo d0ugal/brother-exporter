@@ -164,6 +164,9 @@ const (
 	OIDTonerLevelBase      = "1.3.6.1.2.1.43.11.1.1.9.1"
 	OIDDrumLevelBase       = "1.3.6.1.2.1.43.11.1.1.8.1"
 	OIDPaperTrayStatusBase = "1.3.6.1.2.1.43.8.2.1.10.1"
+
+	// Page counter OIDs (standard MIB - these work reliably)
+	OIDPageCountTotal = "1.3.6.1.2.1.43.10.2.1.4.1.1" // Standard MIB total page count
 )
 
 // Brother data parsing constants
@@ -253,6 +256,9 @@ func (bc *BrotherCollector) collectMetrics() {
 
 	// Collect paper tray status
 	bc.handleCollectionError(bc.collectPaperTrayStatus(), "paper_tray")
+
+	// Collect page counters using standard MIB OIDs
+	bc.handleCollectionError(bc.collectPageCounters(), "page_counters")
 }
 
 // connect establishes SNMP connection to the printer
@@ -777,6 +783,90 @@ func (bc *BrotherCollector) collectPaperTrayStatus() error {
 	}
 
 	return nil
+}
+
+// collectPageCounters collects page count metrics using Brother-specific counters data
+func (bc *BrotherCollector) collectPageCounters() error {
+	// Get the Brother counters data which contains multiple counter types
+	result, err := bc.client.Get([]string{OIDBrotherCountersData})
+	if err != nil {
+		return fmt.Errorf("failed to get Brother counters data: %w", err)
+	}
+	if len(result.Variables) == 0 || result.Variables[0].Value == nil {
+		return fmt.Errorf("no Brother counters data received")
+	}
+	variable := result.Variables[0]
+
+	// Parse the hex string data
+	hexData, ok := variable.Value.([]byte)
+	if !ok {
+		return fmt.Errorf("invalid Brother counters data type: %T", variable.Value)
+	}
+
+	// Parse the hex data to extract individual counters
+	counters := bc.parseBrotherCounters(hexData)
+
+	// Update metrics with the parsed counter values
+	bc.metrics.PageCountTotal.WithLabelValues(bc.config.Printer.Host).Add(float64(counters["0001"]))       // Total page count
+	bc.metrics.PageCountBlack.WithLabelValues(bc.config.Printer.Host).Add(float64(counters["0101"]))       // B/W count
+	bc.metrics.PageCountColor.WithLabelValues(bc.config.Printer.Host).Add(float64(counters["0201"]))       // Color count
+	bc.metrics.PageCountDuplex.WithLabelValues(bc.config.Printer.Host).Add(float64(counters["0601"]))      // Duplex count
+	bc.metrics.PageCountDrumBlack.WithLabelValues(bc.config.Printer.Host).Add(float64(counters["1201"]))   // Black drum count
+	bc.metrics.PageCountDrumCyan.WithLabelValues(bc.config.Printer.Host).Add(float64(counters["1301"]))    // Cyan drum count
+	bc.metrics.PageCountDrumMagenta.WithLabelValues(bc.config.Printer.Host).Add(float64(counters["1401"])) // Magenta drum count
+	bc.metrics.PageCountDrumYellow.WithLabelValues(bc.config.Printer.Host).Add(float64(counters["1501"]))  // Yellow drum count
+
+	slog.Debug("Page counters collected",
+		"total", counters["0001"],
+		"bw", counters["0101"],
+		"color", counters["0201"],
+		"duplex", counters["0601"],
+		"black_drum", counters["1201"],
+		"cyan_drum", counters["1301"],
+		"magenta_drum", counters["1401"],
+		"yellow_drum", counters["1501"])
+
+	return nil
+}
+
+// parseBrotherCounters parses the hex data from Brother counters OID
+func (bc *BrotherCollector) parseBrotherCounters(hexData []byte) map[string]int {
+	counters := make(map[string]int)
+	
+	// Initialize all counter types to 0
+	counterTypes := []string{"0001", "0101", "0201", "0601", "1201", "1301", "1401", "1501", "1601"}
+	for _, counterType := range counterTypes {
+		counters[counterType] = 0
+	}
+	
+	// Parse the hex data - each counter entry is 7 bytes:
+	// 2 bytes: counter type (e.g., "0001", "0101", "0201")
+	// 1 byte: unknown/flag (always 04)
+	// 4 bytes: counter value (big-endian)
+	
+	for i := 0; i < len(hexData)-6; i += 7 {
+		if i+6 >= len(hexData) {
+			break
+		}
+		
+		// Extract counter type (first 2 bytes)
+		counterType := fmt.Sprintf("%02X%02X", hexData[i], hexData[i+1])
+		
+		// Skip the flag byte (should be 04)
+		if hexData[i+2] != 0x04 {
+			continue
+		}
+		
+		// Extract counter value (last 4 bytes, big-endian)
+		value := int(hexData[i+3])<<24 | int(hexData[i+4])<<16 | int(hexData[i+5])<<8 | int(hexData[i+6])
+		
+		// Store the counter value if it's a known type
+		if _, exists := counters[counterType]; exists {
+			counters[counterType] = value
+		}
+	}
+	
+	return counters
 }
 
 // Stop stops the collector

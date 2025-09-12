@@ -35,6 +35,16 @@ type Registry struct {
 	// Paper tray status
 	PaperTrayStatus *prometheus.GaugeVec
 
+	// Page counters (using standard MIB OIDs)
+	PageCountTotal       *prometheus.CounterVec
+	PageCountBlack       *prometheus.CounterVec
+	PageCountColor       *prometheus.CounterVec
+	PageCountDuplex      *prometheus.CounterVec
+	PageCountDrumBlack   *prometheus.CounterVec
+	PageCountDrumCyan    *prometheus.CounterVec
+	PageCountDrumMagenta *prometheus.CounterVec
+	PageCountDrumYellow  *prometheus.CounterVec
+
 	// Maintenance component life remaining (pages)
 	BeltUnitRemainingPages        *prometheus.GaugeVec
 	FuserUnitRemainingPages       *prometheus.GaugeVec
@@ -183,6 +193,79 @@ func NewRegistry() *Registry {
 		[]string{"host", "tray", "status"},
 	)
 	r.addMetricInfo("brother_paper_tray_status", "Brother printer paper tray status (1 = ok, 0 = empty/error)", []string{"host", "tray", "status"})
+
+	// Page counters (using standard MIB OIDs)
+	r.PageCountTotal = promauto.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "brother_page_count_total",
+			Help: "Total number of pages printed",
+		},
+		[]string{"host"},
+	)
+	r.addMetricInfo("brother_page_count_total", "Total number of pages printed", []string{"host"})
+
+	r.PageCountBlack = promauto.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "brother_page_count_black_total",
+			Help: "Total number of black and white pages printed",
+		},
+		[]string{"host"},
+	)
+	r.addMetricInfo("brother_page_count_black_total", "Total number of black and white pages printed", []string{"host"})
+
+	r.PageCountColor = promauto.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "brother_page_count_color_total",
+			Help: "Total number of color pages printed",
+		},
+		[]string{"host"},
+	)
+	r.addMetricInfo("brother_page_count_color_total", "Total number of color pages printed", []string{"host"})
+
+	r.PageCountDuplex = promauto.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "brother_page_count_duplex_total",
+			Help: "Total number of duplex pages printed",
+		},
+		[]string{"host"},
+	)
+	r.addMetricInfo("brother_page_count_duplex_total", "Total number of duplex pages printed", []string{"host"})
+
+	r.PageCountDrumBlack = promauto.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "brother_page_count_drum_black_total",
+			Help: "Total number of pages printed with black drum",
+		},
+		[]string{"host"},
+	)
+	r.addMetricInfo("brother_page_count_drum_black_total", "Total number of pages printed with black drum", []string{"host"})
+
+	r.PageCountDrumCyan = promauto.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "brother_page_count_drum_cyan_total",
+			Help: "Total number of pages printed with cyan drum",
+		},
+		[]string{"host"},
+	)
+	r.addMetricInfo("brother_page_count_drum_cyan_total", "Total number of pages printed with cyan drum", []string{"host"})
+
+	r.PageCountDrumMagenta = promauto.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "brother_page_count_drum_magenta_total",
+			Help: "Total number of pages printed with magenta drum",
+		},
+		[]string{"host"},
+	)
+	r.addMetricInfo("brother_page_count_drum_magenta_total", "Total number of pages printed with magenta drum", []string{"host"})
+
+	r.PageCountDrumYellow = promauto.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "brother_page_count_drum_yellow_total",
+			Help: "Total number of pages printed with yellow drum",
+		},
+		[]string{"host"},
+	)
+	r.addMetricInfo("brother_page_count_drum_yellow_total", "Total number of pages printed with yellow drum", []string{"host"})
 
 	// Maintenance component life remaining (pages)
 	r.BeltUnitRemainingPages = promauto.NewGaugeVec(
