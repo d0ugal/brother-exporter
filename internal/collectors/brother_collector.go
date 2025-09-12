@@ -85,6 +85,14 @@ func calculateStatusFromLevel(level float64) (status string, statusValue float64
 	return status, statusValue
 }
 
+// handleCollectionError is a helper function for the repetitive error handling pattern in collectMetrics
+func (bc *BrotherCollector) handleCollectionError(err error, operation string) {
+	if err != nil {
+		slog.Error("Failed to collect "+operation, "error", err)
+		bc.metrics.PrinterConnectionErrors.WithLabelValues(bc.config.Printer.Host, operation).Inc()
+	}
+}
+
 // collectColorLevelsWithStatus collects level and status metrics for each color using the specified OID base
 func (bc *BrotherCollector) collectColorLevelsWithStatus(oidBase string, colors []string, levelMetric, statusMetric *prometheus.GaugeVec, context string) {
 	for i, color := range colors {
@@ -222,48 +230,29 @@ func (bc *BrotherCollector) collectMetrics() {
 	bc.metrics.PrinterConnectionStatus.WithLabelValues(bc.config.Printer.Host).Set(1)
 
 	// Collect printer information
-	if err := bc.collectPrinterInfo(); err != nil {
-		slog.Error("Failed to collect printer info", "error", err)
-		bc.metrics.PrinterConnectionErrors.WithLabelValues(bc.config.Printer.Host, "info").Inc()
-	}
+	bc.handleCollectionError(bc.collectPrinterInfo(), "printer info")
 
 	// Collect printer status
-	if err := bc.collectPrinterStatus(); err != nil {
-		slog.Error("Failed to collect printer status", "error", err)
-		bc.metrics.PrinterConnectionErrors.WithLabelValues(bc.config.Printer.Host, "status").Inc()
-	}
+	bc.handleCollectionError(bc.collectPrinterStatus(), "printer status")
 
 	// Collect Brother-specific metrics (these work better than standard MIB)
 	if err := bc.collectBrotherSpecificMetrics(); err != nil {
-		slog.Error("Failed to collect Brother-specific metrics", "error", err)
-		bc.metrics.PrinterConnectionErrors.WithLabelValues(bc.config.Printer.Host, "brother_metrics").Inc()
+		bc.handleCollectionError(err, "brother_metrics")
 
 		// Fallback to standard MIB only if Brother-specific collection fails
 		switch bc.config.Printer.Type {
 		case "laser":
-			if err := bc.collectLaserMetrics(); err != nil {
-				slog.Error("Failed to collect laser metrics", "error", err)
-				bc.metrics.PrinterConnectionErrors.WithLabelValues(bc.config.Printer.Host, "laser_metrics").Inc()
-			}
+			bc.handleCollectionError(bc.collectLaserMetrics(), "laser_metrics")
 		case "ink":
-			if err := bc.collectInkjetMetrics(); err != nil {
-				slog.Error("Failed to collect inkjet metrics", "error", err)
-				bc.metrics.PrinterConnectionErrors.WithLabelValues(bc.config.Printer.Host, "inkjet_metrics").Inc()
-			}
+			bc.handleCollectionError(bc.collectInkjetMetrics(), "inkjet_metrics")
 		}
 	} else {
 		// If Brother-specific collection succeeded, also collect nextcare data
-		if err := bc.collectBrotherNextCareData(); err != nil {
-			slog.Error("Failed to collect Brother nextcare data", "error", err)
-			bc.metrics.PrinterConnectionErrors.WithLabelValues(bc.config.Printer.Host, "nextcare_metrics").Inc()
-		}
+		bc.handleCollectionError(bc.collectBrotherNextCareData(), "nextcare_metrics")
 	}
 
 	// Collect paper tray status
-	if err := bc.collectPaperTrayStatus(); err != nil {
-		slog.Error("Failed to collect paper tray status", "error", err)
-		bc.metrics.PrinterConnectionErrors.WithLabelValues(bc.config.Printer.Host, "paper_tray").Inc()
-	}
+	bc.handleCollectionError(bc.collectPaperTrayStatus(), "paper_tray")
 }
 
 // connect establishes SNMP connection to the printer
