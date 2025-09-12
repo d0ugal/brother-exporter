@@ -160,6 +160,11 @@ const (
 	OIDBrotherCountersData    = "1.3.6.1.4.1.2435.2.3.9.4.2.1.5.5.10.0" // Counters data
 	OIDBrotherNextCareData    = "1.3.6.1.4.1.2435.2.3.9.4.2.1.5.5.11.0" // Nextcare data
 
+	// Brother-specific printer info OIDs
+	OIDBrotherModel  = "1.3.6.1.4.1.2435.2.3.9.1.1.7.0"  // Model
+	OIDBrotherSerial = "1.3.6.1.4.1.2435.2.3.9.4.2.1.5.5.1.0" // Serial number
+	OIDBrotherMAC    = "1.3.6.1.2.1.2.2.1.6.1"           // MAC address
+
 	// Standard MIB OIDs (these return -2/-3 for Brother printers)
 	OIDTonerLevelBase      = "1.3.6.1.2.1.43.11.1.1.9.1"
 	OIDDrumLevelBase       = "1.3.6.1.2.1.43.11.1.1.8.1"
@@ -292,37 +297,76 @@ func (bc *BrotherCollector) disconnect() {
 	}
 }
 
-// collectPrinterInfo collects basic printer information
+// collectPrinterInfo collects basic printer information using Brother-specific OIDs
 func (bc *BrotherCollector) collectPrinterInfo() error {
 	oids := []string{
-		OIDSystemDescription,
-		OIDSystemName,
-		OIDSystemContact,
-		OIDSystemLocation,
+		OIDBrotherModel,
+		OIDBrotherSerial,
+		OIDBrotherFirmware,
+		OIDBrotherMAC,
 	}
 
 	result, err := bc.client.Get(oids)
 	if err != nil {
-		return fmt.Errorf("failed to get system info: %w", err)
+		slog.Error("Failed to get Brother printer info", "error", err, "oids", oids)
+		return fmt.Errorf("failed to get Brother printer info: %w", err)
 	}
+	
 
-	var model, serial, firmware string
+	var model, serial, firmware, mac string
 
 	for _, variable := range result.Variables {
+		if variable.Value == nil {
+			slog.Info("Variable has nil value", "name", variable.Name)
+			continue
+		}
+
 		value := string(variable.Value.([]byte))
 
-		switch variable.Name {
-		case OIDSystemDescription:
-			// Parse model and firmware from description
-			parts := strings.Split(value, ";")
-			if len(parts) >= 2 {
-				model = strings.TrimSpace(parts[0])
-				firmware = strings.TrimSpace(parts[1])
+		// Remove leading dot from OID name for comparison
+		oidName := strings.TrimPrefix(variable.Name, ".")
+		switch oidName {
+		case OIDBrotherModel:
+			slog.Debug("Processing Brother model", "raw_value", value, "contains_MDL", strings.Contains(value, "MDL:"))
+			// Extract model from the long string (look for MDL:...;)
+			if strings.Contains(value, "MDL:") {
+				start := strings.Index(value, "MDL:") + 4
+				end := strings.Index(value[start:], ";")
+				if end != -1 {
+					model = strings.TrimSpace(value[start : start+end])
+					// Remove " series" suffix if present
+					model = strings.TrimSuffix(model, " series")
+					slog.Debug("Extracted model from MDL", "start", start, "end", end, "model", model)
+				} else {
+					model = strings.TrimSpace(value[start:])
+					model = strings.TrimSuffix(model, " series")
+					slog.Debug("Using model from MDL start", "model", model)
+				}
 			} else {
-				model = value
+				model = strings.TrimSpace(value)
+				model = strings.TrimSuffix(model, " series")
+				slog.Debug("Using raw model value", "model", model)
 			}
-		case OIDSystemName:
-			serial = value
+		case OIDBrotherSerial:
+			serial = strings.TrimSpace(value)
+			slog.Debug("Processing Brother serial", "raw_value", value, "serial", serial)
+		case OIDBrotherFirmware:
+			firmware = strings.TrimSpace(value)
+			slog.Debug("Processing Brother firmware", "raw_value", value, "firmware", firmware)
+		case OIDBrotherMAC:
+			slog.Debug("Processing Brother MAC", "raw_value", value, "length", len(value), "type", fmt.Sprintf("%T", variable.Value))
+			// Convert MAC address bytes to hex string format
+			if macBytes, ok := variable.Value.([]byte); ok && len(macBytes) == 6 {
+				mac = fmt.Sprintf("%02X:%02X:%02X:%02X:%02X:%02X",
+					macBytes[0], macBytes[1], macBytes[2],
+					macBytes[3], macBytes[4], macBytes[5])
+				slog.Debug("Formatted MAC address from bytes", "mac", mac)
+			} else {
+				mac = strings.TrimSpace(value)
+				slog.Debug("Using MAC as string", "mac", mac)
+			}
+		default:
+			slog.Debug("Unknown OID", "name", variable.Name, "value", value)
 		}
 	}
 
@@ -333,7 +377,14 @@ func (bc *BrotherCollector) collectPrinterInfo() error {
 		serial,
 		firmware,
 		bc.config.Printer.Type,
+		mac,
 	).Set(1)
+
+	slog.Debug("Printer info collected", 
+		"model", model,
+		"serial", serial,
+		"firmware", firmware,
+		"mac", mac)
 
 	return nil
 }
@@ -792,11 +843,9 @@ func (bc *BrotherCollector) collectPageCounters() error {
 	if err != nil {
 		return fmt.Errorf("failed to get Brother counters data: %w", err)
 	}
-
 	if len(result.Variables) == 0 || result.Variables[0].Value == nil {
 		return fmt.Errorf("no Brother counters data received")
 	}
-
 	variable := result.Variables[0]
 
 	// Parse the hex string data

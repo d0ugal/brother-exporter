@@ -118,9 +118,9 @@ func NewRegistry() *Registry {
 			Name: "brother_printer_info",
 			Help: "Information about the Brother printer",
 		},
-		[]string{"host", "model", "serial", "firmware", "type"},
+		[]string{"host", "model", "serial", "firmware", "type", "mac"},
 	)
-	r.addMetricInfo("brother_printer_info", "Information about the Brother printer", []string{"host", "model", "serial", "firmware", "type"})
+	r.addMetricInfo("brother_printer_info", "Information about the Brother printer", []string{"host", "model", "serial", "firmware", "type", "mac"})
 
 	r.PrinterStatus = promauto.NewGaugeVec(
 		prometheus.GaugeOpts{
