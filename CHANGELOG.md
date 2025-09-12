@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.4](https://github.com/d0ugal/brother-exporter/compare/v1.0.3...v1.0.4) (2025-09-12)
+
+
+### Bug Fixes
+
+* **deps:** update module github.com/gosnmp/gosnmp to v1.42.1 ([41b924a](https://github.com/d0ugal/brother-exporter/commit/41b924a98770d5a568cc8f8d898e2fc1a5eaadbd))
+* **deps:** update module github.com/gosnmp/gosnmp to v1.42.1 ([14b97c7](https://github.com/d0ugal/brother-exporter/commit/14b97c77db64ff4f80492d95d846500fb1b446f0))
+* **deps:** update module github.com/prometheus/client_golang to v1.23.2 ([333cae2](https://github.com/d0ugal/brother-exporter/commit/333cae2c10846652cd94aee256a3f0f8033f84f9))
+* **deps:** update module github.com/prometheus/client_golang to v1.23.2 ([ff4a5a0](https://github.com/d0ugal/brother-exporter/commit/ff4a5a0352a048439aac91a81ec6dba9a5dd6146))
+* **deps:** update module github.com/stretchr/testify to v1.11.1 ([ab18d5b](https://github.com/d0ugal/brother-exporter/commit/ab18d5b9715b187f398b5617b835b504c0f69a67))
+* **deps:** update module github.com/stretchr/testify to v1.11.1 ([88066ce](https://github.com/d0ugal/brother-exporter/commit/88066cead413e82ab3f1fbea4a3faaa21b2a426f))
+
 ## [1.0.3](https://github.com/d0ugal/brother-exporter/compare/v1.0.2...v1.0.3) (2025-09-11)
 
 
