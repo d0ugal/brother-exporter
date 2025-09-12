@@ -17,6 +17,9 @@ type Registry struct {
 	// Printer information
 	PrinterInfo *prometheus.GaugeVec
 
+	// Printer uptime
+	PrinterUptime *prometheus.GaugeVec
+
 	// Printer status
 	PrinterStatus *prometheus.GaugeVec
 
@@ -121,6 +124,15 @@ func NewRegistry() *Registry {
 		[]string{"host", "model", "serial", "firmware", "type", "mac"},
 	)
 	r.addMetricInfo("brother_printer_info", "Information about the Brother printer", []string{"host", "model", "serial", "firmware", "type", "mac"})
+
+	r.PrinterUptime = promauto.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "brother_printer_uptime_seconds",
+			Help: "Brother printer uptime in seconds since last restart",
+		},
+		[]string{"host"},
+	)
+	r.addMetricInfo("brother_printer_uptime_seconds", "Brother printer uptime in seconds since last restart", []string{"host"})
 
 	r.PrinterStatus = promauto.NewGaugeVec(
 		prometheus.GaugeOpts{

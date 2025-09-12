@@ -23,6 +23,10 @@ func convertToInt[T any](value T, context string) (int, bool) {
 		return v, true
 	case uint:
 		return int(v), true
+	case int32:
+		return int(v), true
+	case uint32:
+		return int(v), true
 	case int64:
 		return int(v), true
 	case uint64:
@@ -161,9 +165,10 @@ const (
 	OIDBrotherNextCareData    = "1.3.6.1.4.1.2435.2.3.9.4.2.1.5.5.11.0" // Nextcare data
 
 	// Brother-specific printer info OIDs
-	OIDBrotherModel  = "1.3.6.1.4.1.2435.2.3.9.1.1.7.0"  // Model
+	OIDBrotherModel  = "1.3.6.1.4.1.2435.2.3.9.1.1.7.0"       // Model
 	OIDBrotherSerial = "1.3.6.1.4.1.2435.2.3.9.4.2.1.5.5.1.0" // Serial number
-	OIDBrotherMAC    = "1.3.6.1.2.1.2.2.1.6.1"           // MAC address
+	OIDBrotherMAC    = "1.3.6.1.2.1.2.2.1.6.1"                // MAC address
+	OIDBrotherUptime = "1.3.6.1.2.1.1.3.0"                    // System uptime (hundredths of seconds)
 
 	// Standard MIB OIDs (these return -2/-3 for Brother printers)
 	OIDTonerLevelBase      = "1.3.6.1.2.1.43.11.1.1.9.1"
@@ -243,6 +248,9 @@ func (bc *BrotherCollector) collectMetrics() {
 	// Collect printer status
 	bc.handleCollectionError(bc.collectPrinterStatus(), "printer status")
 
+	// Collect printer uptime
+	bc.handleCollectionError(bc.collectPrinterUptime(), "printer uptime")
+
 	// Collect Brother-specific metrics (these work better than standard MIB)
 	if err := bc.collectBrotherSpecificMetrics(); err != nil {
 		bc.handleCollectionError(err, "brother_metrics")
@@ -311,7 +319,6 @@ func (bc *BrotherCollector) collectPrinterInfo() error {
 		slog.Error("Failed to get Brother printer info", "error", err, "oids", oids)
 		return fmt.Errorf("failed to get Brother printer info: %w", err)
 	}
-	
 
 	var model, serial, firmware, mac string
 
@@ -380,11 +387,42 @@ func (bc *BrotherCollector) collectPrinterInfo() error {
 		mac,
 	).Set(1)
 
-	slog.Debug("Printer info collected", 
+	slog.Debug("Printer info collected",
 		"model", model,
 		"serial", serial,
 		"firmware", firmware,
 		"mac", mac)
+
+	return nil
+}
+
+// collectPrinterUptime collects printer uptime information
+func (bc *BrotherCollector) collectPrinterUptime() error {
+	result, err := bc.client.Get([]string{OIDBrotherUptime})
+	if err != nil {
+		return fmt.Errorf("failed to get printer uptime: %w", err)
+	}
+
+	if len(result.Variables) == 0 || result.Variables[0].Value == nil {
+		return fmt.Errorf("no uptime data received")
+	}
+
+	variable := result.Variables[0]
+	
+	// The uptime OID returns time in hundredths of a second
+	// We need to convert it to seconds
+	uptimeHundredths, ok := convertToInt(variable.Value, "uptime")
+	if !ok {
+		return fmt.Errorf("failed to convert uptime value: %T", variable.Value)
+	}
+
+	// Convert from hundredths of seconds to seconds
+	uptimeSeconds := float64(uptimeHundredths) / 100.0
+
+	// Set the uptime metric
+	bc.metrics.PrinterUptime.WithLabelValues(bc.config.Printer.Host).Set(uptimeSeconds)
+
+	slog.Debug("Printer uptime collected", "uptime_seconds", uptimeSeconds, "uptime_hundredths", uptimeHundredths)
 
 	return nil
 }
