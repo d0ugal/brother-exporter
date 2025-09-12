@@ -408,7 +408,7 @@ func (bc *BrotherCollector) collectPrinterUptime() error {
 	}
 
 	variable := result.Variables[0]
-	
+
 	// The uptime OID returns time in hundredths of a second
 	// We need to convert it to seconds
 	uptimeHundredths, ok := convertToInt(variable.Value, "uptime")
@@ -419,10 +419,15 @@ func (bc *BrotherCollector) collectPrinterUptime() error {
 	// Convert from hundredths of seconds to seconds
 	uptimeSeconds := float64(uptimeHundredths) / 100.0
 
-	// Set the uptime metric
-	bc.metrics.PrinterUptime.WithLabelValues(bc.config.Printer.Host).Set(uptimeSeconds)
+	// Calculate the Unix timestamp when the printer was last restarted
+	// by subtracting the uptime from the current time
+	currentTime := float64(time.Now().Unix())
+	restartTimestamp := currentTime - uptimeSeconds
 
-	slog.Debug("Printer uptime collected", "uptime_seconds", uptimeSeconds, "uptime_hundredths", uptimeHundredths)
+	// Set the uptime metric with the restart timestamp
+	bc.metrics.PrinterUptime.WithLabelValues(bc.config.Printer.Host).Set(restartTimestamp)
+
+	slog.Debug("Printer uptime collected", "uptime_seconds", uptimeSeconds, "restart_timestamp", restartTimestamp, "current_time", currentTime)
 
 	return nil
 }
