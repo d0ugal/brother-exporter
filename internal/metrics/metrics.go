@@ -127,12 +127,12 @@ func NewRegistry() *Registry {
 
 	r.PrinterUptime = promauto.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "brother_printer_uptime_seconds",
-			Help: "Unix timestamp when Brother printer was last restarted (use time() - brother_printer_uptime_seconds for uptime)",
+			Name: "brother_printer_restart_timestamp",
+			Help: "Unix timestamp when Brother printer was last restarted (use time() - brother_printer_restart_timestamp for uptime)",
 		},
 		[]string{"host"},
 	)
-	r.addMetricInfo("brother_printer_uptime_seconds", "Unix timestamp when Brother printer was last restarted (use time() - brother_printer_uptime_seconds for uptime)", []string{"host"})
+	r.addMetricInfo("brother_printer_restart_timestamp", "Unix timestamp when Brother printer was last restarted (use time() - brother_printer_restart_timestamp for uptime)", []string{"host"})
 
 	r.PrinterStatus = promauto.NewGaugeVec(
 		prometheus.GaugeOpts{

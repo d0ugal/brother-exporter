@@ -338,6 +338,7 @@ func (bc *BrotherCollector) collectPrinterInfo() error {
 			// Extract model from the long string (look for MDL:...;)
 			if strings.Contains(value, "MDL:") {
 				start := strings.Index(value, "MDL:") + 4
+
 				end := strings.Index(value[start:], ";")
 				if end != -1 {
 					model = strings.TrimSpace(value[start : start+end])
@@ -886,9 +887,11 @@ func (bc *BrotherCollector) collectPageCounters() error {
 	if err != nil {
 		return fmt.Errorf("failed to get Brother counters data: %w", err)
 	}
+
 	if len(result.Variables) == 0 || result.Variables[0].Value == nil {
 		return fmt.Errorf("no Brother counters data received")
 	}
+
 	variable := result.Variables[0]
 
 	// Parse the hex string data
