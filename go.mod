@@ -6,7 +6,7 @@ toolchain go1.25.1
 
 require (
 	github.com/gin-gonic/gin v1.10.1
-	github.com/gosnmp/gosnmp v1.37.0
+	github.com/gosnmp/gosnmp v1.42.1
 	github.com/prometheus/client_golang v1.23.0
 	github.com/stretchr/testify v1.10.0
 	gopkg.in/yaml.v3 v3.0.1
