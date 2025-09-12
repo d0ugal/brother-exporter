@@ -141,11 +141,21 @@ const (
 	OIDBrotherConsumableLevel = "1.3.6.1.4.1.2435.2.3.9.4.2.1.5.5.4.0"  // Consumable level (104%)
 	OIDBrotherStatus          = "1.3.6.1.4.1.2435.2.3.9.4.2.1.5.5.7.0"  // Status (1)
 	OIDBrotherFirmware        = "1.3.6.1.4.1.2435.2.3.9.4.2.1.5.5.17.0" // Firmware version
+	OIDBrotherMaintenanceData = "1.3.6.1.4.1.2435.2.3.9.4.2.1.5.5.8.0"  // Maintenance data
+	OIDBrotherCountersData    = "1.3.6.1.4.1.2435.2.3.9.4.2.1.5.5.10.0" // Counters data
+	OIDBrotherNextCareData    = "1.3.6.1.4.1.2435.2.3.9.4.2.1.5.5.11.0" // Nextcare data
 
 	// Standard MIB OIDs (these return -2/-3 for Brother printers)
 	OIDTonerLevelBase      = "1.3.6.1.2.1.43.11.1.1.9.1"
 	OIDDrumLevelBase       = "1.3.6.1.2.1.43.11.1.1.8.1"
 	OIDPaperTrayStatusBase = "1.3.6.1.2.1.43.8.2.1.10.1"
+)
+
+// Brother data parsing constants
+const (
+	BrotherChunkSize     = 14  // Size of data chunks in Brother hex strings
+	BrotherPercentageDiv = 100 // Divisor for percentage values from Brother data
+	BrotherLowThreshold  = 10  // Threshold for "low" status (percentage)
 )
 
 // Color mappings for Brother printers
@@ -415,7 +425,7 @@ func (bc *BrotherCollector) collectBrotherSpecificMetrics() error {
 
 // collectBrotherMaintenanceData extracts toner and drum levels from Brother maintenance data
 func (bc *BrotherCollector) collectBrotherMaintenanceData() error {
-	result, err := bc.client.Get([]string{"1.3.6.1.4.1.2435.2.3.9.4.2.1.5.5.8.0"})
+	result, err := bc.client.Get([]string{OIDBrotherMaintenanceData})
 	if err != nil {
 		return fmt.Errorf("failed to get Brother maintenance data: %w", err)
 	}
@@ -435,8 +445,8 @@ func (bc *BrotherCollector) collectBrotherMaintenanceData() error {
 	hexString := bytesToHexString(bytes)
 	slog.Debug("Brother maintenance hex data", "hex", hexString, "length", len(hexString))
 
-	// Split into 14-character chunks (CHUNK_SIZE from Python library)
-	chunks := splitIntoChunks(hexString, 14)
+	// Split into chunks (CHUNK_SIZE from Python library)
+	chunks := splitIntoChunks(hexString, BrotherChunkSize)
 
 	slog.Debug("Brother maintenance chunks", "chunks", chunks)
 
@@ -482,7 +492,7 @@ func (bc *BrotherCollector) collectBrotherMaintenanceData() error {
 				}
 
 				// For percentage values, divide by 100 (as per Python library)
-				percentage := int(value / 100)
+				percentage := int(value / BrotherPercentageDiv)
 				if percentage >= 0 && percentage <= 100 {
 					switch sensorType {
 					case "black_toner_remaining":
@@ -564,7 +574,7 @@ func (bc *BrotherCollector) collectBrotherMaintenanceData() error {
 
 // collectBrotherCountersData extracts page counts from Brother counters data
 func (bc *BrotherCollector) collectBrotherCountersData() error {
-	result, err := bc.client.Get([]string{"1.3.6.1.4.1.2435.2.3.9.4.2.1.5.5.10.0"})
+	result, err := bc.client.Get([]string{OIDBrotherCountersData})
 	if err != nil {
 		return fmt.Errorf("failed to get Brother counters data: %w", err)
 	}
@@ -584,8 +594,8 @@ func (bc *BrotherCollector) collectBrotherCountersData() error {
 	hexString := bytesToHexString(bytes)
 	slog.Debug("Brother counters hex data", "hex", hexString, "length", len(hexString))
 
-	// Split into 14-character chunks (CHUNK_SIZE from Python library)
-	chunks := splitIntoChunks(hexString, 14)
+	// Split into chunks (CHUNK_SIZE from Python library)
+	chunks := splitIntoChunks(hexString, BrotherChunkSize)
 
 	slog.Debug("Brother counters chunks", "chunks", chunks)
 
@@ -596,7 +606,7 @@ func (bc *BrotherCollector) collectBrotherCountersData() error {
 
 // collectBrotherNextCareData extracts remaining pages from Brother nextcare data
 func (bc *BrotherCollector) collectBrotherNextCareData() error {
-	result, err := bc.client.Get([]string{"1.3.6.1.4.1.2435.2.3.9.4.2.1.5.5.11.0"})
+	result, err := bc.client.Get([]string{OIDBrotherNextCareData})
 	if err != nil {
 		return fmt.Errorf("failed to get Brother nextcare data: %w", err)
 	}
@@ -616,8 +626,8 @@ func (bc *BrotherCollector) collectBrotherNextCareData() error {
 	hexString := bytesToHexString(bytes)
 	slog.Debug("Brother nextcare hex data", "hex", hexString, "length", len(hexString))
 
-	// Split into 14-character chunks (CHUNK_SIZE from Python library)
-	chunks := splitIntoChunks(hexString, 14)
+	// Split into chunks (CHUNK_SIZE from Python library)
+	chunks := splitIntoChunks(hexString, BrotherChunkSize)
 
 	slog.Debug("Brother nextcare chunks", "chunks", chunks)
 
