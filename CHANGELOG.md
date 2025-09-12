@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/d0ugal/brother-exporter/compare/v1.0.4...v1.1.0) (2025-09-12)
+
+
+### Features
+
+* add printer uptime metric ([fbab094](https://github.com/d0ugal/brother-exporter/commit/fbab09442fdfd692d4340d0d4fd9a8b782df5f62))
+* change uptime metric to Unix timestamp for better PromQL support ([fa7a3e7](https://github.com/d0ugal/brother-exporter/commit/fa7a3e7e3271154cbb7cb6bdd8e6dd800ca508af))
+* implement proper page counter parsing from Brother counters data ([903767f](https://github.com/d0ugal/brother-exporter/commit/903767fe40310b229e1c33b8c0ccb4fd52d0def3))
+* populate brother_printer_info metric with Brother-specific OIDs ([85cf77b](https://github.com/d0ugal/brother-exporter/commit/85cf77b3ea4028c2edc3203360c81b4d357ede1a))
+
+
+### Bug Fixes
+
+* remove _count suffix from gauge metrics to follow Prometheus best practices ([f3b2a2c](https://github.com/d0ugal/brother-exporter/commit/f3b2a2c0a2b1464bbee77b585c223ee66375c86c))
+* remove binary ([ae98e60](https://github.com/d0ugal/brother-exporter/commit/ae98e60043d6571c431e0b6bafa44fccdb04bc2d))
+
 ## [1.0.4](https://github.com/d0ugal/brother-exporter/compare/v1.0.3...v1.0.4) (2025-09-12)
 
 
