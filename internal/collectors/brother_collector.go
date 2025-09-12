@@ -69,6 +69,22 @@ func splitIntoChunks(s string, chunkSize int) []string {
 	return chunks
 }
 
+// calculateStatusFromLevel calculates status string and value based on percentage level
+func calculateStatusFromLevel(level float64) (status string, statusValue float64) {
+	status = "ok"
+	statusValue = 1.0
+
+	if level < BrotherLowThreshold {
+		status = "low"
+		statusValue = 0.0
+	} else if level == 0 {
+		status = "empty"
+		statusValue = 0.0
+	}
+
+	return status, statusValue
+}
+
 // collectColorLevelsWithStatus collects level and status metrics for each color using the specified OID base
 func (bc *BrotherCollector) collectColorLevelsWithStatus(oidBase string, colors []string, levelMetric, statusMetric *prometheus.GaugeVec, context string) {
 	for i, color := range colors {
@@ -96,16 +112,7 @@ func (bc *BrotherCollector) collectColorLevelsWithStatus(oidBase string, colors 
 			levelMetric.WithLabelValues(bc.config.Printer.Host, color).Set(percentage)
 
 			// Set status based on level
-			status := "ok"
-			statusValue := 1.0
-
-			if percentage < 10 {
-				status = "low"
-				statusValue = 0.0
-			} else if percentage == 0 {
-				status = "empty"
-				statusValue = 0.0
-			}
+			status, statusValue := calculateStatusFromLevel(percentage)
 
 			statusMetric.WithLabelValues(bc.config.Printer.Host, color, status).Set(statusValue)
 		}
@@ -532,16 +539,7 @@ func (bc *BrotherCollector) collectBrotherMaintenanceData() error {
 		bc.metrics.TonerLevel.WithLabelValues(bc.config.Printer.Host, color).Set(float64(level))
 
 		// Set toner status based on level
-		status := "ok"
-		statusValue := 1.0
-
-		if level < 10 {
-			status = "low"
-			statusValue = 0.0
-		} else if level == 0 {
-			status = "empty"
-			statusValue = 0.0
-		}
+		status, statusValue := calculateStatusFromLevel(float64(level))
 
 		bc.metrics.TonerStatus.WithLabelValues(bc.config.Printer.Host, color, status).Set(statusValue)
 	}
@@ -551,16 +549,7 @@ func (bc *BrotherCollector) collectBrotherMaintenanceData() error {
 		bc.metrics.DrumLevel.WithLabelValues(bc.config.Printer.Host, color).Set(float64(level))
 
 		// Set drum status based on level
-		status := "ok"
-		statusValue := 1.0
-
-		if level < 10 {
-			status = "low"
-			statusValue = 0.0
-		} else if level == 0 {
-			status = "empty"
-			statusValue = 0.0
-		}
+		status, statusValue := calculateStatusFromLevel(float64(level))
 
 		bc.metrics.DrumStatus.WithLabelValues(bc.config.Printer.Host, color, status).Set(statusValue)
 	}
@@ -740,16 +729,7 @@ func (bc *BrotherCollector) collectInkjetMetrics() error {
 			).Set(percentage)
 
 			// Set status based on level
-			status := "ok"
-			statusValue := 1.0
-
-			if percentage < 10 {
-				status = "low"
-				statusValue = 0.0
-			} else if percentage == 0 {
-				status = "empty"
-				statusValue = 0.0
-			}
+			status, statusValue := calculateStatusFromLevel(percentage)
 
 			bc.metrics.InkStatus.WithLabelValues(
 				bc.config.Printer.Host,
