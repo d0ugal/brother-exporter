@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.1](https://github.com/d0ugal/brother-exporter/compare/v1.1.0...v1.1.1) (2025-09-20)
+
+
+### Bug Fixes
+
+* **deps:** update module github.com/gin-gonic/gin to v1.11.0 ([5ed3bce](https://github.com/d0ugal/brother-exporter/commit/5ed3bce17522233b67259f1662d820882106028b))
+* **deps:** update module github.com/gin-gonic/gin to v1.11.0 ([c8def93](https://github.com/d0ugal/brother-exporter/commit/c8def930ca92cf0a72a9c70af3ca19f955c82e62))
+
 ## [1.1.0](https://github.com/d0ugal/brother-exporter/compare/v1.0.4...v1.1.0) (2025-09-12)
 
 
