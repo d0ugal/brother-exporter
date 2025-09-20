@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.2](https://github.com/d0ugal/brother-exporter/compare/v1.1.1...v1.1.2) (2025-09-20)
+
+
+### Bug Fixes
+
+* **lint:** resolve gosec configuration contradiction ([b88cf5d](https://github.com/d0ugal/brother-exporter/commit/b88cf5d816f0db32db2b196b7f9fe17b08cd2aab))
+
 ## [1.1.1](https://github.com/d0ugal/brother-exporter/compare/v1.1.0...v1.1.1) (2025-09-20)
 
 
