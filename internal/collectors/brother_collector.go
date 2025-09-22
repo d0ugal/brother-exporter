@@ -26,6 +26,7 @@ func convertToInt[T any](value T, context string) (int, bool) {
 		if v > math.MaxInt {
 			return 0, false
 		}
+
 		return int(v), true
 	case int32:
 		return int(v), true
@@ -37,6 +38,7 @@ func convertToInt[T any](value T, context string) (int, bool) {
 		if v > math.MaxInt {
 			return 0, false
 		}
+
 		return int(v), true
 	default:
 		slog.Debug("Unexpected type for "+context, "type", fmt.Sprintf("%T", v), "value", v)
