@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
+	"math"
 	"strconv"
 	"strings"
 	"sync"
@@ -22,6 +23,10 @@ func convertToInt[T any](value T, context string) (int, bool) {
 	case int:
 		return v, true
 	case uint:
+		if v > math.MaxInt {
+			return 0, false
+		}
+
 		return int(v), true
 	case int32:
 		return int(v), true
@@ -30,6 +35,10 @@ func convertToInt[T any](value T, context string) (int, bool) {
 	case int64:
 		return int(v), true
 	case uint64:
+		if v > math.MaxInt {
+			return 0, false
+		}
+
 		return int(v), true
 	default:
 		slog.Debug("Unexpected type for "+context, "type", fmt.Sprintf("%T", v), "value", v)
@@ -142,20 +151,20 @@ type BrotherCollector struct {
 
 // Brother printer SNMP OIDs
 const (
-	// System information
+	// OIDSystemDescription is the system information OID
 	OIDSystemDescription = "1.3.6.1.2.1.1.1.0"
 	OIDSystemUpTime      = "1.3.6.1.2.1.1.3.0"
 	OIDSystemContact     = "1.3.6.1.2.1.1.4.0"
 	OIDSystemName        = "1.3.6.1.2.1.1.5.0"
 	OIDSystemLocation    = "1.3.6.1.2.1.1.6.0"
 
-	// Brother specific OIDs (base: 1.3.6.1.4.1.2435)
+	// OIDBrotherBase is the Brother specific OIDs base
 	OIDBrotherBase = "1.3.6.1.4.1.2435"
 
-	// Printer status
+	// OIDPrinterStatus is the printer status OID
 	OIDPrinterStatus = "1.3.6.1.2.1.25.3.2.1.5.1"
 
-	// Brother-specific consumable OIDs (these work better than standard MIB)
+	// OIDBrotherConsumableInfo and related OIDs are Brother-specific consumable OIDs (these work better than standard MIB)
 	OIDBrotherConsumableInfo  = "1.3.6.1.4.1.2435.2.3.9.4.2.1.5.5.1.0"  // Consumable info
 	OIDBrotherConsumableLevel = "1.3.6.1.4.1.2435.2.3.9.4.2.1.5.5.4.0"  // Consumable level (104%)
 	OIDBrotherStatus          = "1.3.6.1.4.1.2435.2.3.9.4.2.1.5.5.7.0"  // Status (1)
@@ -164,18 +173,18 @@ const (
 	OIDBrotherCountersData    = "1.3.6.1.4.1.2435.2.3.9.4.2.1.5.5.10.0" // Counters data
 	OIDBrotherNextCareData    = "1.3.6.1.4.1.2435.2.3.9.4.2.1.5.5.11.0" // Nextcare data
 
-	// Brother-specific printer info OIDs
+	// OIDBrotherModel and related OIDs are Brother-specific printer info OIDs
 	OIDBrotherModel  = "1.3.6.1.4.1.2435.2.3.9.1.1.7.0"       // Model
 	OIDBrotherSerial = "1.3.6.1.4.1.2435.2.3.9.4.2.1.5.5.1.0" // Serial number
 	OIDBrotherMAC    = "1.3.6.1.2.1.2.2.1.6.1"                // MAC address
 	OIDBrotherUptime = "1.3.6.1.2.1.1.3.0"                    // System uptime (hundredths of seconds)
 
-	// Standard MIB OIDs (these return -2/-3 for Brother printers)
+	// OIDTonerLevelBase and related OIDs are standard MIB OIDs (these return -2/-3 for Brother printers)
 	OIDTonerLevelBase      = "1.3.6.1.2.1.43.11.1.1.9.1"
 	OIDDrumLevelBase       = "1.3.6.1.2.1.43.11.1.1.8.1"
 	OIDPaperTrayStatusBase = "1.3.6.1.2.1.43.8.2.1.10.1"
 
-	// Page counter OIDs (standard MIB - these work reliably)
+	// OIDPageCountTotal is a page counter OID (standard MIB - these work reliably)
 	OIDPageCountTotal = "1.3.6.1.2.1.43.10.2.1.4.1.1" // Standard MIB total page count
 )
 
