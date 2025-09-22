@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.3](https://github.com/d0ugal/brother-exporter/compare/v1.1.2...v1.1.3) (2025-09-22)
+
+
+### Bug Fixes
+
+* **lint:** resolve godoclint and gosec issues ([d80a317](https://github.com/d0ugal/brother-exporter/commit/d80a317e14f6dd415f247ad549a9616c68145244))
+* **lint:** resolve godoclint and gosec issues ([c3c0677](https://github.com/d0ugal/brother-exporter/commit/c3c0677794e78646ddea55ac0e22284a9f755f5d))
+
 ## [1.1.2](https://github.com/d0ugal/brother-exporter/compare/v1.1.1...v1.1.2) (2025-09-20)
 
 
