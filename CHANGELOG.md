@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.4](https://github.com/d0ugal/brother-exporter/compare/v1.1.3...v1.1.4) (2025-09-22)
+
+
+### Bug Fixes
+
+* **lint:** whitespace ([184754a](https://github.com/d0ugal/brother-exporter/commit/184754a1896d4cb80ed7854e2a80830d0e00794f))
+
 ## [1.1.3](https://github.com/d0ugal/brother-exporter/compare/v1.1.2...v1.1.3) (2025-09-22)
 
 
