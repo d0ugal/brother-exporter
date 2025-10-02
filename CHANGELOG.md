@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.5](https://github.com/d0ugal/brother-exporter/compare/v1.1.4...v1.1.5) (2025-10-02)
+
+
+### Bug Fixes
+
+* enable indirect dependency updates in renovate config ([a9293d1](https://github.com/d0ugal/brother-exporter/commit/a9293d1f2cd731890cc2cd78b85f83a34cbea0ce))
+
 ## [1.1.4](https://github.com/d0ugal/brother-exporter/compare/v1.1.3...v1.1.4) (2025-09-22)
 
 
