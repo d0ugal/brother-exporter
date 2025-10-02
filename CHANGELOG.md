@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.6](https://github.com/d0ugal/brother-exporter/compare/v1.1.5...v1.1.6) (2025-10-02)
+
+
+### Reverts
+
+* remove unnecessary renovate config changes ([7d595cf](https://github.com/d0ugal/brother-exporter/commit/7d595cfbebde35415d2fabd70c4305f69910484f))
+
 ## [1.1.5](https://github.com/d0ugal/brother-exporter/compare/v1.1.4...v1.1.5) (2025-10-02)
 
 
