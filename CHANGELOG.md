@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/d0ugal/brother-exporter/compare/v1.1.6...v1.2.0) (2025-10-02)
+
+
+### Features
+
+* **deps:** migrate to YAML v3 ([4a7f5ff](https://github.com/d0ugal/brother-exporter/commit/4a7f5ff0668a15426be62c11f98bfb70809b5294))
+* **renovate:** add gomodTidy post-update option for Go modules ([497b5d2](https://github.com/d0ugal/brother-exporter/commit/497b5d2cfaceaea3519949384e91e53b6b42b37b))
+
 ## [1.1.6](https://github.com/d0ugal/brother-exporter/compare/v1.1.5...v1.1.6) (2025-10-02)
 
 
