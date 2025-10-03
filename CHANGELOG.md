@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/d0ugal/brother-exporter/compare/v1.2.0...v1.3.0) (2025-10-03)
+
+
+### Features
+
+* **renovate:** add docs commit message format for documentation updates ([ced03a7](https://github.com/d0ugal/brother-exporter/commit/ced03a7c81304ccd56890613c4ed69ebd34214ca))
+
 ## [1.2.0](https://github.com/d0ugal/brother-exporter/compare/v1.1.6...v1.2.0) (2025-10-02)
 
 
