@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0](https://github.com/d0ugal/brother-exporter/compare/v1.3.0...v1.4.0) (2025-10-06)
+
+
+### Features
+
+* **renovate:** use feat: commit messages for dependency updates ([7d214aa](https://github.com/d0ugal/brother-exporter/commit/7d214aa291c659a07a45616c1d982134ed82803c))
+* update dependencies to v2.4.3 ([dd3a893](https://github.com/d0ugal/brother-exporter/commit/dd3a8932788ac82dab10849e9fb9a83a6a8feaed))
+
 ## [1.3.0](https://github.com/d0ugal/brother-exporter/compare/v1.2.0...v1.3.0) (2025-10-03)
 
 
