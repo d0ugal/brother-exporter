@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.7.0](https://github.com/d0ugal/brother-exporter/compare/v1.6.0...v1.7.0) (2025-10-08)
+
+
+### Features
+
+* update dependencies to v0.22.0 ([41113c6](https://github.com/d0ugal/brother-exporter/commit/41113c6de07134fc507e8b607a0d00fc3a586f10))
+* update dependencies to v0.29.0 ([6621411](https://github.com/d0ugal/brother-exporter/commit/6621411682f5f4f61bc4da563177e1c0a4781fb7))
+* Update module golang.org/x/crypto to v0.43.0 ([9fe49e5](https://github.com/d0ugal/brother-exporter/commit/9fe49e5167322b81c204fc7d3392343cdbc6180a))
+* Update module golang.org/x/sys to v0.37.0 ([5f4d06a](https://github.com/d0ugal/brother-exporter/commit/5f4d06aa9eaa3e19f79734853336fa72bd9510b2))
+* Update module golang.org/x/text to v0.30.0 ([971f952](https://github.com/d0ugal/brother-exporter/commit/971f9526d94cfb128eae506217ea695e800daaca))
+
 ## [1.6.0](https://github.com/d0ugal/brother-exporter/compare/v1.5.0...v1.6.0) (2025-10-08)
 
 
