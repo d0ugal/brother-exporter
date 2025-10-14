@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.8.0](https://github.com/d0ugal/brother-exporter/compare/v1.7.1...v1.8.0) (2025-10-14)
+
+
+### Features
+
+* set Gin to release mode unless debug logging is enabled ([b49cc56](https://github.com/d0ugal/brother-exporter/commit/b49cc560cf899d2d6c5f03db47c00016d52e63fd))
+
+
+### Bug Fixes
+
+* auto-fix import ordering with golangci-lint ([07a4dda](https://github.com/d0ugal/brother-exporter/commit/07a4dda95842284d42ca4004bb43022d48398d99))
+* correct import ordering for gci linter ([cd2daee](https://github.com/d0ugal/brother-exporter/commit/cd2daeeeb5fa9b5f99c4098676573c4ddb6be6d7))
+
 ## [1.7.1](https://github.com/d0ugal/brother-exporter/compare/v1.7.0...v1.7.1) (2025-10-14)
 
 
