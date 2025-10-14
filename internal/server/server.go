@@ -7,12 +7,11 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/gin-gonic/gin"
-	"github.com/prometheus/client_golang/prometheus/promhttp"
-
 	"github.com/d0ugal/brother-exporter/internal/config"
 	"github.com/d0ugal/brother-exporter/internal/metrics"
 	"github.com/d0ugal/brother-exporter/internal/version"
+	"github.com/gin-gonic/gin"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 // Server handles HTTP requests and serves metrics
