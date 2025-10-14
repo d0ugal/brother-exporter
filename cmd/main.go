@@ -48,10 +48,12 @@ func main() {
 	var (
 		configPath    string
 		configFromEnv bool
+		debug         bool
 	)
 
 	flag.StringVar(&configPath, "config", "config.yaml", "Path to configuration file")
 	flag.BoolVar(&configFromEnv, "config-from-env", false, "Load configuration from environment variables only")
+	flag.BoolVar(&debug, "debug", false, "Enable debug mode for Gin framework")
 	flag.Parse()
 
 	// Show version if requested
@@ -109,7 +111,7 @@ func main() {
 	brotherCollector.Start(ctx)
 
 	// Create and start server
-	srv := server.New(cfg, metricsRegistry)
+	srv := server.New(cfg, metricsRegistry, debug)
 
 	// Handle graceful shutdown
 	sigChan := make(chan os.Signal, 1)
