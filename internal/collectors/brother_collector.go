@@ -143,7 +143,7 @@ func (bc *BrotherCollector) collectColorLevelsWithStatus(oidBase string, colors 
 // BrotherCollector collects metrics from Brother printers via SNMP
 type BrotherCollector struct {
 	config  *config.Config
-	metrics *metrics.Registry
+	metrics *metrics.BrotherRegistry
 	client  *gosnmp.GoSNMP
 	mu      sync.RWMutex
 	done    chan struct{}
@@ -201,7 +201,7 @@ var (
 	InkColors   = []string{"black", "cyan", "magenta", "yellow"}
 )
 
-func NewBrotherCollector(cfg *config.Config, metricsRegistry *metrics.Registry) *BrotherCollector {
+func NewBrotherCollector(cfg *config.Config, metricsRegistry *metrics.BrotherRegistry) *BrotherCollector {
 	return &BrotherCollector{
 		config:  cfg,
 		metrics: metricsRegistry,

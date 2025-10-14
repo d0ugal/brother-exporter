@@ -5,98 +5,35 @@ import (
 	"os"
 	"time"
 
+	promexporter_config "github.com/d0ugal/promexporter/config"
 	"gopkg.in/yaml.v3"
 )
 
-// Duration represents a time duration that can be parsed from strings
-type Duration struct {
-	time.Duration
-}
-
-// UnmarshalYAML implements custom unmarshaling for duration strings
-func (d *Duration) UnmarshalYAML(unmarshal func(interface{}) error) error {
-	var value interface{}
-	if err := unmarshal(&value); err != nil {
-		return err
-	}
-
-	switch v := value.(type) {
-	case string:
-		duration, err := time.ParseDuration(v)
-		if err != nil {
-			return fmt.Errorf("invalid duration format '%s': %w", v, err)
-		}
-
-		d.Duration = duration
-	case int:
-		// Backward compatibility: treat as seconds
-		d.Duration = time.Duration(v) * time.Second
-	case int64:
-		// Backward compatibility: treat as seconds
-		d.Duration = time.Duration(v) * time.Second
-	default:
-		return fmt.Errorf("duration must be a string (e.g., '60s', '1h') or integer (seconds)")
-	}
-
-	return nil
-}
-
-// Seconds returns the duration in seconds
-func (d *Duration) Seconds() int {
-	return int(d.Duration.Seconds())
-}
+// Use promexporter Duration type
+type Duration = promexporter_config.Duration
 
 type Config struct {
-	Server  ServerConfig  `yaml:"server"`
-	Logging LoggingConfig `yaml:"logging"`
-	Metrics MetricsConfig `yaml:"metrics"`
+	promexporter_config.BaseConfig
 	Printer PrinterConfig `yaml:"printer"`
 }
 
-type ServerConfig struct {
-	Host string `yaml:"host"`
-	Port int    `yaml:"port"`
-}
-
-type LoggingConfig struct {
-	Level  string `yaml:"level"`
-	Format string `yaml:"format"` // "json" or "text"
-}
-
-type MetricsConfig struct {
-	Collection CollectionConfig `yaml:"collection"`
-}
-
-type CollectionConfig struct {
-	DefaultInterval Duration `yaml:"default_interval"`
-	// Track if the value was explicitly set
-	DefaultIntervalSet bool `yaml:"-"`
-}
-
-// UnmarshalYAML implements custom unmarshaling to track if the value was set
-func (c *CollectionConfig) UnmarshalYAML(unmarshal func(interface{}) error) error {
-	// Create a temporary struct to unmarshal into
-	type tempCollectionConfig struct {
-		DefaultInterval Duration `yaml:"default_interval"`
-	}
-
-	var temp tempCollectionConfig
-	if err := unmarshal(&temp); err != nil {
-		return err
-	}
-
-	c.DefaultInterval = temp.DefaultInterval
-	c.DefaultIntervalSet = true
-
-	return nil
-}
-
 type PrinterConfig struct {
-	Host      string `yaml:"host"`
-	Community string `yaml:"community"`
-	Type      string `yaml:"type"` // "laser" or "ink"
+	Host       string   `yaml:"host"`
+	Community  string   `yaml:"community"`
+	Type       string   `yaml:"type"`
+	Interfaces []string `yaml:"interfaces"`
 }
 
+// LoadConfig loads configuration from either a YAML file or environment variables
+func LoadConfig(path string, configFromEnv bool) (*Config, error) {
+	if configFromEnv {
+		return loadFromEnv()
+	}
+
+	return Load(path)
+}
+
+// Load loads configuration from a YAML file
 func Load(path string) (*Config, error) {
 	data, err := os.ReadFile(path)
 	if err != nil {
@@ -109,33 +46,7 @@ func Load(path string) (*Config, error) {
 	}
 
 	// Set defaults
-	if config.Server.Host == "" {
-		config.Server.Host = "0.0.0.0"
-	}
-
-	if config.Server.Port == 0 {
-		config.Server.Port = 8080
-	}
-
-	if config.Logging.Level == "" {
-		config.Logging.Level = "info"
-	}
-
-	if config.Logging.Format == "" {
-		config.Logging.Format = "json"
-	}
-
-	if !config.Metrics.Collection.DefaultIntervalSet {
-		config.Metrics.Collection.DefaultInterval = Duration{time.Second * 30}
-	}
-
-	if config.Printer.Community == "" {
-		config.Printer.Community = "public"
-	}
-
-	if config.Printer.Type == "" {
-		config.Printer.Type = "laser"
-	}
+	setDefaults(&config)
 
 	// Validate configuration
 	if err := config.Validate(); err != nil {
@@ -145,48 +56,41 @@ func Load(path string) (*Config, error) {
 	return &config, nil
 }
 
-// LoadConfig loads configuration from either a YAML file or environment variables
-// If configFromEnv is true, it will load from environment variables only
-func LoadConfig(path string, configFromEnv bool) (*Config, error) {
-	if configFromEnv {
-		return loadFromEnv()
-	}
-
-	return Load(path)
-}
-
 // loadFromEnv loads configuration from environment variables
 func loadFromEnv() (*Config, error) {
 	config := &Config{}
 
+	// Load base configuration from environment
+	baseConfig := &promexporter_config.BaseConfig{}
+
 	// Server configuration
 	if host := os.Getenv("BROTHER_EXPORTER_SERVER_HOST"); host != "" {
-		config.Server.Host = host
+		baseConfig.Server.Host = host
 	} else {
-		config.Server.Host = "0.0.0.0"
+		baseConfig.Server.Host = "0.0.0.0"
 	}
 
 	if portStr := os.Getenv("BROTHER_EXPORTER_SERVER_PORT"); portStr != "" {
 		if port, err := parseInt(portStr); err != nil {
 			return nil, fmt.Errorf("invalid server port: %w", err)
 		} else {
-			config.Server.Port = port
+			baseConfig.Server.Port = port
 		}
 	} else {
-		config.Server.Port = 8080
+		baseConfig.Server.Port = 8080
 	}
 
 	// Logging configuration
 	if level := os.Getenv("BROTHER_EXPORTER_LOG_LEVEL"); level != "" {
-		config.Logging.Level = level
+		baseConfig.Logging.Level = level
 	} else {
-		config.Logging.Level = "info"
+		baseConfig.Logging.Level = "info"
 	}
 
 	if format := os.Getenv("BROTHER_EXPORTER_LOG_FORMAT"); format != "" {
-		config.Logging.Format = format
+		baseConfig.Logging.Format = format
 	} else {
-		config.Logging.Format = "json"
+		baseConfig.Logging.Format = "json"
 	}
 
 	// Metrics configuration
@@ -194,18 +98,20 @@ func loadFromEnv() (*Config, error) {
 		if interval, err := time.ParseDuration(intervalStr); err != nil {
 			return nil, fmt.Errorf("invalid metrics default interval: %w", err)
 		} else {
-			config.Metrics.Collection.DefaultInterval = Duration{interval}
-			config.Metrics.Collection.DefaultIntervalSet = true
+			baseConfig.Metrics.Collection.DefaultInterval = promexporter_config.Duration{interval}
+			baseConfig.Metrics.Collection.DefaultIntervalSet = true
 		}
 	} else {
-		config.Metrics.Collection.DefaultInterval = Duration{time.Second * 30}
+		baseConfig.Metrics.Collection.DefaultInterval = promexporter_config.Duration{time.Second * 30}
 	}
+
+	config.BaseConfig = *baseConfig
 
 	// Printer configuration
 	if host := os.Getenv("BROTHER_EXPORTER_PRINTER_HOST"); host != "" {
 		config.Printer.Host = host
 	} else {
-		return nil, fmt.Errorf("printer host is required (BROTHER_EXPORTER_PRINTER_HOST)")
+		config.Printer.Host = "192.168.1.100"
 	}
 
 	if community := os.Getenv("BROTHER_EXPORTER_PRINTER_COMMUNITY"); community != "" {
@@ -219,6 +125,9 @@ func loadFromEnv() (*Config, error) {
 	} else {
 		config.Printer.Type = "laser"
 	}
+
+	// Set defaults for any missing values
+	setDefaults(config)
 
 	// Validate configuration
 	if err := config.Validate(); err != nil {
@@ -242,6 +151,41 @@ func parseInt(s string) (int, error) {
 	}
 
 	return i, nil
+}
+
+// setDefaults sets default values for configuration
+func setDefaults(config *Config) {
+	if config.Server.Host == "" {
+		config.Server.Host = "0.0.0.0"
+	}
+
+	if config.Server.Port == 0 {
+		config.Server.Port = 8080
+	}
+
+	if config.Logging.Level == "" {
+		config.Logging.Level = "info"
+	}
+
+	if config.Logging.Format == "" {
+		config.Logging.Format = "json"
+	}
+
+	if !config.Metrics.Collection.DefaultIntervalSet {
+		config.Metrics.Collection.DefaultInterval = promexporter_config.Duration{time.Second * 30}
+	}
+
+	if config.Printer.Host == "" {
+		config.Printer.Host = "192.168.1.100"
+	}
+
+	if config.Printer.Community == "" {
+		config.Printer.Community = "public"
+	}
+
+	if config.Printer.Type == "" {
+		config.Printer.Type = "laser"
+	}
 }
 
 // Validate performs comprehensive validation of the configuration
@@ -320,12 +264,8 @@ func (c *Config) validatePrinterConfig() error {
 		return fmt.Errorf("printer community is required")
 	}
 
-	validTypes := map[string]bool{
-		"laser": true,
-		"ink":   true,
-	}
-	if !validTypes[c.Printer.Type] {
-		return fmt.Errorf("invalid printer type: %s (must be 'laser' or 'ink')", c.Printer.Type)
+	if c.Printer.Type == "" {
+		return fmt.Errorf("printer type is required")
 	}
 
 	return nil
