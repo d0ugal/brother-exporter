@@ -22,7 +22,7 @@ func TestNew(t *testing.T) {
 	}
 	metricsRegistry := metrics.NewRegistry()
 
-	server := New(cfg, metricsRegistry)
+	server := New(cfg, metricsRegistry, false)
 
 	assert.NotNil(t, server)
 	assert.Equal(t, cfg, server.config)

@@ -40,8 +40,14 @@ func customGinLogger() gin.HandlerFunc {
 }
 
 // New creates a new server instance
-func New(cfg *config.Config, metricsRegistry *metrics.Registry) *Server {
-	gin.SetMode(gin.ReleaseMode)
+func New(cfg *config.Config, metricsRegistry *metrics.Registry, debug bool) *Server {
+	// Set Gin mode based on debug flag or config
+	if debug || cfg.Server.Debug {
+		gin.SetMode(gin.DebugMode)
+	} else {
+		gin.SetMode(gin.ReleaseMode)
+	}
+
 	router := gin.New()
 	router.Use(customGinLogger(), gin.Recovery())
 
