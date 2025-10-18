@@ -4,6 +4,8 @@ import (
 	"os"
 	"testing"
 	"time"
+
+	promexporter_config "github.com/d0ugal/promexporter/config"
 )
 
 func TestDuration_UnmarshalYAML(t *testing.T) {
@@ -382,17 +384,19 @@ func TestConfig_Validate(t *testing.T) {
 		{
 			name: "valid config",
 			config: &Config{
-				Server: ServerConfig{
-					Host: "0.0.0.0",
-					Port: 8080,
-				},
-				Logging: LoggingConfig{
-					Level:  "info",
-					Format: "json",
-				},
-				Metrics: MetricsConfig{
-					Collection: CollectionConfig{
-						DefaultInterval: Duration{Duration: 30 * time.Second},
+				BaseConfig: promexporter_config.BaseConfig{
+					Server: promexporter_config.ServerConfig{
+						Host: "0.0.0.0",
+						Port: 8080,
+					},
+					Logging: promexporter_config.LoggingConfig{
+						Level:  "info",
+						Format: "json",
+					},
+					Metrics: promexporter_config.MetricsConfig{
+						Collection: promexporter_config.CollectionConfig{
+							DefaultInterval: Duration{Duration: 30 * time.Second},
+						},
 					},
 				},
 				Printer: PrinterConfig{
@@ -550,17 +554,19 @@ func TestConfig_Validate(t *testing.T) {
 		{
 			name: "missing printer host",
 			config: &Config{
-				Server: ServerConfig{
-					Host: "0.0.0.0",
-					Port: 8080,
-				},
-				Logging: LoggingConfig{
-					Level:  "info",
-					Format: "json",
-				},
-				Metrics: MetricsConfig{
-					Collection: CollectionConfig{
-						DefaultInterval: Duration{Duration: 30 * time.Second},
+				BaseConfig: promexporter_config.BaseConfig{
+					Server: promexporter_config.ServerConfig{
+						Host: "0.0.0.0",
+						Port: 8080,
+					},
+					Logging: promexporter_config.LoggingConfig{
+						Level:  "info",
+						Format: "json",
+					},
+					Metrics: promexporter_config.MetricsConfig{
+						Collection: promexporter_config.CollectionConfig{
+							DefaultInterval: Duration{Duration: 30 * time.Second},
+						},
 					},
 				},
 				Printer: PrinterConfig{
@@ -574,17 +580,19 @@ func TestConfig_Validate(t *testing.T) {
 		{
 			name: "missing printer community",
 			config: &Config{
-				Server: ServerConfig{
-					Host: "0.0.0.0",
-					Port: 8080,
-				},
-				Logging: LoggingConfig{
-					Level:  "info",
-					Format: "json",
-				},
-				Metrics: MetricsConfig{
-					Collection: CollectionConfig{
-						DefaultInterval: Duration{Duration: 30 * time.Second},
+				BaseConfig: promexporter_config.BaseConfig{
+					Server: promexporter_config.ServerConfig{
+						Host: "0.0.0.0",
+						Port: 8080,
+					},
+					Logging: promexporter_config.LoggingConfig{
+						Level:  "info",
+						Format: "json",
+					},
+					Metrics: promexporter_config.MetricsConfig{
+						Collection: promexporter_config.CollectionConfig{
+							DefaultInterval: Duration{Duration: 30 * time.Second},
+						},
 					},
 				},
 				Printer: PrinterConfig{
@@ -598,17 +606,19 @@ func TestConfig_Validate(t *testing.T) {
 		{
 			name: "invalid printer type",
 			config: &Config{
-				Server: ServerConfig{
-					Host: "0.0.0.0",
-					Port: 8080,
-				},
-				Logging: LoggingConfig{
-					Level:  "info",
-					Format: "json",
-				},
-				Metrics: MetricsConfig{
-					Collection: CollectionConfig{
-						DefaultInterval: Duration{Duration: 30 * time.Second},
+				BaseConfig: promexporter_config.BaseConfig{
+					Server: promexporter_config.ServerConfig{
+						Host: "0.0.0.0",
+						Port: 8080,
+					},
+					Logging: promexporter_config.LoggingConfig{
+						Level:  "info",
+						Format: "json",
+					},
+					Metrics: promexporter_config.MetricsConfig{
+						Collection: promexporter_config.CollectionConfig{
+							DefaultInterval: Duration{Duration: 30 * time.Second},
+						},
 					},
 				},
 				Printer: PrinterConfig{
