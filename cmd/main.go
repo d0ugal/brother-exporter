@@ -94,7 +94,7 @@ func main() {
 	})
 
 	// Initialize metrics registry using promexporter
-	metricsRegistry := promexporter_metrics.NewRegistry()
+	metricsRegistry := promexporter_metrics.NewRegistry("brother_exporter_info")
 
 	// Add custom metrics to the registry
 	brotherRegistry := metrics.NewBrotherRegistry(metricsRegistry)
@@ -103,7 +103,7 @@ func main() {
 	brotherCollector := collectors.NewBrotherCollector(cfg, brotherRegistry)
 
 	// Create and run application using promexporter
-	application := app.New("brother-exporter").
+	application := app.New("Brother Exporter").
 		WithConfig(&cfg.BaseConfig).
 		WithMetrics(metricsRegistry).
 		WithCollector(brotherCollector).
