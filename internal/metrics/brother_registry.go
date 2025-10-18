@@ -99,9 +99,9 @@ func NewBrotherRegistry(baseRegistry *promexporter_metrics.Registry) *BrotherReg
 			Name: "brother_printer_info",
 			Help: "Information about the Brother printer",
 		},
-		[]string{"printer", "model", "serial_number", "firmware_version"},
+		[]string{"printer", "model", "serial_number", "firmware_version", "type", "mac_address"},
 	)
-	baseRegistry.AddMetricInfo("brother_printer_info", "Information about the Brother printer", []string{"printer", "model", "serial_number", "firmware_version"})
+	baseRegistry.AddMetricInfo("brother_printer_info", "Information about the Brother printer", []string{"printer", "model", "serial_number", "firmware_version", "type", "mac_address"})
 
 	// Printer uptime
 	brother.PrinterUptime = factory.NewGaugeVec(
