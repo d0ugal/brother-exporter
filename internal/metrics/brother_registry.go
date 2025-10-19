@@ -23,15 +23,15 @@ type BrotherRegistry struct {
 	// Printer status
 	PrinterStatus *prometheus.GaugeVec
 
-	// Toner/Cartridge levels (for laser printers)
+	// Toner/Cartridge levels (for laser hosts)
 	TonerLevel  *prometheus.GaugeVec
 	TonerStatus *prometheus.GaugeVec
 
-	// Ink levels (for inkjet printers)
+	// Ink levels (for inkjet hosts)
 	InkLevel  *prometheus.GaugeVec
 	InkStatus *prometheus.GaugeVec
 
-	// Drum levels (for laser printers)
+	// Drum levels (for laser hosts)
 	DrumLevel  *prometheus.GaugeVec
 	DrumStatus *prometheus.GaugeVec
 
@@ -74,279 +74,282 @@ func NewBrotherRegistry(baseRegistry *promexporter_metrics.Registry) *BrotherReg
 		Registry: baseRegistry,
 	}
 
+	// Add missing brother_exporter_info metric
+	baseRegistry.AddMetricInfo("brother_exporter_info", "Information about the Brother host exporter", []string{"version", "commit", "build_date"})
+
 	// Printer connection metrics
 	brother.PrinterConnectionStatus = factory.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "brother_printer_connection_status",
-			Help: "Brother printer connection status (1=connected, 0=disconnected)",
+			Name: "brother_host_connection_status",
+			Help: "Brother host connection status (1=connected, 0=disconnected)",
 		},
-		[]string{"printer"},
+		[]string{"host"},
 	)
-	baseRegistry.AddMetricInfo("brother_printer_connection_status", "Brother printer connection status (1=connected, 0=disconnected)", []string{"printer"})
+	baseRegistry.AddMetricInfo("brother_host_connection_status", "Brother host connection status (1=connected, 0=disconnected)", []string{"host"})
 
 	brother.PrinterConnectionErrors = factory.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "brother_printer_connection_errors_total",
-			Help: "Total number of connection errors to Brother printer",
+			Name: "brother_host_connection_errors_total",
+			Help: "Total number of connection errors to Brother host",
 		},
-		[]string{"printer", "error_type"},
+		[]string{"host", "error_type"},
 	)
-	baseRegistry.AddMetricInfo("brother_printer_connection_errors_total", "Total number of connection errors to Brother printer", []string{"printer", "error_type"})
+	baseRegistry.AddMetricInfo("brother_host_connection_errors_total", "Total number of connection errors to Brother host", []string{"host", "error_type"})
 
 	// Printer information
 	brother.PrinterInfo = factory.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "brother_printer_info",
-			Help: "Information about the Brother printer",
+			Name: "brother_host_info",
+			Help: "Information about the Brother host",
 		},
-		[]string{"printer", "model", "serial_number", "firmware_version", "type", "mac_address"},
+		[]string{"host", "model", "serial", "firmware", "type", "mac"},
 	)
-	baseRegistry.AddMetricInfo("brother_printer_info", "Information about the Brother printer", []string{"printer", "model", "serial_number", "firmware_version", "type", "mac_address"})
+	baseRegistry.AddMetricInfo("brother_host_info", "Information about the Brother host", []string{"host", "model", "serial", "firmware", "type", "mac"})
 
 	// Printer uptime
 	brother.PrinterUptime = factory.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "brother_printer_uptime_seconds",
-			Help: "Brother printer uptime in seconds",
+			Name: "brother_host_restart_timestamp",
+			Help: "Unix timestamp when Brother host was last restarted (use time() - brother_host_restart_timestamp for uptime)",
 		},
-		[]string{"printer"},
+		[]string{"host"},
 	)
-	baseRegistry.AddMetricInfo("brother_printer_uptime_seconds", "Brother printer uptime in seconds", []string{"printer"})
+	baseRegistry.AddMetricInfo("brother_host_restart_timestamp", "Unix timestamp when Brother host was last restarted (use time() - brother_host_restart_timestamp for uptime)", []string{"host"})
 
 	// Printer status
 	brother.PrinterStatus = factory.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "brother_printer_status",
-			Help: "Brother printer status (1=ready, 0=not_ready)",
+			Name: "brother_host_status",
+			Help: "Brother host status (1=ready, 0=not_ready)",
 		},
-		[]string{"printer", "status"},
+		[]string{"host", "status"},
 	)
-	baseRegistry.AddMetricInfo("brother_printer_status", "Brother printer status (1=ready, 0=not_ready)", []string{"printer", "status"})
+	baseRegistry.AddMetricInfo("brother_host_status", "Brother host status (1=ready, 0=not_ready)", []string{"host", "status"})
 
-	// Toner/Cartridge levels (for laser printers)
+	// Toner/Cartridge levels (for laser hosts)
 	brother.TonerLevel = factory.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "brother_printer_toner_level_percent",
-			Help: "Brother printer toner level percentage",
+			Name: "brother_host_toner_level_percent",
+			Help: "Brother host toner level percentage",
 		},
-		[]string{"printer", "color"},
+		[]string{"host", "color"},
 	)
-	baseRegistry.AddMetricInfo("brother_printer_toner_level_percent", "Brother printer toner level percentage", []string{"printer", "color"})
+	baseRegistry.AddMetricInfo("brother_host_toner_level_percent", "Brother host toner level percentage", []string{"host", "color"})
 
 	brother.TonerStatus = factory.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "brother_printer_toner_status",
-			Help: "Brother printer toner status (1=ok, 0=low/empty)",
+			Name: "brother_host_toner_status",
+			Help: "Brother host toner status (1=ok, 0=low/empty)",
 		},
-		[]string{"printer", "color", "status"},
+		[]string{"host", "color", "status"},
 	)
-	baseRegistry.AddMetricInfo("brother_printer_toner_status", "Brother printer toner status (1=ok, 0=low/empty)", []string{"printer", "color", "status"})
+	baseRegistry.AddMetricInfo("brother_host_toner_status", "Brother host toner status (1=ok, 0=low/empty)", []string{"host", "color", "status"})
 
-	// Ink levels (for inkjet printers)
+	// Ink levels (for inkjet hosts)
 	brother.InkLevel = factory.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "brother_printer_ink_level_percent",
-			Help: "Brother printer ink level percentage",
+			Name: "brother_host_ink_level_percent",
+			Help: "Brother host ink level percentage",
 		},
-		[]string{"printer", "color"},
+		[]string{"host", "color"},
 	)
-	baseRegistry.AddMetricInfo("brother_printer_ink_level_percent", "Brother printer ink level percentage", []string{"printer", "color"})
+	baseRegistry.AddMetricInfo("brother_host_ink_level_percent", "Brother host ink level percentage", []string{"host", "color"})
 
 	brother.InkStatus = factory.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "brother_printer_ink_status",
-			Help: "Brother printer ink status (1=ok, 0=low/empty)",
+			Name: "brother_host_ink_status",
+			Help: "Brother host ink status (1=ok, 0=low/empty)",
 		},
-		[]string{"printer", "color", "status"},
+		[]string{"host", "color", "status"},
 	)
-	baseRegistry.AddMetricInfo("brother_printer_ink_status", "Brother printer ink status (1=ok, 0=low/empty)", []string{"printer", "color", "status"})
+	baseRegistry.AddMetricInfo("brother_host_ink_status", "Brother host ink status (1=ok, 0=low/empty)", []string{"host", "color", "status"})
 
-	// Drum levels (for laser printers)
+	// Drum levels (for laser hosts)
 	brother.DrumLevel = factory.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "brother_printer_drum_level_percent",
-			Help: "Brother printer drum level percentage",
+			Name: "brother_host_drum_level_percent",
+			Help: "Brother host drum level percentage",
 		},
-		[]string{"printer", "color"},
+		[]string{"host", "color"},
 	)
-	baseRegistry.AddMetricInfo("brother_printer_drum_level_percent", "Brother printer drum level percentage", []string{"printer", "color"})
+	baseRegistry.AddMetricInfo("brother_host_drum_level_percent", "Brother host drum level percentage", []string{"host", "color"})
 
 	brother.DrumStatus = factory.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "brother_printer_drum_status",
-			Help: "Brother printer drum status (1=ok, 0=low/empty)",
+			Name: "brother_host_drum_status",
+			Help: "Brother host drum status (1=ok, 0=low/empty)",
 		},
-		[]string{"printer", "color", "status"},
+		[]string{"host", "color", "status"},
 	)
-	baseRegistry.AddMetricInfo("brother_printer_drum_status", "Brother printer drum status (1=ok, 0=low/empty)", []string{"printer", "color", "status"})
+	baseRegistry.AddMetricInfo("brother_host_drum_status", "Brother host drum status (1=ok, 0=low/empty)", []string{"host", "color", "status"})
 
 	// Paper tray status
 	brother.PaperTrayStatus = factory.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "brother_printer_paper_tray_status",
-			Help: "Brother printer paper tray status (1=ok, 0=empty/error)",
+			Name: "brother_host_paper_tray_status",
+			Help: "Brother host paper tray status (1=ok, 0=empty/error)",
 		},
-		[]string{"printer", "tray", "status"},
+		[]string{"host", "tray", "status"},
 	)
-	baseRegistry.AddMetricInfo("brother_printer_paper_tray_status", "Brother printer paper tray status (1=ok, 0=empty/error)", []string{"printer", "tray", "status"})
+	baseRegistry.AddMetricInfo("brother_host_paper_tray_status", "Brother host paper tray status (1=ok, 0=empty/error)", []string{"host", "tray", "status"})
 
 	// Page counters
 	brother.PageCountTotal = factory.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "brother_printer_pages",
+			Name: "brother_host_pages",
 			Help: "Total number of pages printed",
 		},
-		[]string{"printer"},
+		[]string{"host"},
 	)
-	baseRegistry.AddMetricInfo("brother_printer_pages", "Total number of pages printed", []string{"printer"})
+	baseRegistry.AddMetricInfo("brother_host_pages", "Total number of pages printed", []string{"host"})
 
 	brother.PageCountBlack = factory.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "brother_printer_page_count_black",
+			Name: "brother_host_page_count_black",
 			Help: "Number of black pages printed",
 		},
-		[]string{"printer"},
+		[]string{"host"},
 	)
-	baseRegistry.AddMetricInfo("brother_printer_page_count_black", "Number of black pages printed", []string{"printer"})
+	baseRegistry.AddMetricInfo("brother_host_page_count_black", "Number of black pages printed", []string{"host"})
 
 	brother.PageCountColor = factory.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "brother_printer_page_count_color",
+			Name: "brother_host_page_count_color",
 			Help: "Number of color pages printed",
 		},
-		[]string{"printer"},
+		[]string{"host"},
 	)
-	baseRegistry.AddMetricInfo("brother_printer_page_count_color", "Number of color pages printed", []string{"printer"})
+	baseRegistry.AddMetricInfo("brother_host_page_count_color", "Number of color pages printed", []string{"host"})
 
 	brother.PageCountDuplex = factory.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "brother_printer_page_count_duplex",
+			Name: "brother_host_page_count_duplex",
 			Help: "Number of duplex pages printed",
 		},
-		[]string{"printer"},
+		[]string{"host"},
 	)
-	baseRegistry.AddMetricInfo("brother_printer_page_count_duplex", "Number of duplex pages printed", []string{"printer"})
+	baseRegistry.AddMetricInfo("brother_host_page_count_duplex", "Number of duplex pages printed", []string{"host"})
 
 	// Drum page counts
 	brother.PageCountDrumBlack = factory.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "brother_printer_page_count_drum_black",
+			Name: "brother_host_page_count_drum_black",
 			Help: "Number of pages printed with black drum",
 		},
-		[]string{"printer"},
+		[]string{"host"},
 	)
-	baseRegistry.AddMetricInfo("brother_printer_page_count_drum_black", "Number of pages printed with black drum", []string{"printer"})
+	baseRegistry.AddMetricInfo("brother_host_page_count_drum_black", "Number of pages printed with black drum", []string{"host"})
 
 	brother.PageCountDrumCyan = factory.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "brother_printer_page_count_drum_cyan",
+			Name: "brother_host_page_count_drum_cyan",
 			Help: "Number of pages printed with cyan drum",
 		},
-		[]string{"printer"},
+		[]string{"host"},
 	)
-	baseRegistry.AddMetricInfo("brother_printer_page_count_drum_cyan", "Number of pages printed with cyan drum", []string{"printer"})
+	baseRegistry.AddMetricInfo("brother_host_page_count_drum_cyan", "Number of pages printed with cyan drum", []string{"host"})
 
 	brother.PageCountDrumMagenta = factory.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "brother_printer_page_count_drum_magenta",
+			Name: "brother_host_page_count_drum_magenta",
 			Help: "Number of pages printed with magenta drum",
 		},
-		[]string{"printer"},
+		[]string{"host"},
 	)
-	baseRegistry.AddMetricInfo("brother_printer_page_count_drum_magenta", "Number of pages printed with magenta drum", []string{"printer"})
+	baseRegistry.AddMetricInfo("brother_host_page_count_drum_magenta", "Number of pages printed with magenta drum", []string{"host"})
 
 	brother.PageCountDrumYellow = factory.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "brother_printer_page_count_drum_yellow",
+			Name: "brother_host_page_count_drum_yellow",
 			Help: "Number of pages printed with yellow drum",
 		},
-		[]string{"printer"},
+		[]string{"host"},
 	)
-	baseRegistry.AddMetricInfo("brother_printer_page_count_drum_yellow", "Number of pages printed with yellow drum", []string{"printer"})
+	baseRegistry.AddMetricInfo("brother_host_page_count_drum_yellow", "Number of pages printed with yellow drum", []string{"host"})
 
 	// Maintenance component life remaining (pages)
 	brother.BeltUnitRemainingPages = factory.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "brother_printer_belt_unit_remaining_pages",
+			Name: "brother_host_belt_unit_remaining_pages",
 			Help: "Belt unit remaining pages",
 		},
-		[]string{"printer"},
+		[]string{"host"},
 	)
-	baseRegistry.AddMetricInfo("brother_printer_belt_unit_remaining_pages", "Belt unit remaining pages", []string{"printer"})
+	baseRegistry.AddMetricInfo("brother_host_belt_unit_remaining_pages", "Belt unit remaining pages", []string{"host"})
 
 	brother.FuserUnitRemainingPages = factory.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "brother_printer_fuser_unit_remaining_pages",
+			Name: "brother_host_fuser_unit_remaining_pages",
 			Help: "Fuser unit remaining pages",
 		},
-		[]string{"printer"},
+		[]string{"host"},
 	)
-	baseRegistry.AddMetricInfo("brother_printer_fuser_unit_remaining_pages", "Fuser unit remaining pages", []string{"printer"})
+	baseRegistry.AddMetricInfo("brother_host_fuser_unit_remaining_pages", "Fuser unit remaining pages", []string{"host"})
 
 	brother.LaserUnitRemainingPages = factory.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "brother_printer_laser_unit_remaining_pages",
+			Name: "brother_host_laser_unit_remaining_pages",
 			Help: "Laser unit remaining pages",
 		},
-		[]string{"printer"},
+		[]string{"host"},
 	)
-	baseRegistry.AddMetricInfo("brother_printer_laser_unit_remaining_pages", "Laser unit remaining pages", []string{"printer"})
+	baseRegistry.AddMetricInfo("brother_host_laser_unit_remaining_pages", "Laser unit remaining pages", []string{"host"})
 
 	brother.PaperFeedingKitRemainingPages = factory.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "brother_printer_paper_feeding_kit_remaining_pages",
+			Name: "brother_host_paper_feeding_kit_remaining_pages",
 			Help: "Paper feeding kit remaining pages",
 		},
-		[]string{"printer"},
+		[]string{"host"},
 	)
-	baseRegistry.AddMetricInfo("brother_printer_paper_feeding_kit_remaining_pages", "Paper feeding kit remaining pages", []string{"printer"})
+	baseRegistry.AddMetricInfo("brother_host_paper_feeding_kit_remaining_pages", "Paper feeding kit remaining pages", []string{"host"})
 
 	// Maintenance component life remaining (percentage)
 	brother.BeltUnitRemainingPercent = factory.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "brother_printer_belt_unit_remaining_percent",
+			Name: "brother_host_belt_unit_remaining_percent",
 			Help: "Belt unit remaining percentage",
 		},
-		[]string{"printer"},
+		[]string{"host"},
 	)
-	baseRegistry.AddMetricInfo("brother_printer_belt_unit_remaining_percent", "Belt unit remaining percentage", []string{"printer"})
+	baseRegistry.AddMetricInfo("brother_host_belt_unit_remaining_percent", "Belt unit remaining percentage", []string{"host"})
 
 	brother.FuserUnitRemainingPercent = factory.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "brother_printer_fuser_unit_remaining_percent",
+			Name: "brother_host_fuser_unit_remaining_percent",
 			Help: "Fuser unit remaining percentage",
 		},
-		[]string{"printer"},
+		[]string{"host"},
 	)
-	baseRegistry.AddMetricInfo("brother_printer_fuser_unit_remaining_percent", "Fuser unit remaining percentage", []string{"printer"})
+	baseRegistry.AddMetricInfo("brother_host_fuser_unit_remaining_percent", "Fuser unit remaining percentage", []string{"host"})
 
 	brother.LaserUnitRemainingPercent = factory.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "brother_printer_laser_unit_remaining_percent",
+			Name: "brother_host_laser_unit_remaining_percent",
 			Help: "Laser unit remaining percentage",
 		},
-		[]string{"printer"},
+		[]string{"host"},
 	)
-	baseRegistry.AddMetricInfo("brother_printer_laser_unit_remaining_percent", "Laser unit remaining percentage", []string{"printer"})
+	baseRegistry.AddMetricInfo("brother_host_laser_unit_remaining_percent", "Laser unit remaining percentage", []string{"host"})
 
 	brother.PaperFeedingKitRemainingPercent = factory.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "brother_printer_paper_feeding_kit_remaining_percent",
+			Name: "brother_host_paper_feeding_kit_remaining_percent",
 			Help: "Paper feeding kit remaining percentage",
 		},
-		[]string{"printer"},
+		[]string{"host"},
 	)
-	baseRegistry.AddMetricInfo("brother_printer_paper_feeding_kit_remaining_percent", "Paper feeding kit remaining percentage", []string{"printer"})
+	baseRegistry.AddMetricInfo("brother_host_paper_feeding_kit_remaining_percent", "Paper feeding kit remaining percentage", []string{"host"})
 
 	// Maintenance counters
 	brother.MaintenanceCount = factory.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "brother_printer_maintenance_count_total",
+			Name: "brother_host_maintenance_count_total",
 			Help: "Total number of maintenance operations",
 		},
-		[]string{"printer", "operation"},
+		[]string{"host", "operation"},
 	)
-	baseRegistry.AddMetricInfo("brother_printer_maintenance_count_total", "Total number of maintenance operations", []string{"printer", "operation"})
+	baseRegistry.AddMetricInfo("brother_host_maintenance_count_total", "Total number of maintenance operations", []string{"host", "operation"})
 
 	return brother
 }
