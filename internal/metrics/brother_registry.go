@@ -193,12 +193,12 @@ func NewBrotherRegistry(baseRegistry *promexporter_metrics.Registry) *BrotherReg
 	// Page counters
 	brother.PageCountTotal = factory.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "brother_printer_page_count_total",
+			Name: "brother_printer_pages",
 			Help: "Total number of pages printed",
 		},
 		[]string{"printer"},
 	)
-	baseRegistry.AddMetricInfo("brother_printer_page_count_total", "Total number of pages printed", []string{"printer"})
+	baseRegistry.AddMetricInfo("brother_printer_pages", "Total number of pages printed", []string{"printer"})
 
 	brother.PageCountBlack = factory.NewGaugeVec(
 		prometheus.GaugeOpts{

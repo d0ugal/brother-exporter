@@ -9,11 +9,12 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-// Use promexporter Duration type
+// Duration uses promexporter Duration type
 type Duration = promexporter_config.Duration
 
 type Config struct {
 	promexporter_config.BaseConfig
+
 	Printer PrinterConfig `yaml:"printer"`
 }
 
@@ -98,11 +99,11 @@ func loadFromEnv() (*Config, error) {
 		if interval, err := time.ParseDuration(intervalStr); err != nil {
 			return nil, fmt.Errorf("invalid metrics default interval: %w", err)
 		} else {
-			baseConfig.Metrics.Collection.DefaultInterval = promexporter_config.Duration{interval}
+			baseConfig.Metrics.Collection.DefaultInterval = promexporter_config.Duration{Duration: interval}
 			baseConfig.Metrics.Collection.DefaultIntervalSet = true
 		}
 	} else {
-		baseConfig.Metrics.Collection.DefaultInterval = promexporter_config.Duration{time.Second * 30}
+		baseConfig.Metrics.Collection.DefaultInterval = promexporter_config.Duration{Duration: time.Second * 30}
 	}
 
 	config.BaseConfig = *baseConfig
@@ -172,7 +173,7 @@ func setDefaults(config *Config) {
 	}
 
 	if !config.Metrics.Collection.DefaultIntervalSet {
-		config.Metrics.Collection.DefaultInterval = promexporter_config.Duration{time.Second * 30}
+		config.Metrics.Collection.DefaultInterval = promexporter_config.Duration{Duration: time.Second * 30}
 	}
 
 	if config.Printer.Host == "" {
