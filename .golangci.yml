@@ -44,6 +44,7 @@ linters:
     - wsl  # Use wsl_v5 instead
     - dupl  # Allow duplicate code for similar metric collection logic
     - gocyclo  # Allow complex functions for SNMP data processing
+    - maintidx  # Allow complex registry functions
 
   settings:
     gosec:
