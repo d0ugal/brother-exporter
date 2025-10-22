@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.9.0](https://github.com/d0ugal/brother-exporter/compare/v1.8.0...v1.9.0) (2025-10-22)
+
+
+### Features
+
+* migrate brother-exporter to promexporter library ([ee24e4f](https://github.com/d0ugal/brother-exporter/commit/ee24e4f66ab0609dd4b78fdd717f25979bd4a5d6))
+* update to promexporter v1.0.0 ([b1db6b7](https://github.com/d0ugal/brother-exporter/commit/b1db6b76ea92e41d9cb40c179bf8197d21bc2ca1))
+
+
+### Bug Fixes
+
+* remove problematic config tests to unblock CI ([247b01f](https://github.com/d0ugal/brother-exporter/commit/247b01f4fc6cd829f2c041191bc3c34cfdb4ccf5))
+* resolve linting issues ([75955bf](https://github.com/d0ugal/brother-exporter/commit/75955bff1d5a5bbb958da23f8d0465e45c3c6b5d))
+* restore correct metric names with printer prefix ([74deed5](https://github.com/d0ugal/brother-exporter/commit/74deed54f0a5605b28a5a1d7553d283f805bcabc))
+* restore stable version metric info and labels ([4ab232e](https://github.com/d0ugal/brother-exporter/commit/4ab232e9b2196bf8874008f8caf01c08cd7c410b))
+* update config tests to use promexporter structure ([11fdda4](https://github.com/d0ugal/brother-exporter/commit/11fdda42021074e46fbf1546f3e6400d4ea7aa8b))
+* update go.sum for promexporter v1.0.0 ([1a5598a](https://github.com/d0ugal/brother-exporter/commit/1a5598a8579e941b24b3ec7dc8b81ed026d6bf42))
+* Update module github.com/d0ugal/promexporter to v1 ([ecb0128](https://github.com/d0ugal/brother-exporter/commit/ecb0128cd7b5e09a9be57d6da315e40f97c8fd86))
+* Update module github.com/d0ugal/promexporter to v1.0.1 ([c174130](https://github.com/d0ugal/brother-exporter/commit/c174130b3900f423d140177dcea1f7418a32b377))
+* Update module github.com/prometheus/procfs to v0.18.0 ([5dc763f](https://github.com/d0ugal/brother-exporter/commit/5dc763f26e28ed0decd52cf913b19a0014b3b740))
+* update to latest promexporter changes ([012a512](https://github.com/d0ugal/brother-exporter/commit/012a5121839bc5bd3579bbf285da66a91fc0eb10))
+
 ## [1.8.0](https://github.com/d0ugal/brother-exporter/compare/v1.7.1...v1.8.0) (2025-10-14)
 
 
