@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.10.1](https://github.com/d0ugal/brother-exporter/compare/v1.10.0...v1.10.1) (2025-10-25)
+
+
+### Bug Fixes
+
+* Update module github.com/d0ugal/promexporter to v1.4.1 ([f69dd9e](https://github.com/d0ugal/brother-exporter/commit/f69dd9e114e230d6986c95572e648189df480941))
+* Update module github.com/prometheus/procfs to v0.19.0 ([9645973](https://github.com/d0ugal/brother-exporter/commit/96459730138ba5c1509e5ae644de56b94ba4c353))
+
 ## [1.10.0](https://github.com/d0ugal/brother-exporter/compare/v1.9.0...v1.10.0) (2025-10-25)
 
 
