@@ -9,10 +9,10 @@ import (
 	"github.com/d0ugal/brother-exporter/internal/collectors"
 	"github.com/d0ugal/brother-exporter/internal/config"
 	"github.com/d0ugal/brother-exporter/internal/metrics"
+	"github.com/d0ugal/brother-exporter/internal/version"
 	"github.com/d0ugal/promexporter/app"
 	"github.com/d0ugal/promexporter/logging"
 	promexporter_metrics "github.com/d0ugal/promexporter/metrics"
-	"github.com/d0ugal/promexporter/version"
 )
 
 // hasEnvironmentVariables checks if any BROTHER_EXPORTER_* environment variables are set
@@ -54,11 +54,9 @@ func main() {
 
 	// Show version if requested
 	if showVersion {
-		versionInfo := version.Get()
-		fmt.Printf("brother-exporter %s\n", versionInfo.Version)
-		fmt.Printf("Commit: %s\n", versionInfo.Commit)
-		fmt.Printf("Build Date: %s\n", versionInfo.BuildDate)
-		fmt.Printf("Go Version: %s\n", versionInfo.GoVersion)
+		fmt.Printf("brother-exporter %s\n", version.Version)
+		fmt.Printf("Commit: %s\n", version.Commit)
+		fmt.Printf("Build Date: %s\n", version.BuildDate)
 		os.Exit(0)
 	}
 
@@ -95,6 +93,9 @@ func main() {
 
 	// Initialize metrics registry using promexporter
 	metricsRegistry := promexporter_metrics.NewRegistry("brother_exporter_info")
+
+	// Set version info metric with brother-exporter version information
+	metricsRegistry.VersionInfo.WithLabelValues(version.Version, version.Commit, version.BuildDate).Set(1)
 
 	// Add custom metrics to the registry
 	brotherRegistry := metrics.NewBrotherRegistry(metricsRegistry)
