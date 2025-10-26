@@ -5,7 +5,7 @@ go 1.25
 toolchain go1.25.3
 
 require (
-	github.com/d0ugal/promexporter v1.4.1
+	github.com/d0ugal/promexporter v1.5.0
 	github.com/gosnmp/gosnmp v1.42.1
 	github.com/prometheus/client_golang v1.23.2
 	github.com/stretchr/testify v1.11.1
@@ -39,7 +39,7 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/prometheus/client_model v0.6.2 // indirect
 	github.com/prometheus/common v0.67.1 // indirect
-	github.com/prometheus/procfs v0.19.0 // indirect
+	github.com/prometheus/procfs v0.19.1 // indirect
 	github.com/quic-go/qpack v0.5.1 // indirect
 	github.com/quic-go/quic-go v0.55.0 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
