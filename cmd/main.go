@@ -94,9 +94,6 @@ func main() {
 	// Initialize metrics registry using promexporter
 	metricsRegistry := promexporter_metrics.NewRegistry("brother_exporter_info")
 
-	// Set version info metric with brother-exporter version information
-	metricsRegistry.VersionInfo.WithLabelValues(version.Version, version.Commit, version.BuildDate).Set(1)
-
 	// Add custom metrics to the registry
 	brotherRegistry := metrics.NewBrotherRegistry(metricsRegistry)
 
@@ -108,6 +105,7 @@ func main() {
 		WithConfig(&cfg.BaseConfig).
 		WithMetrics(metricsRegistry).
 		WithCollector(brotherCollector).
+		WithVersionInfo(version.Version, version.Commit, version.BuildDate).
 		Build()
 
 	if err := application.Run(); err != nil {
