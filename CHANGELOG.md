@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.10.3](https://github.com/d0ugal/brother-exporter/compare/v1.10.2...v1.10.3) (2025-10-27)
+
+
+### Bug Fixes
+
+* **ci:** use Makefile for linting instead of golangci-lint-action ([e58d3c4](https://github.com/d0ugal/brother-exporter/commit/e58d3c4a2fc58cb37164ed985f3580ee0015af76))
+
 ## [1.10.2](https://github.com/d0ugal/brother-exporter/compare/v1.10.1...v1.10.2) (2025-10-26)
 
 
