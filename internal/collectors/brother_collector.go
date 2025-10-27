@@ -964,28 +964,28 @@ func (bc *BrotherCollector) collectPageCounters() error {
 	// Update metrics with the parsed counter values
 	bc.metrics.PageCountTotal.With(prometheus.Labels{
 		"host": bc.config.Printer.Host,
-	}).Set(float64(counters["0001"]))       // Total page count
+	}).Set(float64(counters["0001"])) // Total page count
 	bc.metrics.PageCountBlack.With(prometheus.Labels{
 		"host": bc.config.Printer.Host,
-	}).Set(float64(counters["0101"]))       // B/W count
+	}).Set(float64(counters["0101"])) // B/W count
 	bc.metrics.PageCountColor.With(prometheus.Labels{
 		"host": bc.config.Printer.Host,
-	}).Set(float64(counters["0201"]))       // Color count
+	}).Set(float64(counters["0201"])) // Color count
 	bc.metrics.PageCountDuplex.With(prometheus.Labels{
 		"host": bc.config.Printer.Host,
-	}).Set(float64(counters["0601"]))      // Duplex count
+	}).Set(float64(counters["0601"])) // Duplex count
 	bc.metrics.PageCountDrumBlack.With(prometheus.Labels{
 		"host": bc.config.Printer.Host,
-	}).Set(float64(counters["1201"]))   // Black drum count
+	}).Set(float64(counters["1201"])) // Black drum count
 	bc.metrics.PageCountDrumCyan.With(prometheus.Labels{
 		"host": bc.config.Printer.Host,
-	}).Set(float64(counters["1301"]))    // Cyan drum count
+	}).Set(float64(counters["1301"])) // Cyan drum count
 	bc.metrics.PageCountDrumMagenta.With(prometheus.Labels{
 		"host": bc.config.Printer.Host,
 	}).Set(float64(counters["1401"])) // Magenta drum count
 	bc.metrics.PageCountDrumYellow.With(prometheus.Labels{
 		"host": bc.config.Printer.Host,
-	}).Set(float64(counters["1501"]))  // Yellow drum count
+	}).Set(float64(counters["1501"])) // Yellow drum count
 
 	slog.Debug("Page counters collected",
 		"total", counters["0001"],
