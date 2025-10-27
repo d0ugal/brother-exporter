@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.10.3](https://github.com/d0ugal/brother-exporter/compare/v1.10.2...v1.10.3) (2025-10-27)
+
+
+### Bug Fixes
+
+* add missing prometheus import ([0799b6d](https://github.com/d0ugal/brother-exporter/commit/0799b6d509af74f972c4da1521d11b8f2c8d23b9))
+* **ci:** use Makefile for linting instead of golangci-lint-action ([e58d3c4](https://github.com/d0ugal/brother-exporter/commit/e58d3c4a2fc58cb37164ed985f3580ee0015af76))
+
 ## [1.10.2](https://github.com/d0ugal/brother-exporter/compare/v1.10.1...v1.10.2) (2025-10-26)
 
 
