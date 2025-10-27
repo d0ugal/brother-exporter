@@ -102,7 +102,10 @@ func calculateStatusFromLevel(level float64) (status string, statusValue float64
 func (bc *BrotherCollector) handleCollectionError(err error, operation string) {
 	if err != nil {
 		slog.Error("Failed to collect "+operation, "error", err)
-		bc.metrics.PrinterConnectionErrors.WithLabelValues(bc.config.Printer.Host, operation).Inc()
+		bc.metrics.PrinterConnectionErrors.With(prometheus.Labels{
+			"host":      bc.config.Printer.Host,
+			"operation": operation,
+		}).Inc()
 	}
 }
 
@@ -130,12 +133,19 @@ func (bc *BrotherCollector) collectColorLevelsWithStatus(oidBase string, colors 
 			}
 
 			// Set level metric
-			levelMetric.WithLabelValues(bc.config.Printer.Host, color).Set(percentage)
+			levelMetric.With(prometheus.Labels{
+				"host":  bc.config.Printer.Host,
+				"color": color,
+			}).Set(percentage)
 
 			// Set status based on level
 			status, statusValue := calculateStatusFromLevel(percentage)
 
-			statusMetric.WithLabelValues(bc.config.Printer.Host, color, status).Set(statusValue)
+			statusMetric.With(prometheus.Labels{
+				"host":   bc.config.Printer.Host,
+				"color":  color,
+				"status": status,
+			}).Set(statusValue)
 		}
 	}
 }
@@ -240,8 +250,13 @@ func (bc *BrotherCollector) collectMetrics() {
 			"host", bc.config.Printer.Host,
 			"error", err,
 		)
-		bc.metrics.PrinterConnectionStatus.WithLabelValues(bc.config.Printer.Host).Set(0)
-		bc.metrics.PrinterConnectionErrors.WithLabelValues(bc.config.Printer.Host, "connect").Inc()
+		bc.metrics.PrinterConnectionStatus.With(prometheus.Labels{
+			"host": bc.config.Printer.Host,
+		}).Set(0)
+		bc.metrics.PrinterConnectionErrors.With(prometheus.Labels{
+			"host":      bc.config.Printer.Host,
+			"operation": "connect",
+		}).Inc()
 
 		return
 	}
@@ -249,7 +264,9 @@ func (bc *BrotherCollector) collectMetrics() {
 	defer bc.disconnect()
 
 	// Set connection status
-	bc.metrics.PrinterConnectionStatus.WithLabelValues(bc.config.Printer.Host).Set(1)
+	bc.metrics.PrinterConnectionStatus.With(prometheus.Labels{
+		"host": bc.config.Printer.Host,
+	}).Set(1)
 
 	// Collect printer information
 	bc.handleCollectionError(bc.collectPrinterInfo(), "printer info")
@@ -388,14 +405,14 @@ func (bc *BrotherCollector) collectPrinterInfo() error {
 	}
 
 	// Set printer info metric
-	bc.metrics.PrinterInfo.WithLabelValues(
-		bc.config.Printer.Host,
-		model,
-		serial,
-		firmware,
-		bc.config.Printer.Type,
-		mac,
-	).Set(1)
+	bc.metrics.PrinterInfo.With(prometheus.Labels{
+		"host":     bc.config.Printer.Host,
+		"model":    model,
+		"serial":   serial,
+		"firmware": firmware,
+		"type":     bc.config.Printer.Type,
+		"mac":      mac,
+	}).Set(1)
 
 	slog.Debug("Printer info collected",
 		"model", model,
@@ -435,7 +452,9 @@ func (bc *BrotherCollector) collectPrinterUptime() error {
 	restartTimestamp := currentTime - uptimeSeconds
 
 	// Set the uptime metric with the restart timestamp
-	bc.metrics.PrinterUptime.WithLabelValues(bc.config.Printer.Host).Set(restartTimestamp)
+	bc.metrics.PrinterUptime.With(prometheus.Labels{
+		"host": bc.config.Printer.Host,
+	}).Set(restartTimestamp)
 
 	slog.Debug("Printer uptime collected", "uptime_seconds", uptimeSeconds, "restart_timestamp", restartTimestamp, "current_time", currentTime)
 
@@ -475,10 +494,10 @@ func (bc *BrotherCollector) collectPrinterStatus() error {
 			statusValue = 1.0
 		}
 
-		bc.metrics.PrinterStatus.WithLabelValues(
-			bc.config.Printer.Host,
-			statusStr,
-		).Set(statusValue)
+		bc.metrics.PrinterStatus.With(prometheus.Labels{
+			"host":   bc.config.Printer.Host,
+			"status": statusStr,
+		}).Set(statusValue)
 	}
 
 	return nil
@@ -618,13 +637,21 @@ func (bc *BrotherCollector) collectBrotherMaintenanceData() error {
 					case "yellow_drum_remaining":
 						drumLevels["yellow"] = percentage
 					case "belt_unit_remaining":
-						bc.metrics.BeltUnitRemainingPercent.WithLabelValues(bc.config.Printer.Host).Set(float64(percentage))
+						bc.metrics.BeltUnitRemainingPercent.With(prometheus.Labels{
+							"host": bc.config.Printer.Host,
+						}).Set(float64(percentage))
 					case "fuser_unit_remaining":
-						bc.metrics.FuserUnitRemainingPercent.WithLabelValues(bc.config.Printer.Host).Set(float64(percentage))
+						bc.metrics.FuserUnitRemainingPercent.With(prometheus.Labels{
+							"host": bc.config.Printer.Host,
+						}).Set(float64(percentage))
 					case "laser_unit_remaining":
-						bc.metrics.LaserUnitRemainingPercent.WithLabelValues(bc.config.Printer.Host).Set(float64(percentage))
+						bc.metrics.LaserUnitRemainingPercent.With(prometheus.Labels{
+							"host": bc.config.Printer.Host,
+						}).Set(float64(percentage))
 					case "paper_feeding_kit_remaining":
-						bc.metrics.PaperFeedingKitRemainingPercent.WithLabelValues(bc.config.Printer.Host).Set(float64(percentage))
+						bc.metrics.PaperFeedingKitRemainingPercent.With(prometheus.Labels{
+							"host": bc.config.Printer.Host,
+						}).Set(float64(percentage))
 					}
 
 					slog.Debug("Found sensor", "type", sensorType, "value_hex", valueHex, "value", value, "percentage", percentage)
@@ -635,22 +662,36 @@ func (bc *BrotherCollector) collectBrotherMaintenanceData() error {
 
 	// Update toner level metrics
 	for color, level := range tonerLevels {
-		bc.metrics.TonerLevel.WithLabelValues(bc.config.Printer.Host, color).Set(float64(level))
+		bc.metrics.TonerLevel.With(prometheus.Labels{
+			"host":  bc.config.Printer.Host,
+			"color": color,
+		}).Set(float64(level))
 
 		// Set toner status based on level
 		status, statusValue := calculateStatusFromLevel(float64(level))
 
-		bc.metrics.TonerStatus.WithLabelValues(bc.config.Printer.Host, color, status).Set(statusValue)
+		bc.metrics.TonerStatus.With(prometheus.Labels{
+			"host":   bc.config.Printer.Host,
+			"color":  color,
+			"status": status,
+		}).Set(statusValue)
 	}
 
 	// Update drum level metrics
 	for color, level := range drumLevels {
-		bc.metrics.DrumLevel.WithLabelValues(bc.config.Printer.Host, color).Set(float64(level))
+		bc.metrics.DrumLevel.With(prometheus.Labels{
+			"host":  bc.config.Printer.Host,
+			"color": color,
+		}).Set(float64(level))
 
 		// Set drum status based on level
 		status, statusValue := calculateStatusFromLevel(float64(level))
 
-		bc.metrics.DrumStatus.WithLabelValues(bc.config.Printer.Host, color, status).Set(statusValue)
+		bc.metrics.DrumStatus.With(prometheus.Labels{
+			"host":   bc.config.Printer.Host,
+			"color":  color,
+			"status": status,
+		}).Set(statusValue)
 	}
 
 	slog.Debug("Brother maintenance data collected",
@@ -758,13 +799,21 @@ func (bc *BrotherCollector) collectBrotherNextCareData() error {
 				if value >= 0 && value < 10000000 {
 					switch sensorType {
 					case "belt_unit_remaining_pages":
-						bc.metrics.BeltUnitRemainingPages.WithLabelValues(bc.config.Printer.Host).Set(float64(value))
+						bc.metrics.BeltUnitRemainingPages.With(prometheus.Labels{
+							"host": bc.config.Printer.Host,
+						}).Set(float64(value))
 					case "fuser_unit_remaining_pages":
-						bc.metrics.FuserUnitRemainingPages.WithLabelValues(bc.config.Printer.Host).Set(float64(value))
+						bc.metrics.FuserUnitRemainingPages.With(prometheus.Labels{
+							"host": bc.config.Printer.Host,
+						}).Set(float64(value))
 					case "laser_unit_remaining_pages":
-						bc.metrics.LaserUnitRemainingPages.WithLabelValues(bc.config.Printer.Host).Set(float64(value))
+						bc.metrics.LaserUnitRemainingPages.With(prometheus.Labels{
+							"host": bc.config.Printer.Host,
+						}).Set(float64(value))
 					case "paper_feeding_kit_mp_remaining_pages":
-						bc.metrics.PaperFeedingKitRemainingPages.WithLabelValues(bc.config.Printer.Host).Set(float64(value))
+						bc.metrics.PaperFeedingKitRemainingPages.With(prometheus.Labels{
+							"host": bc.config.Printer.Host,
+						}).Set(float64(value))
 					}
 
 					slog.Debug("Found nextcare sensor", "type", sensorType, "value_hex", valueHex, "value", value)
@@ -822,19 +871,19 @@ func (bc *BrotherCollector) collectInkjetMetrics() error {
 				percentage = 100
 			}
 
-			bc.metrics.InkLevel.WithLabelValues(
-				bc.config.Printer.Host,
-				color,
-			).Set(percentage)
+			bc.metrics.InkLevel.With(prometheus.Labels{
+				"host":  bc.config.Printer.Host,
+				"color": color,
+			}).Set(percentage)
 
 			// Set status based on level
 			status, statusValue := calculateStatusFromLevel(percentage)
 
-			bc.metrics.InkStatus.WithLabelValues(
-				bc.config.Printer.Host,
-				color,
-				status,
-			).Set(statusValue)
+			bc.metrics.InkStatus.With(prometheus.Labels{
+				"host":   bc.config.Printer.Host,
+				"color":  color,
+				"status": status,
+			}).Set(statusValue)
 		}
 	}
 
@@ -879,11 +928,11 @@ func (bc *BrotherCollector) collectPaperTrayStatus() error {
 			statusValue = 0.0
 		}
 
-		bc.metrics.PaperTrayStatus.WithLabelValues(
-			bc.config.Printer.Host,
-			"main",
-			statusStr,
-		).Set(statusValue)
+		bc.metrics.PaperTrayStatus.With(prometheus.Labels{
+			"host":   bc.config.Printer.Host,
+			"tray":   "main",
+			"status": statusStr,
+		}).Set(statusValue)
 	}
 
 	return nil
@@ -913,14 +962,30 @@ func (bc *BrotherCollector) collectPageCounters() error {
 	counters := bc.parseBrotherCounters(hexData)
 
 	// Update metrics with the parsed counter values
-	bc.metrics.PageCountTotal.WithLabelValues(bc.config.Printer.Host).Set(float64(counters["0001"]))       // Total page count
-	bc.metrics.PageCountBlack.WithLabelValues(bc.config.Printer.Host).Set(float64(counters["0101"]))       // B/W count
-	bc.metrics.PageCountColor.WithLabelValues(bc.config.Printer.Host).Set(float64(counters["0201"]))       // Color count
-	bc.metrics.PageCountDuplex.WithLabelValues(bc.config.Printer.Host).Set(float64(counters["0601"]))      // Duplex count
-	bc.metrics.PageCountDrumBlack.WithLabelValues(bc.config.Printer.Host).Set(float64(counters["1201"]))   // Black drum count
-	bc.metrics.PageCountDrumCyan.WithLabelValues(bc.config.Printer.Host).Set(float64(counters["1301"]))    // Cyan drum count
-	bc.metrics.PageCountDrumMagenta.WithLabelValues(bc.config.Printer.Host).Set(float64(counters["1401"])) // Magenta drum count
-	bc.metrics.PageCountDrumYellow.WithLabelValues(bc.config.Printer.Host).Set(float64(counters["1501"]))  // Yellow drum count
+	bc.metrics.PageCountTotal.With(prometheus.Labels{
+		"host": bc.config.Printer.Host,
+	}).Set(float64(counters["0001"]))       // Total page count
+	bc.metrics.PageCountBlack.With(prometheus.Labels{
+		"host": bc.config.Printer.Host,
+	}).Set(float64(counters["0101"]))       // B/W count
+	bc.metrics.PageCountColor.With(prometheus.Labels{
+		"host": bc.config.Printer.Host,
+	}).Set(float64(counters["0201"]))       // Color count
+	bc.metrics.PageCountDuplex.With(prometheus.Labels{
+		"host": bc.config.Printer.Host,
+	}).Set(float64(counters["0601"]))      // Duplex count
+	bc.metrics.PageCountDrumBlack.With(prometheus.Labels{
+		"host": bc.config.Printer.Host,
+	}).Set(float64(counters["1201"]))   // Black drum count
+	bc.metrics.PageCountDrumCyan.With(prometheus.Labels{
+		"host": bc.config.Printer.Host,
+	}).Set(float64(counters["1301"]))    // Cyan drum count
+	bc.metrics.PageCountDrumMagenta.With(prometheus.Labels{
+		"host": bc.config.Printer.Host,
+	}).Set(float64(counters["1401"])) // Magenta drum count
+	bc.metrics.PageCountDrumYellow.With(prometheus.Labels{
+		"host": bc.config.Printer.Host,
+	}).Set(float64(counters["1501"]))  // Yellow drum count
 
 	slog.Debug("Page counters collected",
 		"total", counters["0001"],
