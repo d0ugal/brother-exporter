@@ -12,8 +12,11 @@ import (
 
 	"github.com/d0ugal/brother-exporter/internal/config"
 	"github.com/d0ugal/brother-exporter/internal/metrics"
+	"github.com/d0ugal/promexporter/app"
+	"github.com/d0ugal/promexporter/tracing"
 	"github.com/gosnmp/gosnmp"
 	"github.com/prometheus/client_golang/prometheus"
+	"go.opentelemetry.io/otel/attribute"
 )
 
 // convertToInt converts various SNMP value types to int using Go generics
@@ -154,6 +157,7 @@ func (bc *BrotherCollector) collectColorLevelsWithStatus(oidBase string, colors 
 type BrotherCollector struct {
 	config  *config.Config
 	metrics *metrics.BrotherRegistry
+	app     *app.App
 	client  *gosnmp.GoSNMP
 	mu      sync.RWMutex
 	done    chan struct{}
@@ -211,10 +215,11 @@ var (
 	InkColors   = []string{"black", "cyan", "magenta", "yellow"}
 )
 
-func NewBrotherCollector(cfg *config.Config, metricsRegistry *metrics.BrotherRegistry) *BrotherCollector {
+func NewBrotherCollector(cfg *config.Config, metricsRegistry *metrics.BrotherRegistry, app *app.App) *BrotherCollector {
 	return &BrotherCollector{
 		config:  cfg,
 		metrics: metricsRegistry,
+		app:     app,
 		done:    make(chan struct{}),
 	}
 }
@@ -245,11 +250,32 @@ func (bc *BrotherCollector) run(ctx context.Context) {
 
 // collectMetrics performs a single metrics collection cycle
 func (bc *BrotherCollector) collectMetrics() {
+	startTime := time.Now()
+
+	// Create span for collection cycle
+	tracer := bc.app.GetTracer()
+
+	var collectorSpan *tracing.CollectorSpan
+
+	if tracer != nil && tracer.IsEnabled() {
+		collectorSpan = tracer.NewCollectorSpan(context.Background(), "brother-collector", "collect-metrics")
+		collectorSpan.SetAttributes(
+			attribute.String("printer.host", bc.config.Printer.Host),
+			attribute.String("printer.type", bc.config.Printer.Type),
+		)
+		defer collectorSpan.End()
+	}
+
 	if err := bc.connect(); err != nil {
 		slog.Error("Failed to connect to Brother printer",
 			"host", bc.config.Printer.Host,
 			"error", err,
 		)
+
+		if collectorSpan != nil {
+			collectorSpan.RecordError(err, attribute.String("printer.host", bc.config.Printer.Host))
+		}
+
 		bc.metrics.PrinterConnectionStatus.With(prometheus.Labels{
 			"host": bc.config.Printer.Host,
 		}).Set(0)
@@ -298,6 +324,20 @@ func (bc *BrotherCollector) collectMetrics() {
 
 	// Collect page counters using standard MIB OIDs
 	bc.handleCollectionError(bc.collectPageCounters(), "page_counters")
+
+	duration := time.Since(startTime).Seconds()
+
+	if collectorSpan != nil {
+		collectorSpan.SetAttributes(
+			attribute.Float64("collection.duration_seconds", duration),
+		)
+		collectorSpan.AddEvent("collection_completed",
+			attribute.String("printer.host", bc.config.Printer.Host),
+			attribute.Float64("duration_seconds", duration),
+		)
+	}
+
+	slog.Info("Collection cycle completed", "host", bc.config.Printer.Host, "duration", duration)
 }
 
 // connect establishes SNMP connection to the printer
