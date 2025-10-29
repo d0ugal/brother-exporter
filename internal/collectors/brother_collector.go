@@ -234,7 +234,7 @@ func (bc *BrotherCollector) run(ctx context.Context) {
 	defer ticker.Stop()
 
 	// Initial collection
-	bc.collectMetrics()
+	bc.collectMetrics(ctx)
 
 	for {
 		select {
@@ -243,7 +243,7 @@ func (bc *BrotherCollector) run(ctx context.Context) {
 		case <-bc.done:
 			return
 		case <-ticker.C:
-			bc.collectMetrics()
+			bc.collectMetrics(ctx)
 		}
 	}
 }
@@ -259,6 +259,7 @@ func (bc *BrotherCollector) collectMetrics() {
 
 	if tracer != nil && tracer.IsEnabled() {
 		collectorSpan = tracer.NewCollectorSpan(context.Background(), "brother-collector", "collect-metrics")
+
 		collectorSpan.SetAttributes(
 			attribute.String("printer.host", bc.config.Printer.Host),
 			attribute.String("printer.type", bc.config.Printer.Type),
