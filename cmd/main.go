@@ -97,16 +97,16 @@ func main() {
 	// Add custom metrics to the registry
 	brotherRegistry := metrics.NewBrotherRegistry(metricsRegistry)
 
-	// Create collector
-	brotherCollector := collectors.NewBrotherCollector(cfg, brotherRegistry)
-
-	// Create and run application using promexporter
+	// Create and build application using promexporter
 	application := app.New("Brother Exporter").
 		WithConfig(&cfg.BaseConfig).
 		WithMetrics(metricsRegistry).
-		WithCollector(brotherCollector).
 		WithVersionInfo(version.Version, version.Commit, version.BuildDate).
 		Build()
+
+	// Create collector with app reference for tracing
+	brotherCollector := collectors.NewBrotherCollector(cfg, brotherRegistry, application)
+	application.WithCollector(brotherCollector)
 
 	if err := application.Run(); err != nil {
 		slog.Error("Application failed", "error", err)
