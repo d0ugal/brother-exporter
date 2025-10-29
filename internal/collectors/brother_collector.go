@@ -249,7 +249,7 @@ func (bc *BrotherCollector) run(ctx context.Context) {
 }
 
 // collectMetrics performs a single metrics collection cycle
-func (bc *BrotherCollector) collectMetrics() {
+func (bc *BrotherCollector) collectMetrics(ctx context.Context) {
 	startTime := time.Now()
 
 	// Create span for collection cycle
@@ -258,7 +258,7 @@ func (bc *BrotherCollector) collectMetrics() {
 	var collectorSpan *tracing.CollectorSpan
 
 	if tracer != nil && tracer.IsEnabled() {
-		collectorSpan = tracer.NewCollectorSpan(context.Background(), "brother-collector", "collect-metrics")
+		collectorSpan = tracer.NewCollectorSpan(ctx, "brother-collector", "collect-metrics")
 
 		collectorSpan.SetAttributes(
 			attribute.String("printer.host", bc.config.Printer.Host),
