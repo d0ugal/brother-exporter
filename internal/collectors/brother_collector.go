@@ -113,19 +113,60 @@ func (bc *BrotherCollector) handleCollectionError(err error, operation string) {
 }
 
 // collectColorLevelsWithStatus collects level and status metrics for each color using the specified OID base
-func (bc *BrotherCollector) collectColorLevelsWithStatus(oidBase string, colors []string, levelMetric, statusMetric *prometheus.GaugeVec, context string) {
+func (bc *BrotherCollector) collectColorLevelsWithStatus(ctx context.Context, oidBase string, colors []string, levelMetric, statusMetric *prometheus.GaugeVec, context string) {
+	tracer := bc.app.GetTracer()
+
+	var (
+		span    *tracing.CollectorSpan
+		spanCtx context.Context
+	)
+
+	if tracer != nil && tracer.IsEnabled() {
+		span = tracer.NewCollectorSpan(ctx, "brother-collector", "collect-color-levels")
+
+		span.SetAttributes(
+			attribute.String("oid.base", oidBase),
+			attribute.String("context", context),
+			attribute.Int("colors.count", len(colors)),
+		)
+
+		spanCtx = span.Context()
+		defer span.End()
+	} else {
+		spanCtx = ctx
+	}
+
+	collectStart := time.Now()
+	var colorsCollected int
+
 	for i, color := range colors {
 		oid := fmt.Sprintf("%s.%d", oidBase, i+1)
 
+		getStart := time.Now()
+
 		result, err := bc.client.Get([]string{oid})
+
+		getDuration := time.Since(getStart)
+
 		if err != nil {
 			slog.Debug("Failed to get "+context, "color", color, "oid", oid, "error", err)
+
+			if span != nil {
+				span.RecordError(err, attribute.String("color", color), attribute.String("oid", oid))
+			}
+
 			continue
 		}
 
 		if len(result.Variables) > 0 {
+			parseStart := time.Now()
+
 			level, ok := convertToInt(result.Variables[0].Value, context)
 			if !ok {
+				if span != nil {
+					span.RecordError(fmt.Errorf("failed to convert level"), attribute.String("color", color))
+				}
+
 				continue
 			}
 
@@ -134,6 +175,8 @@ func (bc *BrotherCollector) collectColorLevelsWithStatus(oidBase string, colors 
 			if percentage > 100 {
 				percentage = 100
 			}
+
+			parseDuration := time.Since(parseStart)
 
 			// Set level metric
 			levelMetric.With(prometheus.Labels{
@@ -149,7 +192,30 @@ func (bc *BrotherCollector) collectColorLevelsWithStatus(oidBase string, colors 
 				"color":  color,
 				"status": status,
 			}).Set(statusValue)
+
+			colorsCollected++
+
+			if span != nil {
+				span.SetAttributes(
+					attribute.Float64("color."+color+".get_duration_seconds", getDuration.Seconds()),
+					attribute.Float64("color."+color+".parse_duration_seconds", parseDuration.Seconds()),
+					attribute.Float64("color."+color+".percentage", percentage),
+					attribute.String("color."+color+".status", status),
+				)
+			}
 		}
+	}
+
+	collectDuration := time.Since(collectStart)
+
+	if span != nil {
+		span.SetAttributes(
+			attribute.Int("collect.colors_collected", colorsCollected),
+			attribute.Float64("collect.duration_seconds", collectDuration.Seconds()),
+		)
+		span.AddEvent("color_levels_collected",
+			attribute.Int("colors_collected", colorsCollected),
+		)
 	}
 }
 
@@ -267,7 +333,15 @@ func (bc *BrotherCollector) collectMetrics(ctx context.Context) {
 		defer collectorSpan.End()
 	}
 
-	if err := bc.connect(); err != nil {
+	var spanCtx context.Context
+
+	if collectorSpan != nil {
+		spanCtx = collectorSpan.Context()
+	} else {
+		spanCtx = ctx
+	}
+
+	if err := bc.connect(spanCtx); err != nil {
 		slog.Error("Failed to connect to Brother printer",
 			"host", bc.config.Printer.Host,
 			"error", err,
@@ -288,43 +362,51 @@ func (bc *BrotherCollector) collectMetrics(ctx context.Context) {
 		return
 	}
 
-	defer bc.disconnect()
+	defer bc.disconnect(spanCtx)
 
 	// Set connection status
 	bc.metrics.PrinterConnectionStatus.With(prometheus.Labels{
 		"host": bc.config.Printer.Host,
 	}).Set(1)
 
+	var spanCtx context.Context
+
+	if collectorSpan != nil {
+		spanCtx = collectorSpan.Context()
+	} else {
+		spanCtx = ctx
+	}
+
 	// Collect printer information
-	bc.handleCollectionError(bc.collectPrinterInfo(), "printer info")
+	bc.handleCollectionError(bc.collectPrinterInfo(spanCtx), "printer info")
 
 	// Collect printer status
-	bc.handleCollectionError(bc.collectPrinterStatus(), "printer status")
+	bc.handleCollectionError(bc.collectPrinterStatus(spanCtx), "printer status")
 
 	// Collect printer uptime
-	bc.handleCollectionError(bc.collectPrinterUptime(), "printer uptime")
+	bc.handleCollectionError(bc.collectPrinterUptime(spanCtx), "printer uptime")
 
 	// Collect Brother-specific metrics (these work better than standard MIB)
-	if err := bc.collectBrotherSpecificMetrics(); err != nil {
+	if err := bc.collectBrotherSpecificMetrics(spanCtx); err != nil {
 		bc.handleCollectionError(err, "brother_metrics")
 
 		// Fallback to standard MIB only if Brother-specific collection fails
 		switch bc.config.Printer.Type {
 		case "laser":
-			bc.handleCollectionError(bc.collectLaserMetrics(), "laser_metrics")
+			bc.handleCollectionError(bc.collectLaserMetrics(spanCtx), "laser_metrics")
 		case "ink":
-			bc.handleCollectionError(bc.collectInkjetMetrics(), "inkjet_metrics")
+			bc.handleCollectionError(bc.collectInkjetMetrics(spanCtx), "inkjet_metrics")
 		}
 	} else {
 		// If Brother-specific collection succeeded, also collect nextcare data
-		bc.handleCollectionError(bc.collectBrotherNextCareData(), "nextcare_metrics")
+		bc.handleCollectionError(bc.collectBrotherNextCareData(spanCtx), "nextcare_metrics")
 	}
 
 	// Collect paper tray status
-	bc.handleCollectionError(bc.collectPaperTrayStatus(), "paper_tray")
+	bc.handleCollectionError(bc.collectPaperTrayStatus(spanCtx), "paper_tray")
 
 	// Collect page counters using standard MIB OIDs
-	bc.handleCollectionError(bc.collectPageCounters(), "page_counters")
+	bc.handleCollectionError(bc.collectPageCounters(spanCtx), "page_counters")
 
 	duration := time.Since(startTime).Seconds()
 
@@ -342,7 +424,33 @@ func (bc *BrotherCollector) collectMetrics(ctx context.Context) {
 }
 
 // connect establishes SNMP connection to the printer
-func (bc *BrotherCollector) connect() error {
+func (bc *BrotherCollector) connect(ctx context.Context) error {
+	tracer := bc.app.GetTracer()
+
+	var (
+		span    *tracing.CollectorSpan
+		spanCtx context.Context
+	)
+
+	if tracer != nil && tracer.IsEnabled() {
+		span = tracer.NewCollectorSpan(ctx, "brother-collector", "connect")
+
+		span.SetAttributes(
+			attribute.String("snmp.host", bc.config.Printer.Host),
+			attribute.Int("snmp.port", 161),
+			attribute.String("snmp.version", "v2c"),
+			attribute.Int("snmp.timeout_seconds", 10),
+			attribute.Int("snmp.retries", 3),
+		)
+
+		spanCtx = span.Context()
+		defer span.End()
+	} else {
+		spanCtx = ctx
+	}
+
+	configStart := time.Now()
+
 	bc.mu.Lock()
 	defer bc.mu.Unlock()
 
@@ -355,25 +463,99 @@ func (bc *BrotherCollector) connect() error {
 		Retries:   3,
 	}
 
-	return bc.client.Connect()
+	configDuration := time.Since(configStart)
+
+	if span != nil {
+		span.SetAttributes(
+			attribute.Float64("config.duration_seconds", configDuration.Seconds()),
+		)
+		span.AddEvent("client_configured")
+	}
+
+	connectStart := time.Now()
+
+	err := bc.client.Connect()
+
+	connectDuration := time.Since(connectStart)
+
+	if span != nil {
+		span.SetAttributes(
+			attribute.Float64("connect.duration_seconds", connectDuration.Seconds()),
+			attribute.Bool("connect.success", err == nil),
+		)
+
+		if err != nil {
+			span.RecordError(err, attribute.String("operation", "snmp_connect"))
+		} else {
+			span.AddEvent("connection_established",
+				attribute.String("host", bc.config.Printer.Host),
+			)
+		}
+	}
+
+	return err
 }
 
 // disconnect closes the SNMP connection
-func (bc *BrotherCollector) disconnect() {
+func (bc *BrotherCollector) disconnect(ctx context.Context) {
+	tracer := bc.app.GetTracer()
+
+	var span *tracing.CollectorSpan
+
+	if tracer != nil && tracer.IsEnabled() {
+		span = tracer.NewCollectorSpan(ctx, "brother-collector", "disconnect")
+		defer span.End()
+	}
+
+	disconnectStart := time.Now()
+
 	bc.mu.Lock()
 	defer bc.mu.Unlock()
 
 	if bc.client != nil {
 		if err := bc.client.Conn.Close(); err != nil {
 			slog.Debug("Error closing SNMP connection", "error", err)
+
+			if span != nil {
+				span.RecordError(err, attribute.String("operation", "snmp_disconnect"))
+			}
 		}
 
 		bc.client = nil
 	}
+
+	disconnectDuration := time.Since(disconnectStart)
+
+	if span != nil {
+		span.SetAttributes(
+			attribute.Float64("disconnect.duration_seconds", disconnectDuration.Seconds()),
+		)
+		span.AddEvent("connection_closed")
+	}
 }
 
 // collectPrinterInfo collects basic printer information using Brother-specific OIDs
-func (bc *BrotherCollector) collectPrinterInfo() error {
+func (bc *BrotherCollector) collectPrinterInfo(ctx context.Context) error {
+	tracer := bc.app.GetTracer()
+
+	var (
+		span    *tracing.CollectorSpan
+		spanCtx context.Context
+	)
+
+	if tracer != nil && tracer.IsEnabled() {
+		span = tracer.NewCollectorSpan(ctx, "brother-collector", "collect-printer-info")
+
+		span.SetAttributes(
+			attribute.Int("oids.count", 4),
+		)
+
+		spanCtx = span.Context()
+		defer span.End()
+	} else {
+		spanCtx = ctx
+	}
+
 	oids := []string{
 		OIDBrotherModel,
 		OIDBrotherSerial,
@@ -381,13 +563,30 @@ func (bc *BrotherCollector) collectPrinterInfo() error {
 		OIDBrotherMAC,
 	}
 
-	result, err := bc.client.Get(oids)
-	if err != nil {
-		slog.Error("Failed to get Brother printer info", "error", err, "oids", oids)
-		return fmt.Errorf("failed to get Brother printer info: %w", err)
-	}
+	getStart := time.Now()
 
+	result, err := bc.client.Get(oids)
+
+	getDuration := time.Since(getStart)
+
+	if span != nil {
+		span.SetAttributes(
+			attribute.StringSlice("oids", oids),
+			attribute.Float64("get.duration_seconds", getDuration.Seconds()),
+			attribute.Bool("get.success", err == nil),
+		)
+
+		if err != nil {
+			span.RecordError(err, attribute.String("operation", "snmp_get"))
+			return fmt.Errorf("failed to get Brother printer info: %w", err)
+		}
+	} else {
+		if err != nil {
+			return fmt.Errorf("failed to get Brother printer info: %w", err)
+		}
+	}
 	var model, serial, firmware, mac string
+	parseStart := time.Now()
 
 	for _, variable := range result.Variables {
 		if variable.Value == nil {
@@ -455,6 +654,21 @@ func (bc *BrotherCollector) collectPrinterInfo() error {
 		"mac":      mac,
 	}).Set(1)
 
+	parseDuration := time.Since(parseStart)
+
+	if span != nil {
+		span.SetAttributes(
+			attribute.String("printer.model", model),
+			attribute.String("printer.serial", serial),
+			attribute.String("printer.firmware", firmware),
+			attribute.String("printer.mac", mac),
+			attribute.Float64("parse.duration_seconds", parseDuration.Seconds()),
+		)
+		span.AddEvent("printer_info_collected",
+			attribute.String("model", model),
+		)
+	}
+
 	slog.Debug("Printer info collected",
 		"model", model,
 		"serial", serial,
@@ -465,23 +679,72 @@ func (bc *BrotherCollector) collectPrinterInfo() error {
 }
 
 // collectPrinterUptime collects printer uptime information
-func (bc *BrotherCollector) collectPrinterUptime() error {
-	result, err := bc.client.Get([]string{OIDBrotherUptime})
-	if err != nil {
-		return fmt.Errorf("failed to get printer uptime: %w", err)
+func (bc *BrotherCollector) collectPrinterUptime(ctx context.Context) error {
+	tracer := bc.app.GetTracer()
+
+	var (
+		span    *tracing.CollectorSpan
+		spanCtx context.Context
+	)
+
+	if tracer != nil && tracer.IsEnabled() {
+		span = tracer.NewCollectorSpan(ctx, "brother-collector", "collect-printer-uptime")
+
+		span.SetAttributes(
+			attribute.String("oid", OIDBrotherUptime),
+		)
+
+		spanCtx = span.Context()
+		defer span.End()
+	} else {
+		spanCtx = ctx
 	}
 
+	getStart := time.Now()
+
+	result, err := bc.client.Get([]string{OIDBrotherUptime})
+
+	getDuration := time.Since(getStart)
+
+	if span != nil {
+		span.SetAttributes(
+			attribute.Float64("get.duration_seconds", getDuration.Seconds()),
+			attribute.Bool("get.success", err == nil),
+		)
+
+		if err != nil {
+			span.RecordError(err, attribute.String("operation", "snmp_get"))
+			return fmt.Errorf("failed to get printer uptime: %w", err)
+		}
+	} else {
+		if err != nil {
+			return fmt.Errorf("failed to get printer uptime: %w", err)
+		}
+	}
 	if len(result.Variables) == 0 || result.Variables[0].Value == nil {
-		return fmt.Errorf("no uptime data received")
+		err := fmt.Errorf("no uptime data received")
+
+		if span != nil {
+			span.RecordError(err, attribute.String("operation", "parse_uptime"))
+		}
+
+		return err
 	}
 
 	variable := result.Variables[0]
+	parseStart := time.Now()
 
 	// The uptime OID returns time in hundredths of a second
 	// We need to convert it to seconds
 	uptimeHundredths, ok := convertToInt(variable.Value, "uptime")
 	if !ok {
-		return fmt.Errorf("failed to convert uptime value: %T", variable.Value)
+		err := fmt.Errorf("failed to convert uptime value: %T", variable.Value)
+
+		if span != nil {
+			span.RecordError(err, attribute.String("operation", "convert_uptime"))
+		}
+
+		return err
 	}
 
 	// Convert from hundredths of seconds to seconds
@@ -492,10 +755,25 @@ func (bc *BrotherCollector) collectPrinterUptime() error {
 	currentTime := float64(time.Now().Unix())
 	restartTimestamp := currentTime - uptimeSeconds
 
+	parseDuration := time.Since(parseStart)
+
 	// Set the uptime metric with the restart timestamp
 	bc.metrics.PrinterUptime.With(prometheus.Labels{
 		"host": bc.config.Printer.Host,
 	}).Set(restartTimestamp)
+
+	if span != nil {
+		span.SetAttributes(
+			attribute.Int64("uptime.hundredths", int64(uptimeHundredths)),
+			attribute.Float64("uptime.seconds", uptimeSeconds),
+			attribute.Float64("uptime.restart_timestamp", restartTimestamp),
+			attribute.Float64("uptime.current_timestamp", currentTime),
+			attribute.Float64("parse.duration_seconds", parseDuration.Seconds()),
+		)
+		span.AddEvent("uptime_collected",
+			attribute.Float64("uptime_seconds", uptimeSeconds),
+		)
+	}
 
 	slog.Debug("Printer uptime collected", "uptime_seconds", uptimeSeconds, "restart_timestamp", restartTimestamp, "current_time", currentTime)
 
@@ -503,15 +781,60 @@ func (bc *BrotherCollector) collectPrinterUptime() error {
 }
 
 // collectPrinterStatus collects printer status information
-func (bc *BrotherCollector) collectPrinterStatus() error {
-	result, err := bc.client.Get([]string{OIDPrinterStatus})
-	if err != nil {
-		return fmt.Errorf("failed to get printer status: %w", err)
+func (bc *BrotherCollector) collectPrinterStatus(ctx context.Context) error {
+	tracer := bc.app.GetTracer()
+
+	var (
+		span    *tracing.CollectorSpan
+		spanCtx context.Context
+	)
+
+	if tracer != nil && tracer.IsEnabled() {
+		span = tracer.NewCollectorSpan(ctx, "brother-collector", "collect-printer-status")
+
+		span.SetAttributes(
+			attribute.String("oid", OIDPrinterStatus),
+		)
+
+		spanCtx = span.Context()
+		defer span.End()
+	} else {
+		spanCtx = ctx
 	}
 
+	getStart := time.Now()
+
+	result, err := bc.client.Get([]string{OIDPrinterStatus})
+
+	getDuration := time.Since(getStart)
+
+	if span != nil {
+		span.SetAttributes(
+			attribute.Float64("get.duration_seconds", getDuration.Seconds()),
+			attribute.Bool("get.success", err == nil),
+		)
+
+		if err != nil {
+			span.RecordError(err, attribute.String("operation", "snmp_get"))
+			return fmt.Errorf("failed to get printer status: %w", err)
+		}
+	} else {
+		if err != nil {
+			return fmt.Errorf("failed to get printer status: %w", err)
+		}
+	}
 	if len(result.Variables) > 0 {
+		parseStart := time.Now()
+
 		status, ok := convertToInt(result.Variables[0].Value, "printer status")
 		if !ok {
+			if span != nil {
+				span.SetAttributes(
+					attribute.Bool("parse.success", false),
+				)
+				span.RecordError(fmt.Errorf("failed to convert status value"), attribute.String("operation", "convert_status"))
+			}
+
 			return nil
 		}
 
@@ -535,36 +858,101 @@ func (bc *BrotherCollector) collectPrinterStatus() error {
 			statusValue = 1.0
 		}
 
+		parseDuration := time.Since(parseStart)
+
 		bc.metrics.PrinterStatus.With(prometheus.Labels{
 			"host":   bc.config.Printer.Host,
 			"status": statusStr,
 		}).Set(statusValue)
+
+		if span != nil {
+			span.SetAttributes(
+				attribute.Int("status.code", status),
+				attribute.String("status.string", statusStr),
+				attribute.Float64("status.value", statusValue),
+				attribute.Float64("parse.duration_seconds", parseDuration.Seconds()),
+				attribute.Bool("parse.success", true),
+			)
+			span.AddEvent("status_collected",
+				attribute.String("status", statusStr),
+			)
+		}
 	}
 
 	return nil
 }
 
 // collectBrotherSpecificMetrics collects Brother-specific metrics using the proper OIDs and decoding
-func (bc *BrotherCollector) collectBrotherSpecificMetrics() error {
+func (bc *BrotherCollector) collectBrotherSpecificMetrics(ctx context.Context) error {
+	tracer := bc.app.GetTracer()
+
+	var (
+		span    *tracing.CollectorSpan
+		spanCtx context.Context
+	)
+
+	if tracer != nil && tracer.IsEnabled() {
+		span = tracer.NewCollectorSpan(ctx, "brother-collector", "collect-brother-specific-metrics")
+
+		span.SetAttributes(
+			attribute.String("printer.type", bc.config.Printer.Type),
+		)
+
+		spanCtx = span.Context()
+		defer span.End()
+	} else {
+		spanCtx = ctx
+	}
+
+	collectStart := time.Now()
+
 	// Get maintenance data (contains toner and drum levels)
-	if err := bc.collectBrotherMaintenanceData(); err != nil {
+	if err := bc.collectBrotherMaintenanceData(spanCtx); err != nil {
 		slog.Error("Failed to collect Brother maintenance data", "error", err)
+
+		if span != nil {
+			span.RecordError(err, attribute.String("operation", "maintenance_data"))
+		}
 	}
 
 	// Get counters data (contains page counts)
-	if err := bc.collectBrotherCountersData(); err != nil {
+	if err := bc.collectBrotherCountersData(spanCtx); err != nil {
 		slog.Error("Failed to collect Brother counters data", "error", err)
+
+		if span != nil {
+			span.RecordError(err, attribute.String("operation", "counters_data"))
+		}
 	}
 
 	// Get basic info
+	infoStart := time.Now()
+
 	oids := []string{
 		OIDBrotherConsumableInfo, // Consumable info (E83216M3N204406)
 		OIDBrotherFirmware,       // Firmware version (1.16)
 	}
 
+	getStart := time.Now()
+
 	result, err := bc.client.Get(oids)
-	if err != nil {
-		return fmt.Errorf("failed to get Brother basic info: %w", err)
+
+	getDuration := time.Since(getStart)
+
+	if span != nil {
+		span.SetAttributes(
+			attribute.StringSlice("oids", oids),
+			attribute.Float64("get.duration_seconds", getDuration.Seconds()),
+			attribute.Bool("get.success", err == nil),
+		)
+
+		if err != nil {
+			span.RecordError(err, attribute.String("operation", "snmp_get_basic_info"))
+			return fmt.Errorf("failed to get Brother basic info: %w", err)
+		}
+	} else {
+		if err != nil {
+			return fmt.Errorf("failed to get Brother basic info: %w", err)
+		}
 	}
 
 	for i, variable := range result.Variables {
@@ -577,42 +965,129 @@ func (bc *BrotherCollector) collectBrotherSpecificMetrics() error {
 			if bytes, ok := variable.Value.([]uint8); ok {
 				info := string(bytes)
 				slog.Debug("Brother consumable info", "info", info)
+
+				if span != nil {
+					span.SetAttributes(
+						attribute.String("consumable.info", info),
+					)
+				}
 			}
 		case 1: // Firmware
 			if bytes, ok := variable.Value.([]uint8); ok {
 				firmware := string(bytes)
 				slog.Debug("Brother firmware", "firmware", firmware)
+
+				if span != nil {
+					span.SetAttributes(
+						attribute.String("consumable.firmware", firmware),
+					)
+				}
 			}
 		}
+	}
+
+	collectDuration := time.Since(collectStart)
+
+	if span != nil {
+		span.SetAttributes(
+			attribute.Float64("collect.duration_seconds", collectDuration.Seconds()),
+		)
+		span.AddEvent("brother_metrics_collected")
 	}
 
 	return nil
 }
 
 // collectBrotherMaintenanceData extracts toner and drum levels from Brother maintenance data
-func (bc *BrotherCollector) collectBrotherMaintenanceData() error {
+func (bc *BrotherCollector) collectBrotherMaintenanceData(ctx context.Context) error {
+	tracer := bc.app.GetTracer()
+
+	var (
+		span    *tracing.CollectorSpan
+		spanCtx context.Context
+	)
+
+	if tracer != nil && tracer.IsEnabled() {
+		span = tracer.NewCollectorSpan(ctx, "brother-collector", "collect-maintenance-data")
+
+		span.SetAttributes(
+			attribute.String("oid", OIDBrotherMaintenanceData),
+		)
+
+		spanCtx = span.Context()
+		defer span.End()
+	} else {
+		spanCtx = ctx
+	}
+
+	collectStart := time.Now()
+	getStart := time.Now()
+
 	result, err := bc.client.Get([]string{OIDBrotherMaintenanceData})
-	if err != nil {
-		return fmt.Errorf("failed to get Brother maintenance data: %w", err)
+
+	getDuration := time.Since(getStart)
+
+	if span != nil {
+		span.SetAttributes(
+			attribute.Float64("get.duration_seconds", getDuration.Seconds()),
+			attribute.Bool("get.success", err == nil),
+		)
+
+		if err != nil {
+			span.RecordError(err, attribute.String("operation", "snmp_get"))
+			return fmt.Errorf("failed to get Brother maintenance data: %w", err)
+		}
+	} else {
+		if err != nil {
+			return fmt.Errorf("failed to get Brother maintenance data: %w", err)
+		}
 	}
 
 	if len(result.Variables) == 0 || result.Variables[0].Value == nil {
-		return fmt.Errorf("no maintenance data received")
+		err := fmt.Errorf("no maintenance data received")
+
+		if span != nil {
+			span.RecordError(err, attribute.String("operation", "parse_maintenance_data"))
+		}
+
+		return err
 	}
 
 	variable := result.Variables[0]
+	parseStart := time.Now()
 
 	bytes, ok := variable.Value.([]uint8)
 	if !ok {
-		return fmt.Errorf("maintenance data is not a byte array: %T", variable.Value)
+		err := fmt.Errorf("maintenance data is not a byte array: %T", variable.Value)
+
+		if span != nil {
+			span.RecordError(err, attribute.String("operation", "convert_maintenance_data"))
+		}
+
+		return err
 	}
 
 	// Convert bytes to hex string (excluding last byte which is checksum)
 	hexString := bytesToHexString(bytes)
+
+	if span != nil {
+		span.SetAttributes(
+			attribute.Int("maintenance.data_length_bytes", len(bytes)),
+			attribute.Int("maintenance.hex_length", len(hexString)),
+		)
+	}
+
 	slog.Debug("Brother maintenance hex data", "hex", hexString, "length", len(hexString))
 
 	// Split into chunks (CHUNK_SIZE from Python library)
 	chunks := splitIntoChunks(hexString, BrotherChunkSize)
+
+	if span != nil {
+		span.SetAttributes(
+			attribute.Int("maintenance.chunks_count", len(chunks)),
+			attribute.Float64("parse.hex_duration_seconds", time.Since(parseStart).Seconds()),
+		)
+	}
 
 	slog.Debug("Brother maintenance chunks", "chunks", chunks)
 
@@ -735,6 +1210,20 @@ func (bc *BrotherCollector) collectBrotherMaintenanceData() error {
 		}).Set(statusValue)
 	}
 
+	collectDuration := time.Since(collectStart)
+
+	if span != nil {
+		span.SetAttributes(
+			attribute.Int("maintenance.toner_colors", len(tonerLevels)),
+			attribute.Int("maintenance.drum_colors", len(drumLevels)),
+			attribute.Float64("collect.duration_seconds", collectDuration.Seconds()),
+		)
+		span.AddEvent("maintenance_data_collected",
+			attribute.Int("toner_colors", len(tonerLevels)),
+			attribute.Int("drum_colors", len(drumLevels)),
+		)
+	}
+
 	slog.Debug("Brother maintenance data collected",
 		"toner_levels", tonerLevels,
 		"drum_levels", drumLevels)
@@ -743,31 +1232,106 @@ func (bc *BrotherCollector) collectBrotherMaintenanceData() error {
 }
 
 // collectBrotherCountersData extracts page counts from Brother counters data
-func (bc *BrotherCollector) collectBrotherCountersData() error {
+func (bc *BrotherCollector) collectBrotherCountersData(ctx context.Context) error {
+	tracer := bc.app.GetTracer()
+
+	var (
+		span    *tracing.CollectorSpan
+		spanCtx context.Context
+	)
+
+	if tracer != nil && tracer.IsEnabled() {
+		span = tracer.NewCollectorSpan(ctx, "brother-collector", "collect-counters-data")
+
+		span.SetAttributes(
+			attribute.String("oid", OIDBrotherCountersData),
+		)
+
+		spanCtx = span.Context()
+		defer span.End()
+	} else {
+		spanCtx = ctx
+	}
+
+	collectStart := time.Now()
+	getStart := time.Now()
+
 	result, err := bc.client.Get([]string{OIDBrotherCountersData})
-	if err != nil {
-		return fmt.Errorf("failed to get Brother counters data: %w", err)
+
+	getDuration := time.Since(getStart)
+
+	if span != nil {
+		span.SetAttributes(
+			attribute.Float64("get.duration_seconds", getDuration.Seconds()),
+			attribute.Bool("get.success", err == nil),
+		)
+
+		if err != nil {
+			span.RecordError(err, attribute.String("operation", "snmp_get"))
+			return fmt.Errorf("failed to get Brother counters data: %w", err)
+		}
+	} else {
+		if err != nil {
+			return fmt.Errorf("failed to get Brother counters data: %w", err)
+		}
 	}
 
 	if len(result.Variables) == 0 || result.Variables[0].Value == nil {
-		return fmt.Errorf("no counters data received")
+		err := fmt.Errorf("no counters data received")
+
+		if span != nil {
+			span.RecordError(err, attribute.String("operation", "parse_counters_data"))
+		}
+
+		return err
 	}
 
 	variable := result.Variables[0]
+	parseStart := time.Now()
 
 	bytes, ok := variable.Value.([]uint8)
 	if !ok {
-		return fmt.Errorf("counters data is not a byte array: %T", variable.Value)
+		err := fmt.Errorf("counters data is not a byte array: %T", variable.Value)
+
+		if span != nil {
+			span.RecordError(err, attribute.String("operation", "convert_counters_data"))
+		}
+
+		return err
 	}
 
 	// Convert bytes to hex string (excluding last byte which is checksum)
 	hexString := bytesToHexString(bytes)
+
+	if span != nil {
+		span.SetAttributes(
+			attribute.Int("counters.data_length_bytes", len(bytes)),
+			attribute.Int("counters.hex_length", len(hexString)),
+		)
+	}
+
 	slog.Debug("Brother counters hex data", "hex", hexString, "length", len(hexString))
 
 	// Split into chunks (CHUNK_SIZE from Python library)
 	chunks := splitIntoChunks(hexString, BrotherChunkSize)
 
+	if span != nil {
+		span.SetAttributes(
+			attribute.Int("counters.chunks_count", len(chunks)),
+			attribute.Float64("parse.duration_seconds", time.Since(parseStart).Seconds()),
+		)
+	}
+
 	slog.Debug("Brother counters chunks", "chunks", chunks)
+
+	collectDuration := time.Since(collectStart)
+
+	if span != nil {
+		span.SetAttributes(
+			attribute.Float64("collect.duration_seconds", collectDuration.Seconds()),
+		)
+		span.AddEvent("counters_data_collected")
+	}
 
 	slog.Debug("Brother counters data collected (page count metrics removed)")
 
@@ -775,29 +1339,94 @@ func (bc *BrotherCollector) collectBrotherCountersData() error {
 }
 
 // collectBrotherNextCareData extracts remaining pages from Brother nextcare data
-func (bc *BrotherCollector) collectBrotherNextCareData() error {
-	result, err := bc.client.Get([]string{OIDBrotherNextCareData})
-	if err != nil {
-		return fmt.Errorf("failed to get Brother nextcare data: %w", err)
+func (bc *BrotherCollector) collectBrotherNextCareData(ctx context.Context) error {
+	tracer := bc.app.GetTracer()
+
+	var (
+		span    *tracing.CollectorSpan
+		spanCtx context.Context
+	)
+
+	if tracer != nil && tracer.IsEnabled() {
+		span = tracer.NewCollectorSpan(ctx, "brother-collector", "collect-nextcare-data")
+
+		span.SetAttributes(
+			attribute.String("oid", OIDBrotherNextCareData),
+		)
+
+		spanCtx = span.Context()
+		defer span.End()
+	} else {
+		spanCtx = ctx
 	}
 
+	collectStart := time.Now()
+	getStart := time.Now()
+
+	result, err := bc.client.Get([]string{OIDBrotherNextCareData})
+
+	getDuration := time.Since(getStart)
+
+	if span != nil {
+		span.SetAttributes(
+			attribute.Float64("get.duration_seconds", getDuration.Seconds()),
+			attribute.Bool("get.success", err == nil),
+		)
+
+		if err != nil {
+			span.RecordError(err, attribute.String("operation", "snmp_get"))
+			return fmt.Errorf("failed to get Brother nextcare data: %w", err)
+		}
+	} else {
+		if err != nil {
+			return fmt.Errorf("failed to get Brother nextcare data: %w", err)
+		}
+	}
 	if len(result.Variables) == 0 || result.Variables[0].Value == nil {
-		return fmt.Errorf("no nextcare data received")
+		err := fmt.Errorf("no nextcare data received")
+
+		if span != nil {
+			span.RecordError(err, attribute.String("operation", "parse_nextcare_data"))
+		}
+
+		return err
 	}
 
 	variable := result.Variables[0]
+	parseStart := time.Now()
 
 	bytes, ok := variable.Value.([]uint8)
 	if !ok {
-		return fmt.Errorf("nextcare data is not a byte array: %T", variable.Value)
+		err := fmt.Errorf("nextcare data is not a byte array: %T", variable.Value)
+
+		if span != nil {
+			span.RecordError(err, attribute.String("operation", "convert_nextcare_data"))
+		}
+
+		return err
 	}
 
 	// Convert bytes to hex string (excluding last byte which is checksum)
 	hexString := bytesToHexString(bytes)
+
+	if span != nil {
+		span.SetAttributes(
+			attribute.Int("nextcare.data_length_bytes", len(bytes)),
+			attribute.Int("nextcare.hex_length", len(hexString)),
+		)
+	}
+
 	slog.Debug("Brother nextcare hex data", "hex", hexString, "length", len(hexString))
 
 	// Split into chunks (CHUNK_SIZE from Python library)
 	chunks := splitIntoChunks(hexString, BrotherChunkSize)
+
+	if span != nil {
+		span.SetAttributes(
+			attribute.Int("nextcare.chunks_count", len(chunks)),
+			attribute.Float64("parse.hex_duration_seconds", time.Since(parseStart).Seconds()),
+		)
+	}
 
 	slog.Debug("Brother nextcare chunks", "chunks", chunks)
 
@@ -863,24 +1492,89 @@ func (bc *BrotherCollector) collectBrotherNextCareData() error {
 		}
 	}
 
+	collectDuration := time.Since(collectStart)
+
+	if span != nil {
+		span.SetAttributes(
+			attribute.Float64("collect.duration_seconds", collectDuration.Seconds()),
+		)
+		span.AddEvent("nextcare_data_collected")
+	}
+
 	slog.Debug("Brother nextcare data collected")
 
 	return nil
 }
 
 // collectLaserMetrics collects metrics specific to laser printers
-func (bc *BrotherCollector) collectLaserMetrics() error {
+func (bc *BrotherCollector) collectLaserMetrics(ctx context.Context) error {
+	tracer := bc.app.GetTracer()
+
+	var (
+		span    *tracing.CollectorSpan
+		spanCtx context.Context
+	)
+
+	if tracer != nil && tracer.IsEnabled() {
+		span = tracer.NewCollectorSpan(ctx, "brother-collector", "collect-laser-metrics")
+
+		span.SetAttributes(
+			attribute.String("printer.type", "laser"),
+			attribute.Int("colors.count", len(LaserColors)),
+		)
+
+		spanCtx = span.Context()
+		defer span.End()
+	} else {
+		spanCtx = ctx
+	}
+
+	collectStart := time.Now()
+
 	// Collect toner levels and status
-	bc.collectColorLevelsWithStatus(OIDTonerLevelBase, LaserColors, bc.metrics.TonerLevel, bc.metrics.TonerStatus, "toner level")
+	bc.collectColorLevelsWithStatus(spanCtx, OIDTonerLevelBase, LaserColors, bc.metrics.TonerLevel, bc.metrics.TonerStatus, "toner level")
 
 	// Collect drum levels and status
-	bc.collectColorLevelsWithStatus(OIDDrumLevelBase, LaserColors, bc.metrics.DrumLevel, bc.metrics.DrumStatus, "drum level")
+	bc.collectColorLevelsWithStatus(spanCtx, OIDDrumLevelBase, LaserColors, bc.metrics.DrumLevel, bc.metrics.DrumStatus, "drum level")
+
+	collectDuration := time.Since(collectStart)
+
+	if span != nil {
+		span.SetAttributes(
+			attribute.Float64("collect.duration_seconds", collectDuration.Seconds()),
+		)
+		span.AddEvent("laser_metrics_collected")
+	}
 
 	return nil
 }
 
 // collectInkjetMetrics collects metrics specific to inkjet printers
-func (bc *BrotherCollector) collectInkjetMetrics() error {
+func (bc *BrotherCollector) collectInkjetMetrics(ctx context.Context) error {
+	tracer := bc.app.GetTracer()
+
+	var (
+		span    *tracing.CollectorSpan
+		spanCtx context.Context
+	)
+
+	if tracer != nil && tracer.IsEnabled() {
+		span = tracer.NewCollectorSpan(ctx, "brother-collector", "collect-inkjet-metrics")
+
+		span.SetAttributes(
+			attribute.String("printer.type", "ink"),
+			attribute.Int("colors.count", len(InkColors)),
+		)
+
+		spanCtx = span.Context()
+		defer span.End()
+	} else {
+		spanCtx = ctx
+	}
+
+	collectStart := time.Now()
+	var colorsCollected int
+
 	// Collect ink levels (using Brother-specific OIDs)
 	inkOIDs := []string{
 		"1.3.6.1.4.1.2435.2.3.9.4.2.1.5.5.1.0", // Brother ink info
@@ -894,15 +1588,31 @@ func (bc *BrotherCollector) collectInkjetMetrics() error {
 
 		color := InkColors[i]
 
+		getStart := time.Now()
+
 		result, err := bc.client.Get([]string{oid})
+
+		getDuration := time.Since(getStart)
+
 		if err != nil {
 			slog.Debug("Failed to get ink level", "color", color, "oid", oid, "error", err)
+
+			if span != nil {
+				span.RecordError(err, attribute.String("color", color), attribute.String("oid", oid))
+			}
+
 			continue
 		}
 
 		if len(result.Variables) > 0 {
+			parseStart := time.Now()
+
 			level, ok := convertToInt(result.Variables[0].Value, "ink level")
 			if !ok {
+				if span != nil {
+					span.RecordError(fmt.Errorf("failed to convert ink level"), attribute.String("color", color))
+				}
+
 				continue
 			}
 
@@ -911,6 +1621,8 @@ func (bc *BrotherCollector) collectInkjetMetrics() error {
 			if percentage > 100 {
 				percentage = 100
 			}
+
+			parseDuration := time.Since(parseStart)
 
 			bc.metrics.InkLevel.With(prometheus.Labels{
 				"host":  bc.config.Printer.Host,
@@ -925,26 +1637,98 @@ func (bc *BrotherCollector) collectInkjetMetrics() error {
 				"color":  color,
 				"status": status,
 			}).Set(statusValue)
+
+			colorsCollected++
+
+			if span != nil {
+				span.SetAttributes(
+					attribute.Float64("ink."+color+".get_duration_seconds", getDuration.Seconds()),
+					attribute.Float64("ink."+color+".parse_duration_seconds", parseDuration.Seconds()),
+					attribute.Float64("ink."+color+".percentage", percentage),
+					attribute.String("ink."+color+".status", status),
+				)
+			}
 		}
+	}
+
+	collectDuration := time.Since(collectStart)
+
+	if span != nil {
+		span.SetAttributes(
+			attribute.Int("collect.colors_collected", colorsCollected),
+			attribute.Float64("collect.duration_seconds", collectDuration.Seconds()),
+		)
+		span.AddEvent("inkjet_metrics_collected",
+			attribute.Int("colors_collected", colorsCollected),
+		)
 	}
 
 	return nil
 }
 
 // collectPaperTrayStatus collects paper tray status
-func (bc *BrotherCollector) collectPaperTrayStatus() error {
+func (bc *BrotherCollector) collectPaperTrayStatus(ctx context.Context) error {
+	tracer := bc.app.GetTracer()
+
+	var (
+		span    *tracing.CollectorSpan
+		spanCtx context.Context
+	)
+
+	if tracer != nil && tracer.IsEnabled() {
+		span = tracer.NewCollectorSpan(ctx, "brother-collector", "collect-paper-tray-status")
+
+		spanCtx = span.Context()
+		defer span.End()
+	} else {
+		spanCtx = ctx
+	}
+
+	collectStart := time.Now()
+
 	// Check main paper tray
 	oid := fmt.Sprintf("%s.1", OIDPaperTrayStatusBase)
 
+	if span != nil {
+		span.SetAttributes(
+			attribute.String("oid", oid),
+		)
+	}
+
+	getStart := time.Now()
+
 	result, err := bc.client.Get([]string{oid})
+
+	getDuration := time.Since(getStart)
+
+	if span != nil {
+		span.SetAttributes(
+			attribute.Float64("get.duration_seconds", getDuration.Seconds()),
+			attribute.Bool("get.success", err == nil),
+		)
+
+		if err != nil {
+			span.RecordError(err, attribute.String("operation", "snmp_get"))
+		}
+	}
+
 	if err != nil {
 		slog.Debug("Failed to get paper tray status", "oid", oid, "error", err)
 		return nil
 	}
 
 	if len(result.Variables) > 0 {
+		parseStart := time.Now()
+
 		status, ok := convertToInt(result.Variables[0].Value, "paper tray status")
 		if !ok {
+			if span != nil {
+				span.SetAttributes(
+					attribute.Bool("parse.success", false),
+				)
+				span.RecordError(fmt.Errorf("failed to convert status value"), attribute.String("operation", "convert_status"))
+			}
+
 			return nil
 		}
 
@@ -969,40 +1753,123 @@ func (bc *BrotherCollector) collectPaperTrayStatus() error {
 			statusValue = 0.0
 		}
 
+		parseDuration := time.Since(parseStart)
+
 		bc.metrics.PaperTrayStatus.With(prometheus.Labels{
 			"host":   bc.config.Printer.Host,
 			"tray":   "main",
 			"status": statusStr,
 		}).Set(statusValue)
+
+		if span != nil {
+			span.SetAttributes(
+				attribute.Int("tray.status_code", status),
+				attribute.String("tray.status_string", statusStr),
+				attribute.Float64("tray.status_value", statusValue),
+				attribute.Float64("parse.duration_seconds", parseDuration.Seconds()),
+				attribute.Bool("parse.success", true),
+			)
+			span.AddEvent("paper_tray_status_collected",
+				attribute.String("status", statusStr),
+			)
+		}
+	}
+
+	collectDuration := time.Since(collectStart)
+
+	if span != nil {
+		span.SetAttributes(
+			attribute.Float64("collect.duration_seconds", collectDuration.Seconds()),
+		)
 	}
 
 	return nil
 }
 
 // collectPageCounters collects page count metrics using Brother-specific counters data
-func (bc *BrotherCollector) collectPageCounters() error {
-	// Get the Brother counters data which contains multiple counter types
-	result, err := bc.client.Get([]string{OIDBrotherCountersData})
-	if err != nil {
-		return fmt.Errorf("failed to get Brother counters data: %w", err)
+func (bc *BrotherCollector) collectPageCounters(ctx context.Context) error {
+	tracer := bc.app.GetTracer()
+
+	var (
+		span    *tracing.CollectorSpan
+		spanCtx context.Context
+	)
+
+	if tracer != nil && tracer.IsEnabled() {
+		span = tracer.NewCollectorSpan(ctx, "brother-collector", "collect-page-counters")
+
+		span.SetAttributes(
+			attribute.String("oid", OIDBrotherCountersData),
+		)
+
+		spanCtx = span.Context()
+		defer span.End()
+	} else {
+		spanCtx = ctx
 	}
 
+	collectStart := time.Now()
+	getStart := time.Now()
+
+	// Get the Brother counters data which contains multiple counter types
+	result, err := bc.client.Get([]string{OIDBrotherCountersData})
+
+	getDuration := time.Since(getStart)
+
+	if span != nil {
+		span.SetAttributes(
+			attribute.Float64("get.duration_seconds", getDuration.Seconds()),
+			attribute.Bool("get.success", err == nil),
+		)
+
+		if err != nil {
+			span.RecordError(err, attribute.String("operation", "snmp_get"))
+			return fmt.Errorf("failed to get Brother counters data: %w", err)
+		}
+	} else {
+		if err != nil {
+			return fmt.Errorf("failed to get Brother counters data: %w", err)
+		}
+	}
 	if len(result.Variables) == 0 || result.Variables[0].Value == nil {
-		return fmt.Errorf("no Brother counters data received")
+		err := fmt.Errorf("no Brother counters data received")
+
+		if span != nil {
+			span.RecordError(err, attribute.String("operation", "parse_counters_data"))
+		}
+
+		return err
 	}
 
 	variable := result.Variables[0]
+	parseStart := time.Now()
 
 	// Parse the hex string data
 	hexData, ok := variable.Value.([]byte)
 	if !ok {
-		return fmt.Errorf("invalid Brother counters data type: %T", variable.Value)
+		err := fmt.Errorf("invalid Brother counters data type: %T", variable.Value)
+
+		if span != nil {
+			span.RecordError(err, attribute.String("operation", "convert_counters_data"))
+		}
+
+		return err
+	}
+
+	if span != nil {
+		span.SetAttributes(
+			attribute.Int("counters.data_length_bytes", len(hexData)),
+		)
 	}
 
 	// Parse the hex data to extract individual counters
 	counters := bc.parseBrotherCounters(hexData)
 
+	parseDuration := time.Since(parseStart)
+
 	// Update metrics with the parsed counter values
+	updateStart := time.Now()
+
 	bc.metrics.PageCountTotal.With(prometheus.Labels{
 		"host": bc.config.Printer.Host,
 	}).Set(float64(counters["0001"])) // Total page count
@@ -1027,6 +1894,28 @@ func (bc *BrotherCollector) collectPageCounters() error {
 	bc.metrics.PageCountDrumYellow.With(prometheus.Labels{
 		"host": bc.config.Printer.Host,
 	}).Set(float64(counters["1501"])) // Yellow drum count
+
+	updateDuration := time.Since(updateStart)
+	collectDuration := time.Since(collectStart)
+
+	if span != nil {
+		span.SetAttributes(
+			attribute.Int64("counters.total", int64(counters["0001"])),
+			attribute.Int64("counters.black_white", int64(counters["0101"])),
+			attribute.Int64("counters.color", int64(counters["0201"])),
+			attribute.Int64("counters.duplex", int64(counters["0601"])),
+			attribute.Int64("counters.black_drum", int64(counters["1201"])),
+			attribute.Int64("counters.cyan_drum", int64(counters["1301"])),
+			attribute.Int64("counters.magenta_drum", int64(counters["1401"])),
+			attribute.Int64("counters.yellow_drum", int64(counters["1501"])),
+			attribute.Float64("parse.duration_seconds", parseDuration.Seconds()),
+			attribute.Float64("update.duration_seconds", updateDuration.Seconds()),
+			attribute.Float64("collect.duration_seconds", collectDuration.Seconds()),
+		)
+		span.AddEvent("page_counters_collected",
+			attribute.Int64("total", int64(counters["0001"])),
+		)
+	}
 
 	slog.Debug("Page counters collected",
 		"total", counters["0001"],
