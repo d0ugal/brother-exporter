@@ -1292,10 +1292,7 @@ func (bc *BrotherCollector) collectBrotherCountersData(ctx context.Context) erro
 func (bc *BrotherCollector) collectBrotherNextCareData(ctx context.Context) error {
 	tracer := bc.app.GetTracer()
 
-	var (
-		span    *tracing.CollectorSpan
-		spanCtx context.Context
-	)
+	var span *tracing.CollectorSpan
 
 	if tracer != nil && tracer.IsEnabled() {
 		span = tracer.NewCollectorSpan(ctx, "brother-collector", "collect-nextcare-data")
@@ -1304,10 +1301,7 @@ func (bc *BrotherCollector) collectBrotherNextCareData(ctx context.Context) erro
 			attribute.String("oid", OIDBrotherNextCareData),
 		)
 
-		spanCtx = span.Context()
 		defer span.End()
-	} else {
-		spanCtx = ctx
 	}
 
 	collectStart := time.Now()
@@ -1503,10 +1497,7 @@ func (bc *BrotherCollector) collectLaserMetrics(ctx context.Context) error {
 func (bc *BrotherCollector) collectInkjetMetrics(ctx context.Context) error {
 	tracer := bc.app.GetTracer()
 
-	var (
-		span    *tracing.CollectorSpan
-		spanCtx context.Context
-	)
+	var span *tracing.CollectorSpan
 
 	if tracer != nil && tracer.IsEnabled() {
 		span = tracer.NewCollectorSpan(ctx, "brother-collector", "collect-inkjet-metrics")
@@ -1516,10 +1507,7 @@ func (bc *BrotherCollector) collectInkjetMetrics(ctx context.Context) error {
 			attribute.Int("colors.count", len(InkColors)),
 		)
 
-		spanCtx = span.Context()
 		defer span.End()
-	} else {
-		spanCtx = ctx
 	}
 
 	collectStart := time.Now()
@@ -1620,18 +1608,12 @@ func (bc *BrotherCollector) collectInkjetMetrics(ctx context.Context) error {
 func (bc *BrotherCollector) collectPaperTrayStatus(ctx context.Context) error {
 	tracer := bc.app.GetTracer()
 
-	var (
-		span    *tracing.CollectorSpan
-		spanCtx context.Context
-	)
+	var span *tracing.CollectorSpan
 
 	if tracer != nil && tracer.IsEnabled() {
 		span = tracer.NewCollectorSpan(ctx, "brother-collector", "collect-paper-tray-status")
 
-		spanCtx = span.Context()
 		defer span.End()
-	} else {
-		spanCtx = ctx
 	}
 
 	collectStart := time.Now()
@@ -1740,10 +1722,7 @@ func (bc *BrotherCollector) collectPaperTrayStatus(ctx context.Context) error {
 func (bc *BrotherCollector) collectPageCounters(ctx context.Context) error {
 	tracer := bc.app.GetTracer()
 
-	var (
-		span    *tracing.CollectorSpan
-		spanCtx context.Context
-	)
+	var span *tracing.CollectorSpan
 
 	if tracer != nil && tracer.IsEnabled() {
 		span = tracer.NewCollectorSpan(ctx, "brother-collector", "collect-page-counters")
@@ -1752,10 +1731,7 @@ func (bc *BrotherCollector) collectPageCounters(ctx context.Context) error {
 			attribute.String("oid", OIDBrotherCountersData),
 		)
 
-		spanCtx = span.Context()
 		defer span.End()
-	} else {
-		spanCtx = ctx
 	}
 
 	collectStart := time.Now()
