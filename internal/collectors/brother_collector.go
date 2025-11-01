@@ -113,27 +113,21 @@ func (bc *BrotherCollector) handleCollectionError(err error, operation string) {
 }
 
 // collectColorLevelsWithStatus collects level and status metrics for each color using the specified OID base
-func (bc *BrotherCollector) collectColorLevelsWithStatus(ctx context.Context, oidBase string, colors []string, levelMetric, statusMetric *prometheus.GaugeVec, context string) {
+func (bc *BrotherCollector) collectColorLevelsWithStatus(ctx context.Context, oidBase string, colors []string, levelMetric, statusMetric *prometheus.GaugeVec, contextName string) {
 	tracer := bc.app.GetTracer()
 
-	var (
-		span    *tracing.CollectorSpan
-		spanCtx context.Context
-	)
+	var span *tracing.CollectorSpan
 
 	if tracer != nil && tracer.IsEnabled() {
 		span = tracer.NewCollectorSpan(ctx, "brother-collector", "collect-color-levels")
 
 		span.SetAttributes(
 			attribute.String("oid.base", oidBase),
-			attribute.String("context", context),
+			attribute.String("context", contextName),
 			attribute.Int("colors.count", len(colors)),
 		)
 
-		spanCtx = span.Context()
 		defer span.End()
-	} else {
-		spanCtx = ctx
 	}
 
 	collectStart := time.Now()
@@ -149,7 +143,7 @@ func (bc *BrotherCollector) collectColorLevelsWithStatus(ctx context.Context, oi
 		getDuration := time.Since(getStart)
 
 		if err != nil {
-			slog.Debug("Failed to get "+context, "color", color, "oid", oid, "error", err)
+			slog.Debug("Failed to get "+contextName, "color", color, "oid", oid, "error", err)
 
 			if span != nil {
 				span.RecordError(err, attribute.String("color", color), attribute.String("oid", oid))
@@ -161,7 +155,7 @@ func (bc *BrotherCollector) collectColorLevelsWithStatus(ctx context.Context, oi
 		if len(result.Variables) > 0 {
 			parseStart := time.Now()
 
-			level, ok := convertToInt(result.Variables[0].Value, context)
+			level, ok := convertToInt(result.Variables[0].Value, contextName)
 			if !ok {
 				if span != nil {
 					span.RecordError(fmt.Errorf("failed to convert level"), attribute.String("color", color))
@@ -369,13 +363,7 @@ func (bc *BrotherCollector) collectMetrics(ctx context.Context) {
 		"host": bc.config.Printer.Host,
 	}).Set(1)
 
-	var spanCtx context.Context
-
-	if collectorSpan != nil {
-		spanCtx = collectorSpan.Context()
-	} else {
-		spanCtx = ctx
-	}
+	// Reuse spanCtx from above for child operations
 
 	// Collect printer information
 	bc.handleCollectionError(bc.collectPrinterInfo(spanCtx), "printer info")
@@ -427,10 +415,7 @@ func (bc *BrotherCollector) collectMetrics(ctx context.Context) {
 func (bc *BrotherCollector) connect(ctx context.Context) error {
 	tracer := bc.app.GetTracer()
 
-	var (
-		span    *tracing.CollectorSpan
-		spanCtx context.Context
-	)
+	var span *tracing.CollectorSpan
 
 	if tracer != nil && tracer.IsEnabled() {
 		span = tracer.NewCollectorSpan(ctx, "brother-collector", "connect")
@@ -443,10 +428,7 @@ func (bc *BrotherCollector) connect(ctx context.Context) error {
 			attribute.Int("snmp.retries", 3),
 		)
 
-		spanCtx = span.Context()
 		defer span.End()
-	} else {
-		spanCtx = ctx
 	}
 
 	configStart := time.Now()
@@ -538,10 +520,7 @@ func (bc *BrotherCollector) disconnect(ctx context.Context) {
 func (bc *BrotherCollector) collectPrinterInfo(ctx context.Context) error {
 	tracer := bc.app.GetTracer()
 
-	var (
-		span    *tracing.CollectorSpan
-		spanCtx context.Context
-	)
+	var span *tracing.CollectorSpan
 
 	if tracer != nil && tracer.IsEnabled() {
 		span = tracer.NewCollectorSpan(ctx, "brother-collector", "collect-printer-info")
@@ -550,10 +529,7 @@ func (bc *BrotherCollector) collectPrinterInfo(ctx context.Context) error {
 			attribute.Int("oids.count", 4),
 		)
 
-		spanCtx = span.Context()
 		defer span.End()
-	} else {
-		spanCtx = ctx
 	}
 
 	oids := []string{
@@ -682,10 +658,7 @@ func (bc *BrotherCollector) collectPrinterInfo(ctx context.Context) error {
 func (bc *BrotherCollector) collectPrinterUptime(ctx context.Context) error {
 	tracer := bc.app.GetTracer()
 
-	var (
-		span    *tracing.CollectorSpan
-		spanCtx context.Context
-	)
+	var span *tracing.CollectorSpan
 
 	if tracer != nil && tracer.IsEnabled() {
 		span = tracer.NewCollectorSpan(ctx, "brother-collector", "collect-printer-uptime")
@@ -694,10 +667,7 @@ func (bc *BrotherCollector) collectPrinterUptime(ctx context.Context) error {
 			attribute.String("oid", OIDBrotherUptime),
 		)
 
-		spanCtx = span.Context()
 		defer span.End()
-	} else {
-		spanCtx = ctx
 	}
 
 	getStart := time.Now()
@@ -784,10 +754,7 @@ func (bc *BrotherCollector) collectPrinterUptime(ctx context.Context) error {
 func (bc *BrotherCollector) collectPrinterStatus(ctx context.Context) error {
 	tracer := bc.app.GetTracer()
 
-	var (
-		span    *tracing.CollectorSpan
-		spanCtx context.Context
-	)
+	var span *tracing.CollectorSpan
 
 	if tracer != nil && tracer.IsEnabled() {
 		span = tracer.NewCollectorSpan(ctx, "brother-collector", "collect-printer-status")
@@ -796,10 +763,7 @@ func (bc *BrotherCollector) collectPrinterStatus(ctx context.Context) error {
 			attribute.String("oid", OIDPrinterStatus),
 		)
 
-		spanCtx = span.Context()
 		defer span.End()
-	} else {
-		spanCtx = ctx
 	}
 
 	getStart := time.Now()
@@ -925,8 +889,6 @@ func (bc *BrotherCollector) collectBrotherSpecificMetrics(ctx context.Context) e
 	}
 
 	// Get basic info
-	infoStart := time.Now()
-
 	oids := []string{
 		OIDBrotherConsumableInfo, // Consumable info (E83216M3N204406)
 		OIDBrotherFirmware,       // Firmware version (1.16)
@@ -1002,10 +964,7 @@ func (bc *BrotherCollector) collectBrotherSpecificMetrics(ctx context.Context) e
 func (bc *BrotherCollector) collectBrotherMaintenanceData(ctx context.Context) error {
 	tracer := bc.app.GetTracer()
 
-	var (
-		span    *tracing.CollectorSpan
-		spanCtx context.Context
-	)
+	var span *tracing.CollectorSpan
 
 	if tracer != nil && tracer.IsEnabled() {
 		span = tracer.NewCollectorSpan(ctx, "brother-collector", "collect-maintenance-data")
@@ -1014,10 +973,7 @@ func (bc *BrotherCollector) collectBrotherMaintenanceData(ctx context.Context) e
 			attribute.String("oid", OIDBrotherMaintenanceData),
 		)
 
-		spanCtx = span.Context()
 		defer span.End()
-	} else {
-		spanCtx = ctx
 	}
 
 	collectStart := time.Now()
@@ -1235,10 +1191,7 @@ func (bc *BrotherCollector) collectBrotherMaintenanceData(ctx context.Context) e
 func (bc *BrotherCollector) collectBrotherCountersData(ctx context.Context) error {
 	tracer := bc.app.GetTracer()
 
-	var (
-		span    *tracing.CollectorSpan
-		spanCtx context.Context
-	)
+	var span *tracing.CollectorSpan
 
 	if tracer != nil && tracer.IsEnabled() {
 		span = tracer.NewCollectorSpan(ctx, "brother-collector", "collect-counters-data")
@@ -1247,10 +1200,7 @@ func (bc *BrotherCollector) collectBrotherCountersData(ctx context.Context) erro
 			attribute.String("oid", OIDBrotherCountersData),
 		)
 
-		spanCtx = span.Context()
 		defer span.End()
-	} else {
-		spanCtx = ctx
 	}
 
 	collectStart := time.Now()
@@ -1973,5 +1923,5 @@ func (bc *BrotherCollector) parseBrotherCounters(hexData []byte) map[string]int 
 // Stop stops the collector
 func (bc *BrotherCollector) Stop() {
 	close(bc.done)
-	bc.disconnect()
+	bc.disconnect(context.Background())
 }
