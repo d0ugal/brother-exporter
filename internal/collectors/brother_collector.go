@@ -131,6 +131,7 @@ func (bc *BrotherCollector) collectColorLevelsWithStatus(ctx context.Context, oi
 	}
 
 	collectStart := time.Now()
+
 	var colorsCollected int
 
 	for i, color := range colors {
@@ -330,7 +331,7 @@ func (bc *BrotherCollector) collectMetrics(ctx context.Context) {
 	var spanCtx context.Context //nolint:contextcheck // Extracting context from span for child operations
 
 	if collectorSpan != nil {
-		spanCtx = collectorSpan.Context() //nolint:contextcheck // Standard OpenTelemetry pattern: extract context from span
+		spanCtx = collectorSpan.Context()
 	} else {
 		spanCtx = ctx
 	}
@@ -561,7 +562,9 @@ func (bc *BrotherCollector) collectPrinterInfo(ctx context.Context) error {
 			return fmt.Errorf("failed to get Brother printer info: %w", err)
 		}
 	}
+
 	var model, serial, firmware, mac string
+
 	parseStart := time.Now()
 
 	for _, variable := range result.Variables {
@@ -691,6 +694,7 @@ func (bc *BrotherCollector) collectPrinterUptime(ctx context.Context) error {
 			return fmt.Errorf("failed to get printer uptime: %w", err)
 		}
 	}
+
 	if len(result.Variables) == 0 || result.Variables[0].Value == nil {
 		err := fmt.Errorf("no uptime data received")
 
@@ -787,6 +791,7 @@ func (bc *BrotherCollector) collectPrinterStatus(ctx context.Context) error {
 			return fmt.Errorf("failed to get printer status: %w", err)
 		}
 	}
+
 	if len(result.Variables) > 0 {
 		parseStart := time.Now()
 
@@ -862,7 +867,7 @@ func (bc *BrotherCollector) collectBrotherSpecificMetrics(ctx context.Context) e
 			attribute.String("printer.type", bc.config.Printer.Type),
 		)
 
-		spanCtx = span.Context() //nolint:contextcheck // Standard OpenTelemetry pattern: extract context from span
+		spanCtx = span.Context()
 		defer span.End()
 	} else {
 		spanCtx = ctx
@@ -1326,6 +1331,7 @@ func (bc *BrotherCollector) collectBrotherNextCareData(ctx context.Context) erro
 			return fmt.Errorf("failed to get Brother nextcare data: %w", err)
 		}
 	}
+
 	if len(result.Variables) == 0 || result.Variables[0].Value == nil {
 		err := fmt.Errorf("no nextcare data received")
 
@@ -1467,7 +1473,7 @@ func (bc *BrotherCollector) collectLaserMetrics(ctx context.Context) error {
 			attribute.Int("colors.count", len(LaserColors)),
 		)
 
-		spanCtx = span.Context() //nolint:contextcheck // Standard OpenTelemetry pattern: extract context from span
+		spanCtx = span.Context()
 		defer span.End()
 	} else {
 		spanCtx = ctx
@@ -1511,6 +1517,7 @@ func (bc *BrotherCollector) collectInkjetMetrics(ctx context.Context) error {
 	}
 
 	collectStart := time.Now()
+
 	var colorsCollected int
 
 	// Collect ink levels (using Brother-specific OIDs)
@@ -1757,6 +1764,7 @@ func (bc *BrotherCollector) collectPageCounters(ctx context.Context) error {
 			return fmt.Errorf("failed to get Brother counters data: %w", err)
 		}
 	}
+
 	if len(result.Variables) == 0 || result.Variables[0].Value == nil {
 		err := fmt.Errorf("no Brother counters data received")
 
