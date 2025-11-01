@@ -327,10 +327,10 @@ func (bc *BrotherCollector) collectMetrics(ctx context.Context) {
 		defer collectorSpan.End()
 	}
 
-	var spanCtx context.Context
+	var spanCtx context.Context //nolint:contextcheck // Extracting context from span for child operations
 
 	if collectorSpan != nil {
-		spanCtx = collectorSpan.Context()
+		spanCtx = collectorSpan.Context() //nolint:contextcheck // Standard OpenTelemetry pattern: extract context from span
 	} else {
 		spanCtx = ctx
 	}
@@ -852,7 +852,7 @@ func (bc *BrotherCollector) collectBrotherSpecificMetrics(ctx context.Context) e
 
 	var (
 		span    *tracing.CollectorSpan
-		spanCtx context.Context
+		spanCtx context.Context //nolint:contextcheck // Extracting context from span for child operations
 	)
 
 	if tracer != nil && tracer.IsEnabled() {
@@ -862,7 +862,7 @@ func (bc *BrotherCollector) collectBrotherSpecificMetrics(ctx context.Context) e
 			attribute.String("printer.type", bc.config.Printer.Type),
 		)
 
-		spanCtx = span.Context()
+		spanCtx = span.Context() //nolint:contextcheck // Standard OpenTelemetry pattern: extract context from span
 		defer span.End()
 	} else {
 		spanCtx = ctx
@@ -1456,7 +1456,7 @@ func (bc *BrotherCollector) collectLaserMetrics(ctx context.Context) error {
 
 	var (
 		span    *tracing.CollectorSpan
-		spanCtx context.Context
+		spanCtx context.Context //nolint:contextcheck // Extracting context from span for child operations
 	)
 
 	if tracer != nil && tracer.IsEnabled() {
@@ -1467,7 +1467,7 @@ func (bc *BrotherCollector) collectLaserMetrics(ctx context.Context) error {
 			attribute.Int("colors.count", len(LaserColors)),
 		)
 
-		spanCtx = span.Context()
+		spanCtx = span.Context() //nolint:contextcheck // Standard OpenTelemetry pattern: extract context from span
 		defer span.End()
 	} else {
 		spanCtx = ctx
