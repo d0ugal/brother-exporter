@@ -2,6 +2,37 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.11.0](https://github.com/d0ugal/brother-exporter/compare/v1.10.3...v1.11.0) (2025-11-02)
+
+
+### Features
+
+* add dev-tag Makefile target ([796d941](https://github.com/d0ugal/brother-exporter/commit/796d941a0d5809722d1ec7a4b5f88e05cc210d89))
+* add duplication linter (dupl) to golangci configuration ([fa4851a](https://github.com/d0ugal/brother-exporter/commit/fa4851a7fd53e40eb69e105e3849fd6cc79b1415))
+* add tracing configuration support ([5212127](https://github.com/d0ugal/brother-exporter/commit/52121278df9b51f41984fc8353710c91299bb189))
+* **ci:** add auto-format workflow ([e45defd](https://github.com/d0ugal/brother-exporter/commit/e45defd588813ba58c443cbb9bcf5c4acc133e7e))
+* integrate OpenTelemetry tracing into collector ([7bd98f5](https://github.com/d0ugal/brother-exporter/commit/7bd98f591d8f38a920479d63c84e8cdc86881d15))
+* trigger CI after auto-format workflow completes ([f933454](https://github.com/d0ugal/brother-exporter/commit/f933454911870aed3f5b7dd4669e7b76d9e10978))
+
+
+### Bug Fixes
+
+* add nolint comments for contextcheck on span context extraction ([cde4c80](https://github.com/d0ugal/brother-exporter/commit/cde4c80836f965d5cb40736fe35aebf1cb56b103))
+* remove unused spanCtx variables and fix disconnect call ([befa34c](https://github.com/d0ugal/brother-exporter/commit/befa34c0862bbe0fd47009635f54197b214b4b57))
+* remove unused spanCtx variables from collection functions ([4010029](https://github.com/d0ugal/brother-exporter/commit/4010029817b027345243507ef5995e5255dff750))
+* resolve contextcheck and whitespace linting issues ([ca2fd85](https://github.com/d0ugal/brother-exporter/commit/ca2fd85062b1dd9d59b2570b8d8dee925e7627de))
+* update collectMetrics signature to accept context parameter ([01036b4](https://github.com/d0ugal/brother-exporter/commit/01036b423fee694b088ad91b92840de7346e96e8))
+* Update google.golang.org/genproto/googleapis/api digest to ab9386a ([5ab992a](https://github.com/d0ugal/brother-exporter/commit/5ab992a052bf74c755a0853c28b251757ca62f4f))
+* Update google.golang.org/genproto/googleapis/rpc digest to ab9386a ([feb0482](https://github.com/d0ugal/brother-exporter/commit/feb048249ba03b5d4d3dbcd0b27da4a41f094944))
+* Update module github.com/bytedance/sonic to v1.14.2 ([a18fc2a](https://github.com/d0ugal/brother-exporter/commit/a18fc2a451f4c17f4f6872cbf2b2acaa1718449c))
+* Update module github.com/d0ugal/promexporter to v1.6.1 ([fdec88c](https://github.com/d0ugal/brother-exporter/commit/fdec88c40bc4e26877fc17632dfd3c2857de7a8d))
+* Update module github.com/d0ugal/promexporter to v1.7.1 ([3bdf37e](https://github.com/d0ugal/brother-exporter/commit/3bdf37ec7edfb1173551eed794a7968490199549))
+* Update module github.com/d0ugal/promexporter to v1.8.0 ([20407d6](https://github.com/d0ugal/brother-exporter/commit/20407d6a3b22ac383a0e48429ecfe9117c505989))
+* Update module github.com/gabriel-vasile/mimetype to v1.4.11 ([beee98d](https://github.com/d0ugal/brother-exporter/commit/beee98dd39b4f16b30affc8db5777144a8383ea1))
+* Update module github.com/prometheus/common to v0.67.2 ([a5f4458](https://github.com/d0ugal/brother-exporter/commit/a5f445862eb15e166e19ae1634ed10ece79ec2ef))
+* Update module github.com/prometheus/procfs to v0.19.2 ([b2abe38](https://github.com/d0ugal/brother-exporter/commit/b2abe38fae8f2f03287a850bcb3ec4028e5f2430))
+* Update module github.com/ugorji/go/codec to v1.3.1 ([5c41f36](https://github.com/d0ugal/brother-exporter/commit/5c41f3662f015e4a601f510c88498cdf1878742e))
+
 ## [1.10.3](https://github.com/d0ugal/brother-exporter/compare/v1.10.2...v1.10.3) (2025-10-27)
 
 
