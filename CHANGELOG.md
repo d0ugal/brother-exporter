@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.11.1](https://github.com/d0ugal/brother-exporter/compare/v1.11.0...v1.11.1) (2025-11-04)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to f26f940 ([25f3eef](https://github.com/d0ugal/brother-exporter/commit/25f3eef4f3efcd8456ba944d65328673061b7eee))
+* Update google.golang.org/genproto/googleapis/rpc digest to f26f940 ([4f73318](https://github.com/d0ugal/brother-exporter/commit/4f73318a5dc6ca837b903b20ec77c6c4a86cc5e9))
+* Update module github.com/d0ugal/promexporter to v1.9.0 ([9e7a143](https://github.com/d0ugal/brother-exporter/commit/9e7a143347a3270fc1545968c77adf5cc40bc6c8))
+* Update module go.opentelemetry.io/proto/otlp to v1.9.0 ([c00a017](https://github.com/d0ugal/brother-exporter/commit/c00a01756b4ed56ff9152f069b274b1b0d4570b4))
+
 ## [1.11.0](https://github.com/d0ugal/brother-exporter/compare/v1.10.3...v1.11.0) (2025-11-02)
 
 
