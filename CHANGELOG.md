@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.11.3](https://github.com/d0ugal/brother-exporter/compare/v1.11.2...v1.11.3) (2025-11-05)
+
+
+### Bug Fixes
+
+* Update dependency go to v1.25.4 ([4ae8832](https://github.com/d0ugal/brother-exporter/commit/4ae883218696a03d504db9fbdbcfa846ba82b4eb))
+
 ## [1.11.2](https://github.com/d0ugal/brother-exporter/compare/v1.11.1...v1.11.2) (2025-11-04)
 
 
