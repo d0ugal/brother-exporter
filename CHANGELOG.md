@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.11.5](https://github.com/d0ugal/brother-exporter/compare/v1.11.4...v1.11.5) (2025-11-09)
+
+
+### Bug Fixes
+
+* Update module github.com/d0ugal/promexporter to v1.11.2 ([57a1c5c](https://github.com/d0ugal/brother-exporter/commit/57a1c5c0a8e60e6e79dab1a800254c540f8312b0))
+* Update module github.com/quic-go/quic-go to v0.56.0 ([cb5e6e2](https://github.com/d0ugal/brother-exporter/commit/cb5e6e270c7083f2a86318c20a37d14b06ec4d06))
+* Update module golang.org/x/arch to v0.23.0 ([da1ea23](https://github.com/d0ugal/brother-exporter/commit/da1ea23f8fa9e91ea2ccfc36647061278ea1dea0))
+* Update module golang.org/x/sys to v0.38.0 ([1ad7d46](https://github.com/d0ugal/brother-exporter/commit/1ad7d46625eda7fc78a449d1ba73d010c8c30547))
+
 ## [1.11.4](https://github.com/d0ugal/brother-exporter/compare/v1.11.3...v1.11.4) (2025-11-06)
 
 
