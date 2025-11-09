@@ -74,9 +74,6 @@ func NewBrotherRegistry(baseRegistry *promexporter_metrics.Registry) *BrotherReg
 		Registry: baseRegistry,
 	}
 
-	// Add missing brother_exporter_info metric
-	baseRegistry.AddMetricInfo("brother_exporter_info", "Information about the Brother host exporter", []string{"version", "commit", "build_date"})
-
 	// Printer connection metrics
 	brother.PrinterConnectionStatus = factory.NewGaugeVec(
 		prometheus.GaugeOpts{
