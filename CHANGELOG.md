@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.11.6](https://github.com/d0ugal/brother-exporter/compare/v1.11.5...v1.11.6) (2025-11-10)
+
+
+### Bug Fixes
+
+* Remove duplicate info metric registration ([78d1715](https://github.com/d0ugal/brother-exporter/commit/78d17156137860bf104d1cdfab43b1f9355a980e))
+* Update module github.com/d0ugal/promexporter to v1.12.0 ([5f543f2](https://github.com/d0ugal/brother-exporter/commit/5f543f2078dbace0cfad646010f699324014d041))
+
 ## [1.11.5](https://github.com/d0ugal/brother-exporter/compare/v1.11.4...v1.11.5) (2025-11-09)
 
 
