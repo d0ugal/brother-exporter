@@ -2,7 +2,7 @@
 
 A Prometheus exporter for Brother printers that collects metrics via SNMP.
 
-**Image**: `ghcr.io/d0ugal/brother-exporter:v1.11.5`
+**Image**: `ghcr.io/d0ugal/brother-exporter:v1.11.6`
 
 ## Metrics
 
@@ -47,7 +47,7 @@ A Prometheus exporter for Brother printers that collects metrics via SNMP.
 version: '3.8'
 services:
   brother-exporter:
-    image: ghcr.io/d0ugal/brother-exporter:v1.11.5
+    image: ghcr.io/d0ugal/brother-exporter:v1.11.6
     ports:
       - "8080:8080"
     environment:
@@ -92,7 +92,7 @@ printer:
 version: '3.8'
 services:
   brother-exporter:
-    image: ghcr.io/d0ugal/brother-exporter:v1.11.5
+    image: ghcr.io/d0ugal/brother-exporter:v1.11.6
     ports:
       - "8080:8080"
     environment:
@@ -121,7 +121,7 @@ spec:
     spec:
       containers:
       - name: brother-exporter
-        image: ghcr.io/d0ugal/brother-exporter:v1.11.5
+        image: ghcr.io/d0ugal/brother-exporter:v1.11.6
         ports:
         - containerPort: 8080
         env:
