@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.0](https://github.com/d0ugal/brother-exporter/compare/v1.11.7...v1.12.0) (2025-11-12)
+
+
+### Features
+
+* **ci:** ensure CI runs for release-please branches and PRs ([5e5aee9](https://github.com/d0ugal/brother-exporter/commit/5e5aee9be59ef18f9b251cbba74c4c7d52c3871c))
+* **ci:** use RELEASE_TOKEN secret for release-please ([5d09f1a](https://github.com/d0ugal/brother-exporter/commit/5d09f1a2421590def0de9460beb120150b3b341c))
+
+
+### Bug Fixes
+
+* **ci:** check github.head_ref for release-please PR detection ([71863ca](https://github.com/d0ugal/brother-exporter/commit/71863cab713a12a32d5a86b151393b636cefd030))
+* Update module github.com/d0ugal/promexporter to v1.12.2 ([7677c9e](https://github.com/d0ugal/brother-exporter/commit/7677c9e2778e72f60d3cd0f3255c23316818e6a1))
+* Update module golang.org/x/net to v0.47.0 ([80e8f8e](https://github.com/d0ugal/brother-exporter/commit/80e8f8e41bf52973341553f7f5052415c50dc0ff))
+
 ## [1.11.7](https://github.com/d0ugal/brother-exporter/compare/v1.11.6...v1.11.7) (2025-11-11)
 
 
