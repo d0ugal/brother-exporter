@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.2](https://github.com/d0ugal/brother-exporter/compare/v1.12.1...v1.12.2) (2025-11-18)
+
+
+### Bug Fixes
+
+* Update module github.com/prometheus/common to v0.67.3 ([7805e72](https://github.com/d0ugal/brother-exporter/commit/7805e7236b60e181434c786c27e5e14d6fe1702b))
+* Update module google.golang.org/grpc to v1.77.0 ([ab3a1ee](https://github.com/d0ugal/brother-exporter/commit/ab3a1eea91d274294573f78ecce6b6efadde5ea0))
+
 ## [1.12.1](https://github.com/d0ugal/brother-exporter/compare/v1.12.0...v1.12.1) (2025-11-12)
 
 
