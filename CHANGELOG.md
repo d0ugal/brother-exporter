@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.4](https://github.com/d0ugal/brother-exporter/compare/v1.12.3...v1.12.4) (2025-11-20)
+
+
+### Bug Fixes
+
+* correct step property indentation in workflows ([347cb9f](https://github.com/d0ugal/brother-exporter/commit/347cb9f01fb048624f867ea61eeebd3612b00f6c))
+* resolve YAML linting issues ([a5d6c3c](https://github.com/d0ugal/brother-exporter/commit/a5d6c3c6c2884da57e68dcda3479e84c7fc3c685))
+* Update module github.com/d0ugal/promexporter to v1.13.3 ([4b6b736](https://github.com/d0ugal/brother-exporter/commit/4b6b736586799ef33a26bd184450d0602c39aa25))
+* Update module golang.org/x/crypto to v0.45.0 ([6f7ff48](https://github.com/d0ugal/brother-exporter/commit/6f7ff484a67b7935f370329bb70e2fc353225fea))
+
 ## [1.12.3](https://github.com/d0ugal/brother-exporter/compare/v1.12.2...v1.12.3) (2025-11-18)
 
 
