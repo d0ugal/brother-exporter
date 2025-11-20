@@ -18,9 +18,9 @@ jobs:
 
     steps:
       - name: Checkout code
-      uses: actions/checkout@v5
-      with:
-        fetch-depth: 0
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
         ref: ${{ github.ref }}
         sha: ${{ github.sha }}
 
@@ -48,15 +48,15 @@ jobs:
 
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v5
-      with:
-        fetch-depth: 0
-        ref: ${{ github.ref }}
-        sha: ${{ github.sha }}
+      - name: Checkout code
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          ref: ${{ github.ref }}
+          sha: ${{ github.sha }}
 
-    - name: Run linting using Makefile
-      run: make lint-only
+      - name: Run linting using Makefile
+        run: make lint-only
 
   build:
     name: Build
