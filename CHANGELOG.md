@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.8](https://github.com/d0ugal/brother-exporter/compare/v1.12.7...v1.12.8) (2025-11-26)
+
+
+### Bug Fixes
+
+* Update module github.com/d0ugal/promexporter to v1.13.7 ([0bba065](https://github.com/d0ugal/brother-exporter/commit/0bba06568c7a4f63e685ae3892fa4bd24256be1b))
+* Update module github.com/quic-go/quic-go to v0.57.1 ([8e8bba8](https://github.com/d0ugal/brother-exporter/commit/8e8bba8ee876d53d2adebfd0356b687dbf69ea16))
+
 ## [1.12.7](https://github.com/d0ugal/brother-exporter/compare/v1.12.6...v1.12.7) (2025-11-25)
 
 
