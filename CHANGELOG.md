@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.9](https://github.com/d0ugal/brother-exporter/compare/v1.12.8...v1.12.9) (2025-11-29)
+
+
+### Bug Fixes
+
+* Update module github.com/d0ugal/promexporter to v1.13.8 ([1431dd6](https://github.com/d0ugal/brother-exporter/commit/1431dd6d5e95e8f6ffa644b6f63cc0836bdd04fa))
+* Update module github.com/goccy/go-yaml to v1.19.0 ([33c05b8](https://github.com/d0ugal/brother-exporter/commit/33c05b871de6abd170780aa3c13f90501521c20a))
+
 ## [1.12.8](https://github.com/d0ugal/brother-exporter/compare/v1.12.7...v1.12.8) (2025-11-26)
 
 
