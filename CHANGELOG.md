@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.10](https://github.com/d0ugal/brother-exporter/compare/v1.12.9...v1.12.10) (2025-12-01)
+
+
+### Bug Fixes
+
+* remove trailing blank lines in workflow file ([cfb732b](https://github.com/d0ugal/brother-exporter/commit/cfb732b4069ecbb2562c3001e8589a9db111d42c))
+* Update module github.com/d0ugal/promexporter to v1.14.1 ([483d1cd](https://github.com/d0ugal/brother-exporter/commit/483d1cd29ec103e44a191f57f3bfa419f356d2b9))
+* Update module github.com/d0ugal/promexporter to v1.14.2 ([0ec341b](https://github.com/d0ugal/brother-exporter/commit/0ec341bf726776ca93488580a39ef58491c88f04))
+* Update module github.com/klauspost/compress to v1.18.2 ([d8580d4](https://github.com/d0ugal/brother-exporter/commit/d8580d44b822855a18bdb4da702b62cb702fb237))
+
 ## [1.12.9](https://github.com/d0ugal/brother-exporter/compare/v1.12.8...v1.12.9) (2025-11-29)
 
 
