@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.12](https://github.com/d0ugal/brother-exporter/compare/v1.12.11...v1.12.12) (2025-12-04)
+
+
+### Bug Fixes
+
+* **workflows:** fix workflow syntax errors and revert Alpine to 3.22.2 ([8a1ec11](https://github.com/d0ugal/brother-exporter/commit/8a1ec11098207e871912585cbbf48c4cdce12acf))
+
 ## [1.12.11](https://github.com/d0ugal/brother-exporter/compare/v1.12.10...v1.12.11) (2025-12-04)
 
 
