@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.11](https://github.com/d0ugal/brother-exporter/compare/v1.12.10...v1.12.11) (2025-12-04)
+
+
+### Bug Fixes
+
+* Update dependency go to v1.25.5 ([80610df](https://github.com/d0ugal/brother-exporter/commit/80610df8f133dbfc183507bd5c3b1622cc2fa640))
+* Update google.golang.org/genproto/googleapis/api digest to ff82c1b ([be76180](https://github.com/d0ugal/brother-exporter/commit/be7618029fceb9d14ea04764ee0befb08ce0d542))
+* Update google.golang.org/genproto/googleapis/rpc digest to ff82c1b ([a90dc4d](https://github.com/d0ugal/brother-exporter/commit/a90dc4d62bed856b225cdeec5a5f83b1637c6fed))
+* Update module github.com/d0ugal/promexporter to v1.14.3 ([24c3457](https://github.com/d0ugal/brother-exporter/commit/24c34578a7dd304b420b80f54489ef8da27da1c4))
+
 ## [1.12.10](https://github.com/d0ugal/brother-exporter/compare/v1.12.9...v1.12.10) (2025-12-01)
 
 
