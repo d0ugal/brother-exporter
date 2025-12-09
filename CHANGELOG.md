@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.13](https://github.com/d0ugal/brother-exporter/compare/v1.12.12...v1.12.13) (2025-12-09)
+
+
+### Bug Fixes
+
+* **ci:** add GOMODCACHE env var to fix permission denied error ([262ac2d](https://github.com/d0ugal/brother-exporter/commit/262ac2d32ba150ca04defeb5386ea2d3d6be8e98))
+* Update module golang.org/x/crypto to v0.46.0 ([f81dbfa](https://github.com/d0ugal/brother-exporter/commit/f81dbfa12d3aba4f1c53ec29b5b97ded16af249b))
+* Update module golang.org/x/net to v0.48.0 ([165c84d](https://github.com/d0ugal/brother-exporter/commit/165c84de2e4c97c5e6764baa9a7c0f5dffa1f73d))
+* Update module golang.org/x/sys to v0.39.0 ([1a5b9d9](https://github.com/d0ugal/brother-exporter/commit/1a5b9d911c81466429b4f799f1c88f53ee66dbd5))
+* Update opentelemetry-go monorepo to v1.39.0 ([0c238e6](https://github.com/d0ugal/brother-exporter/commit/0c238e6c6c55fb69f05b25b1a83f88bc1d176fbe))
+* Update opentelemetry-go-contrib monorepo to v0.64.0 ([5bb8a3a](https://github.com/d0ugal/brother-exporter/commit/5bb8a3a2b3cf36a305fc78e125b6523bd25be2cd))
+
 ## [1.12.12](https://github.com/d0ugal/brother-exporter/compare/v1.12.11...v1.12.12) (2025-12-04)
 
 
