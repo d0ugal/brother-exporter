@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.15](https://github.com/d0ugal/brother-exporter/compare/v1.12.14...v1.12.15) (2025-12-14)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to 97cd9d5 ([22ae71e](https://github.com/d0ugal/brother-exporter/commit/22ae71e0628ce647420c44ae3d61050e1528e6c5))
+* Update google.golang.org/genproto/googleapis/rpc digest to 97cd9d5 ([b68c048](https://github.com/d0ugal/brother-exporter/commit/b68c0483a2b16879ce8639b808575b220e092bf2))
+* Update module github.com/d0ugal/promexporter to v1.14.5 ([0a9e062](https://github.com/d0ugal/brother-exporter/commit/0a9e062341bf1156e742b8fcc7492a5e1cdeae35))
+* Update module github.com/d0ugal/promexporter to v1.14.6 ([5ae196e](https://github.com/d0ugal/brother-exporter/commit/5ae196e0a3673745bb305b55183f58f6c3196478))
+* Update module github.com/gabriel-vasile/mimetype to v1.4.12 ([09e3fec](https://github.com/d0ugal/brother-exporter/commit/09e3fec8c027e59d187b003f0cbb257fa1646ea8))
+* Update module github.com/go-playground/validator/v10 to v10.29.0 ([54a8b06](https://github.com/d0ugal/brother-exporter/commit/54a8b0697b8b7f95da527f2c38e7cead5c1cd3db))
+* Update module google.golang.org/protobuf to v1.36.11 ([35bebc7](https://github.com/d0ugal/brother-exporter/commit/35bebc70ddd2d3d8b65a5a64e9bf42c56c5294c2))
+
 ## [1.12.14](https://github.com/d0ugal/brother-exporter/compare/v1.12.13...v1.12.14) (2025-12-10)
 
 
