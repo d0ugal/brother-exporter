@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.19](https://github.com/d0ugal/brother-exporter/compare/v1.12.18...v1.12.19) (2025-12-22)
+
+
+### Bug Fixes
+
+* Update module github.com/d0ugal/promexporter to v1.14.9 ([f8e2d0d](https://github.com/d0ugal/brother-exporter/commit/f8e2d0d3871b64f983893df3b5f064d2c5dda904))
+* Update module github.com/go-playground/validator/v10 to v10.30.0 ([0b9c0d9](https://github.com/d0ugal/brother-exporter/commit/0b9c0d9a886a6237f2ddc8d83b88efd6b3f8e2f5))
+
 ## [1.12.18](https://github.com/d0ugal/brother-exporter/compare/v1.12.17...v1.12.18) (2025-12-21)
 
 
