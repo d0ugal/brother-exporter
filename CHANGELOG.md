@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.21](https://github.com/d0ugal/brother-exporter/compare/v1.12.20...v1.12.21) (2025-12-23)
+
+
+### Bug Fixes
+
+* Update module github.com/d0ugal/promexporter to v1.14.10 ([0bccb68](https://github.com/d0ugal/brother-exporter/commit/0bccb681b9b05554759199e6f1d4b88c83cdf152))
+* Update module google.golang.org/grpc to v1.78.0 ([2af1e7b](https://github.com/d0ugal/brother-exporter/commit/2af1e7be8957c1530a8aec20c089bfff4fd448b2))
+
 ## [1.12.20](https://github.com/d0ugal/brother-exporter/compare/v1.12.19...v1.12.20) (2025-12-23)
 
 
