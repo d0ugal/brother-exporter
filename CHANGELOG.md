@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.23](https://github.com/d0ugal/brother-exporter/compare/v1.12.22...v1.12.23) (2025-12-24)
+
+
+### Bug Fixes
+
+* Update module github.com/go-playground/validator/v10 to v10.30.1 ([9184e2a](https://github.com/d0ugal/brother-exporter/commit/9184e2a779425ad694e3e56804cb299f74c2492e))
+
 ## [1.12.22](https://github.com/d0ugal/brother-exporter/compare/v1.12.21...v1.12.22) (2025-12-23)
 
 
