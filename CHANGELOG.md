@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.24](https://github.com/d0ugal/brother-exporter/compare/v1.12.23...v1.12.24) (2025-12-27)
+
+
+### Bug Fixes
+
+* Update module github.com/d0ugal/promexporter to v1.14.12 ([e08bafe](https://github.com/d0ugal/brother-exporter/commit/e08bafe9079087ce36e7935f3b02f585dc8ebe9b))
+* Update module github.com/grpc-ecosystem/grpc-gateway/v2 to v2.27.4 ([a279f61](https://github.com/d0ugal/brother-exporter/commit/a279f61030a9a0a1349a59d5502351dae9bf89cb))
+
 ## [1.12.23](https://github.com/d0ugal/brother-exporter/compare/v1.12.22...v1.12.23) (2025-12-24)
 
 
