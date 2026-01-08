@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.28](https://github.com/d0ugal/brother-exporter/compare/v1.12.27...v1.12.28) (2026-01-08)
+
+
+### Bug Fixes
+
+* Update module github.com/d0ugal/promexporter to v1.14.14 ([ffcad6c](https://github.com/d0ugal/brother-exporter/commit/ffcad6c5fb37e6b1a30c217b36162c553157dbe3))
+* Update module golang.org/x/sys to v0.40.0 ([768b371](https://github.com/d0ugal/brother-exporter/commit/768b3713c0fef0951ed211b38bc51a182cc7e42e))
+
 ## [1.12.27](https://github.com/d0ugal/brother-exporter/compare/v1.12.26...v1.12.27) (2026-01-08)
 
 
