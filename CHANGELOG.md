@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.27](https://github.com/d0ugal/brother-exporter/compare/v1.12.26...v1.12.27) (2026-01-08)
+
+
+### Bug Fixes
+
+* Update module github.com/goccy/go-yaml to v1.19.2 ([f6386bc](https://github.com/d0ugal/brother-exporter/commit/f6386bc8d2ad867d4a36a07161eb85f6051c565c))
+
 ## [1.12.26](https://github.com/d0ugal/brother-exporter/compare/v1.12.25...v1.12.26) (2026-01-06)
 
 
