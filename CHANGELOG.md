@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.29](https://github.com/d0ugal/brother-exporter/compare/v1.12.28...v1.12.29) (2026-01-09)
+
+
+### Bug Fixes
+
+* Update module github.com/d0ugal/promexporter to v1.14.15 ([629de32](https://github.com/d0ugal/brother-exporter/commit/629de3242f144b92c18d5c184699aa79043f805a))
+
 ## [1.12.28](https://github.com/d0ugal/brother-exporter/compare/v1.12.27...v1.12.28) (2026-01-08)
 
 
