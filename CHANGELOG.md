@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.33](https://github.com/d0ugal/brother-exporter/compare/v1.12.32...v1.12.33) (2026-01-16)
+
+
+### Bug Fixes
+
+* Update dependency go to v1.25.6 ([849b725](https://github.com/d0ugal/brother-exporter/commit/849b725a755da111d25f20c43f6054e16d4d0661))
+* Update google.golang.org/genproto/googleapis/api digest to 3f89685 ([8adafb4](https://github.com/d0ugal/brother-exporter/commit/8adafb42f6a2677af0b53ccfb6f47a2ee85c63d0))
+* Update google.golang.org/genproto/googleapis/rpc digest to 3f89685 ([d92f852](https://github.com/d0ugal/brother-exporter/commit/d92f85247c891c0d8d47f55ae79597e2e0b95b87))
+* Update module github.com/klauspost/compress to v1.18.3 ([79bc92c](https://github.com/d0ugal/brother-exporter/commit/79bc92cdcb0bf91282918b958d36ca2f8cf30206))
+
 ## [1.12.32](https://github.com/d0ugal/brother-exporter/compare/v1.12.31...v1.12.32) (2026-01-14)
 
 
