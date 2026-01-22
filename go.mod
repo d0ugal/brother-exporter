@@ -5,7 +5,7 @@ go 1.25
 toolchain go1.25.6
 
 require (
-	github.com/d0ugal/promexporter v1.14.22
+	github.com/d0ugal/promexporter v1.14.23
 	github.com/gosnmp/gosnmp v1.43.2
 	github.com/prometheus/client_golang v1.23.2
 	github.com/stretchr/testify v1.11.1
