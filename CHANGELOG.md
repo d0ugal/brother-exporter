@@ -2,6 +2,36 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.34](https://github.com/d0ugal/brother-exporter/compare/v1.12.33...v1.12.34) (2026-01-17)
+
+
+### Bug Fixes
+
+* Update module github.com/d0ugal/promexporter to v1.14.21 ([a81157d](https://github.com/d0ugal/brother-exporter/commit/a81157d8b0aeced09aeca0ae361ec824446e6d4c))
+
+## [1.12.33](https://github.com/d0ugal/brother-exporter/compare/v1.12.32...v1.12.33) (2026-01-16)
+
+
+### Bug Fixes
+
+* Update dependency go to v1.25.6 ([849b725](https://github.com/d0ugal/brother-exporter/commit/849b725a755da111d25f20c43f6054e16d4d0661))
+* Update google.golang.org/genproto/googleapis/api digest to 3f89685 ([8adafb4](https://github.com/d0ugal/brother-exporter/commit/8adafb42f6a2677af0b53ccfb6f47a2ee85c63d0))
+* Update google.golang.org/genproto/googleapis/rpc digest to 3f89685 ([d92f852](https://github.com/d0ugal/brother-exporter/commit/d92f85247c891c0d8d47f55ae79597e2e0b95b87))
+* Update module github.com/klauspost/compress to v1.18.3 ([79bc92c](https://github.com/d0ugal/brother-exporter/commit/79bc92cdcb0bf91282918b958d36ca2f8cf30206))
+
+## [1.12.32](https://github.com/d0ugal/brother-exporter/compare/v1.12.31...v1.12.32) (2026-01-14)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to 99fd39f ([8f11a41](https://github.com/d0ugal/brother-exporter/commit/8f11a41e35d6959e0a927a8208613770b35dcbe9))
+* Update google.golang.org/genproto/googleapis/rpc digest to 99fd39f ([aa1f540](https://github.com/d0ugal/brother-exporter/commit/aa1f5402559ee00dfdde2c5ec05fd1968c221ec5))
+* Update module github.com/d0ugal/promexporter to v1.14.18 ([82b5f10](https://github.com/d0ugal/brother-exporter/commit/82b5f10e86eefbf80b6d791828244b56b80ced47))
+* Update module github.com/d0ugal/promexporter to v1.14.19 ([7f8cfc2](https://github.com/d0ugal/brother-exporter/commit/7f8cfc23f4545c51226d03b0041c094befab64cb))
+* Update module github.com/d0ugal/promexporter to v1.14.20 ([16716fb](https://github.com/d0ugal/brother-exporter/commit/16716fbad5d95abdf2f34eb001241f0b0d18bbd9))
+* Update module github.com/gosnmp/gosnmp to v1.43.2 ([4d3c182](https://github.com/d0ugal/brother-exporter/commit/4d3c1827982f59a806c483c360cdd8d98355dce1))
+* Update module golang.org/x/net to v0.49.0 ([75ad5a2](https://github.com/d0ugal/brother-exporter/commit/75ad5a2d1aad73c1aead5979c069bd9efe9d1218))
+
 ## [1.12.31](https://github.com/d0ugal/brother-exporter/compare/v1.12.30...v1.12.31) (2026-01-11)
 
 
