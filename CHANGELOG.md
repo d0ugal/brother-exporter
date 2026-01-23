@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.35](https://github.com/d0ugal/brother-exporter/compare/v1.12.34...v1.12.35) (2026-01-23)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to 409b4a9 ([51c84cd](https://github.com/d0ugal/brother-exporter/commit/51c84cde43fc75b8e5e2fcacbddfb9f0272156cc))
+* Update google.golang.org/genproto/googleapis/api digest to 8e98ce8 ([b12d596](https://github.com/d0ugal/brother-exporter/commit/b12d59680825761414cd8431916655021043201d))
+* Update google.golang.org/genproto/googleapis/api digest to b8f7ae3 ([c85b339](https://github.com/d0ugal/brother-exporter/commit/c85b33974a8bcb5d4e26fb2e309beb623366208e))
+* Update google.golang.org/genproto/googleapis/rpc digest to 8e98ce8 ([f99de61](https://github.com/d0ugal/brother-exporter/commit/f99de61425c23702e80bed04ec9ff8423cfd4636))
+* Update google.golang.org/genproto/googleapis/rpc digest to b8f7ae3 ([585aa93](https://github.com/d0ugal/brother-exporter/commit/585aa9321d4885ab26bcd3823fe8836570ae7794))
+* Update module github.com/bytedance/sonic to v1.15.0 ([5ca357d](https://github.com/d0ugal/brother-exporter/commit/5ca357de478cd609e4a63014fa1efc4f1edd4be9))
+* Update module github.com/d0ugal/promexporter to v1.14.22 ([ebba16e](https://github.com/d0ugal/brother-exporter/commit/ebba16e25d14a402afbc93512c69879b08969e48))
+* Update module github.com/d0ugal/promexporter to v1.14.23 ([22266e4](https://github.com/d0ugal/brother-exporter/commit/22266e4e7773210e321ba5e05021336a22c498cd))
+* Update module github.com/d0ugal/promexporter to v1.14.24 ([86fdc71](https://github.com/d0ugal/brother-exporter/commit/86fdc714dc1a0a4adb2e843a6366856eb9c9e10e))
+* Update module github.com/grpc-ecosystem/grpc-gateway/v2 to v2.27.5 ([ba62391](https://github.com/d0ugal/brother-exporter/commit/ba62391a324f84d08806bc6e201b1d9d0e9c34de))
+
 ## [1.12.34](https://github.com/d0ugal/brother-exporter/compare/v1.12.33...v1.12.34) (2026-01-17)
 
 
