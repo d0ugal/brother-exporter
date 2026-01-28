@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.36](https://github.com/d0ugal/brother-exporter/compare/v1.12.35...v1.12.36) (2026-01-28)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to 8636f87 ([3d7a1e6](https://github.com/d0ugal/brother-exporter/commit/3d7a1e691a6ac9cf6559f4d37b4134dbc1c01558))
+* Update google.golang.org/genproto/googleapis/api digest to d11affd ([156eeff](https://github.com/d0ugal/brother-exporter/commit/156eeff6ef8bba4e7a9b1c3671bb662282c3b7e4))
+* Update google.golang.org/genproto/googleapis/rpc digest to 8636f87 ([fc49d28](https://github.com/d0ugal/brother-exporter/commit/fc49d289d2dd99f24c2d128fc7f6fdfb749196d0))
+* Update google.golang.org/genproto/googleapis/rpc digest to d11affd ([d7998a0](https://github.com/d0ugal/brother-exporter/commit/d7998a05568a720830596c9ec7c84b65e9db385e))
+* Update module github.com/d0ugal/promexporter to v1.14.25 ([340ae63](https://github.com/d0ugal/brother-exporter/commit/340ae634adb046f3cae2de01620ea4e1b5cd45db))
+* Update module github.com/grpc-ecosystem/grpc-gateway/v2 to v2.27.6 ([158f127](https://github.com/d0ugal/brother-exporter/commit/158f1273ac2a406cc50df761cef39a53594f8935))
+
 ## [1.12.35](https://github.com/d0ugal/brother-exporter/compare/v1.12.34...v1.12.35) (2026-01-23)
 
 
