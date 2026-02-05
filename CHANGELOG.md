@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.37](https://github.com/d0ugal/brother-exporter/compare/v1.12.36...v1.12.37) (2026-02-05)
+
+
+### Bug Fixes
+
+* Update dependency go to v1.25.7 ([f91ad25](https://github.com/d0ugal/brother-exporter/commit/f91ad258c2ce4184abf37348a297b428ac342d83))
+* Update google.golang.org/genproto/googleapis/api digest to 546029d ([7f6fec3](https://github.com/d0ugal/brother-exporter/commit/7f6fec3decfcdec765ba811baee69bd0650439e5))
+* Update google.golang.org/genproto/googleapis/api digest to ce8ad4c ([5aebfda](https://github.com/d0ugal/brother-exporter/commit/5aebfda6128ae9a678439b1707676bceb1281088))
+* Update google.golang.org/genproto/googleapis/rpc digest to 546029d ([3b7a6ad](https://github.com/d0ugal/brother-exporter/commit/3b7a6adf760c97a61509ef420ba5c900720ed562))
+* Update google.golang.org/genproto/googleapis/rpc digest to ce8ad4c ([d26a966](https://github.com/d0ugal/brother-exporter/commit/d26a96609ea4963e51f3a9d71884e317164a71bc))
+* Update module github.com/d0ugal/promexporter to v2 ([8e15226](https://github.com/d0ugal/brother-exporter/commit/8e152266b503d7bb5c2ba6e00c029108b3f938dd))
+* Update opentelemetry-go monorepo to v1.40.0 ([c0b1a52](https://github.com/d0ugal/brother-exporter/commit/c0b1a5265b518369a61bfdf5f4593c6b27524945))
+* Update opentelemetry-go-contrib monorepo to v0.65.0 ([bff66fb](https://github.com/d0ugal/brother-exporter/commit/bff66fb2f9b69db48dba74669b2f23a07e7c28b0))
+
 ## [1.12.36](https://github.com/d0ugal/brother-exporter/compare/v1.12.35...v1.12.36) (2026-02-01)
 
 
