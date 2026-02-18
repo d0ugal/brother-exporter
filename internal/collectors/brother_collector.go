@@ -59,7 +59,7 @@ func bytesToHexString(bytes []uint8) string {
 	builder.Grow((len(bytes) - 1) * 2) // Pre-allocate capacity for efficiency
 
 	for i := 0; i < len(bytes)-1; i++ {
-		builder.WriteString(fmt.Sprintf("%02x", bytes[i]))
+		fmt.Fprintf(&builder, "%02x", bytes[i])
 	}
 
 	return builder.String()
