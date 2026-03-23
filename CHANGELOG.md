@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.39](https://github.com/d0ugal/brother-exporter/compare/v1.12.38...v1.12.39) (2026-03-23)
+
+
+### Bug Fixes
+
+* Update dependency go to v1.26.1 ([7f1e59d](https://github.com/d0ugal/brother-exporter/commit/7f1e59de7ad2bae5bfc09490cc3abda1a550d9d7))
+* Update google.golang.org/genproto/googleapis/api digest to d00831a ([fb1e144](https://github.com/d0ugal/brother-exporter/commit/fb1e144fff64ede4ed61457299e9729e5ce5efd7))
+* Update module github.com/bytedance/gopkg to v0.1.4 ([7ea7821](https://github.com/d0ugal/brother-exporter/commit/7ea7821b97b1e9daf73bd5c0e82c95d29e52aa1c))
+* Update module github.com/d0ugal/promexporter to v1.14.27 ([b58627a](https://github.com/d0ugal/brother-exporter/commit/b58627ab1a94d0ffc43f685ea48d4c7d91bb02b5))
+* Update module github.com/prometheus/procfs to v0.20.1 ([91514be](https://github.com/d0ugal/brother-exporter/commit/91514bee4bd41c62e95f31f7f549cc29d6503355))
+* Update module go.yaml.in/yaml/v2 to v2.4.4 ([27d625b](https://github.com/d0ugal/brother-exporter/commit/27d625b23e61d480250e69a9c45181849b4e0754))
+* Update opentelemetry-go monorepo to v1.42.0 ([f261f44](https://github.com/d0ugal/brother-exporter/commit/f261f4477376f28a0fd0681ae43bcdc6a9560482))
+
 ## [1.12.38](https://github.com/d0ugal/brother-exporter/compare/v1.12.37...v1.12.38) (2026-03-13)
 
 
