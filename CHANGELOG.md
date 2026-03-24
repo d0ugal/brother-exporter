@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.40](https://github.com/d0ugal/brother-exporter/compare/v1.12.39...v1.12.40) (2026-03-24)
+
+
+### Bug Fixes
+
+* Update module github.com/pelletier/go-toml/v2 to v2.3.0 ([ae78a7e](https://github.com/d0ugal/brother-exporter/commit/ae78a7e2ca7b68678228f52a75d85cfec4077234))
+
 ## [1.12.39](https://github.com/d0ugal/brother-exporter/compare/v1.12.38...v1.12.39) (2026-03-23)
 
 
