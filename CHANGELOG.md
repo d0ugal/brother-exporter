@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.42](https://github.com/d0ugal/brother-exporter/compare/v1.12.41...v1.12.42) (2026-03-26)
+
+
+### Bug Fixes
+
+* Update module github.com/grafana/pyroscope-go to v1.2.8 ([e2b0197](https://github.com/d0ugal/brother-exporter/commit/e2b0197b7e89096f519248e1d68662939f2a6a82))
+
 ## [1.12.41](https://github.com/d0ugal/brother-exporter/compare/v1.12.40...v1.12.41) (2026-03-25)
 
 
