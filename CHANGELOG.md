@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.43](https://github.com/d0ugal/brother-exporter/compare/v1.12.42...v1.12.43) (2026-03-28)
+
+
+### Bug Fixes
+
+* Update module github.com/bytedance/sonic/loader to v0.5.1 ([f0637ec](https://github.com/d0ugal/brother-exporter/commit/f0637ec3451a187369754fbf85ac9a06f686babf))
+* Update module github.com/d0ugal/promexporter to v1.14.29 ([cf3fdd4](https://github.com/d0ugal/brother-exporter/commit/cf3fdd4990adae4413497d33b0f62cb9969188b8))
+* Update module github.com/gin-contrib/sse to v1.1.1 ([6f70472](https://github.com/d0ugal/brother-exporter/commit/6f7047218f9a1edddadd4186e0a3ccb6bdfe1f13))
+
 ## [1.12.42](https://github.com/d0ugal/brother-exporter/compare/v1.12.41...v1.12.42) (2026-03-26)
 
 
