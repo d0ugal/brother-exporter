@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.44](https://github.com/d0ugal/brother-exporter/compare/v1.12.43...v1.12.44) (2026-03-31)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to d5a96ad ([16b28a6](https://github.com/d0ugal/brother-exporter/commit/16b28a6f6d0345ea59b6e065ef2c3f29974e04b3))
+* Update google.golang.org/genproto/googleapis/rpc digest to d5a96ad ([7a367ba](https://github.com/d0ugal/brother-exporter/commit/7a367bac8d6fc9bb96818d2f70eca66fb265ac9e))
+* Update module github.com/d0ugal/promexporter to v1.14.30 ([f1f1f67](https://github.com/d0ugal/brother-exporter/commit/f1f1f676c1d895cfbd635613993375bbba4f1f7e))
+* Update module github.com/go-playground/validator/v10 to v10.30.2 ([71f0303](https://github.com/d0ugal/brother-exporter/commit/71f03035f6c9f6c59de3b468c2b6cea57513c63c))
+
 ## [1.12.43](https://github.com/d0ugal/brother-exporter/compare/v1.12.42...v1.12.43) (2026-03-28)
 
 
