@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.48](https://github.com/d0ugal/brother-exporter/compare/v1.12.47...v1.12.48) (2026-04-03)
+
+
+### Bug Fixes
+
+* Update opentelemetry-go monorepo to v1.43.0 ([91b039a](https://github.com/d0ugal/brother-exporter/commit/91b039aa9aacc495f7b3ee486f82e9a5d696b5af))
+
 ## [1.12.47](https://github.com/d0ugal/brother-exporter/compare/v1.12.46...v1.12.47) (2026-04-01)
 
 
