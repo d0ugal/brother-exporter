@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.51](https://github.com/d0ugal/brother-exporter/compare/v1.12.50...v1.12.51) (2026-04-07)
+
+
+### Bug Fixes
+
+* Update module github.com/d0ugal/promexporter to v1.14.34 ([922677a](https://github.com/d0ugal/brother-exporter/commit/922677a013d6596dddb2accf85835fe742fb23e1))
+* Update opentelemetry-go-contrib monorepo to v0.68.0 ([1d64c2b](https://github.com/d0ugal/brother-exporter/commit/1d64c2b0d81815f27df080a398b42f885aeb6d8c))
+
 ## [1.12.50](https://github.com/d0ugal/brother-exporter/compare/v1.12.49...v1.12.50) (2026-04-07)
 
 
