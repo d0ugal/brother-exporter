@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.54](https://github.com/d0ugal/brother-exporter/compare/v1.12.53...v1.12.54) (2026-04-08)
+
+
+### Bug Fixes
+
+* Update module github.com/d0ugal/promexporter to v1.14.36 ([0d162fd](https://github.com/d0ugal/brother-exporter/commit/0d162fd006c4222208ef61dbaae64dff442870c4))
+* Update module github.com/mattn/go-isatty to v0.0.21 ([d4838c6](https://github.com/d0ugal/brother-exporter/commit/d4838c6a4dec872fe3794b56e43f41a2d25c6eff))
+* Update module golang.org/x/sys to v0.43.0 ([811b73b](https://github.com/d0ugal/brother-exporter/commit/811b73ba9f1104046602ce69bbc7820173e79506))
+
 ## [1.12.53](https://github.com/d0ugal/brother-exporter/compare/v1.12.52...v1.12.53) (2026-04-08)
 
 
