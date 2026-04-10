@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.58](https://github.com/d0ugal/brother-exporter/compare/v1.12.57...v1.12.58) (2026-04-10)
+
+
+### Bug Fixes
+
+* Update module golang.org/x/arch to v0.26.0 ([fec85b3](https://github.com/d0ugal/brother-exporter/commit/fec85b38e0e8832456b01ee3ba3eaaf7d56d4e56))
+
 ## [1.12.57](https://github.com/d0ugal/brother-exporter/compare/v1.12.56...v1.12.57) (2026-04-10)
 
 
