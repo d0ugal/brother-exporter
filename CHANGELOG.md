@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.60](https://github.com/d0ugal/brother-exporter/compare/v1.12.59...v1.12.60) (2026-04-16)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to 85fdc51 ([f1d3f9a](https://github.com/d0ugal/brother-exporter/commit/f1d3f9ae953e4246426605cf37654665474ea22c))
+* Update google.golang.org/genproto/googleapis/api digest to afd174a ([4514506](https://github.com/d0ugal/brother-exporter/commit/45145063aeffa2795657fa33d30b1e73383d9556))
+* Update google.golang.org/genproto/googleapis/rpc digest to afd174a ([b72744b](https://github.com/d0ugal/brother-exporter/commit/b72744b79e50261e1a6a9caf8a633ae85e62ba53))
+* Update module github.com/d0ugal/promexporter to v1.14.41 ([13ac088](https://github.com/d0ugal/brother-exporter/commit/13ac08827f8ab292da925ab86bdcefbc52386bd2))
+* Update module github.com/grpc-ecosystem/grpc-gateway/v2 to v2.29.0 ([0d07868](https://github.com/d0ugal/brother-exporter/commit/0d078680d0a20a4a688e72b6963eea899935ab68))
+* Update module go.mongodb.org/mongo-driver/v2 to v2.5.1 ([43a8833](https://github.com/d0ugal/brother-exporter/commit/43a88333a8610e357b8d434e29a45e5736eba09f))
+
 ## [1.12.59](https://github.com/d0ugal/brother-exporter/compare/v1.12.58...v1.12.59) (2026-04-11)
 
 
