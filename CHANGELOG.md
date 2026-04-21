@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.61](https://github.com/d0ugal/brother-exporter/compare/v1.12.60...v1.12.61) (2026-04-21)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to e10c466 ([eeaec00](https://github.com/d0ugal/brother-exporter/commit/eeaec00bd4f93d846b1a09c99464ec2852de176e))
+* Update google.golang.org/genproto/googleapis/rpc digest to e10c466 ([990fc23](https://github.com/d0ugal/brother-exporter/commit/990fc2346658e352564689e2e64b2c47401bd99a))
+
 ## [1.12.60](https://github.com/d0ugal/brother-exporter/compare/v1.12.59...v1.12.60) (2026-04-16)
 
 
