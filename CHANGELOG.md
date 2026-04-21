@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.63](https://github.com/d0ugal/brother-exporter/compare/v1.12.62...v1.12.63) (2026-04-21)
+
+
+### Bug Fixes
+
+* remove trailing blank line in commits.yml ([088c960](https://github.com/d0ugal/brother-exporter/commit/088c960f01515bfdd92d8fff01bffb24bf1fe08e))
+
 ## [1.12.62](https://github.com/d0ugal/brother-exporter/compare/v1.12.61...v1.12.62) (2026-04-21)
 
 
