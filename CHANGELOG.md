@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.65](https://github.com/d0ugal/brother-exporter/compare/v1.12.64...v1.12.65) (2026-04-26)
+
+
+### Bug Fixes
+
+* make yaml optional and always overlay env vars on config ([1878721](https://github.com/d0ugal/brother-exporter/commit/18787210fa29a0a419e10f3056986f4088453ad4))
+
 ## [1.12.64](https://github.com/d0ugal/brother-exporter/compare/v1.12.63...v1.12.64) (2026-04-21)
 
 
