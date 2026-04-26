@@ -25,123 +25,69 @@ type PrinterConfig struct {
 	Interfaces []string `yaml:"interfaces"`
 }
 
-// LoadConfig loads configuration from either a YAML file or environment variables
-func LoadConfig(path string, configFromEnv bool) (*Config, error) {
-	if configFromEnv {
-		return loadFromEnv()
-	}
+// LoadConfig loads configuration with priority: env vars > yaml file > defaults.
+// The yaml file is optional; if path is empty or the file does not exist it is
+// silently skipped. Environment variables are always applied on top.
+func LoadConfig(path string) (*Config, error) {
+	var cfg Config
 
-	return Load(path)
-}
-
-// Load loads configuration from a YAML file
-func Load(path string) (*Config, error) {
-	data, err := os.ReadFile(path)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read config file: %w", err)
-	}
-
-	var config Config
-	if err := yaml.Unmarshal(data, &config); err != nil {
-		return nil, fmt.Errorf("failed to parse config file: %w", err)
-	}
-
-	// Set defaults
-	setDefaults(&config)
-
-	// Validate configuration
-	if err := config.Validate(); err != nil {
-		return nil, fmt.Errorf("configuration validation failed: %w", err)
-	}
-
-	return &config, nil
-}
-
-// loadFromEnv loads configuration from environment variables
-func loadFromEnv() (*Config, error) {
-	config := &Config{}
-
-	// Load base configuration from environment
-	baseConfig := &promexporter_config.BaseConfig{}
-
-	// Server configuration
-	if host := os.Getenv("BROTHER_EXPORTER_SERVER_HOST"); host != "" {
-		baseConfig.Server.Host = host
-	} else {
-		baseConfig.Server.Host = "0.0.0.0"
-	}
-
-	if portStr := os.Getenv("BROTHER_EXPORTER_SERVER_PORT"); portStr != "" {
-		if port, err := parseInt(portStr); err != nil {
-			return nil, fmt.Errorf("invalid server port: %w", err)
-		} else {
-			baseConfig.Server.Port = port
+	if path != "" {
+		data, err := os.ReadFile(path)
+		if err == nil {
+			if err := yaml.Unmarshal(data, &cfg); err != nil {
+				return nil, fmt.Errorf("failed to parse config file %s: %w", path, err)
+			}
+		} else if !os.IsNotExist(err) {
+			return nil, fmt.Errorf("failed to read config file %s: %w", path, err)
 		}
-	} else {
-		baseConfig.Server.Port = 8080
 	}
 
-	// Logging configuration
-	if level := os.Getenv("BROTHER_EXPORTER_LOG_LEVEL"); level != "" {
-		baseConfig.Logging.Level = level
-	} else {
-		baseConfig.Logging.Level = "info"
-	}
-
-	if format := os.Getenv("BROTHER_EXPORTER_LOG_FORMAT"); format != "" {
-		baseConfig.Logging.Format = format
-	} else {
-		baseConfig.Logging.Format = "json"
-	}
-
-	// Metrics configuration
-	if intervalStr := os.Getenv("BROTHER_EXPORTER_METRICS_DEFAULT_INTERVAL"); intervalStr != "" {
-		if interval, err := time.ParseDuration(intervalStr); err != nil {
-			return nil, fmt.Errorf("invalid metrics default interval: %w", err)
-		} else {
-			baseConfig.Metrics.Collection.DefaultInterval = promexporter_config.Duration{Duration: interval}
-			baseConfig.Metrics.Collection.DefaultIntervalSet = true
-		}
-	} else {
-		baseConfig.Metrics.Collection.DefaultInterval = promexporter_config.Duration{Duration: time.Second * 30}
-	}
-
-	config.BaseConfig = *baseConfig
-
-	// Apply generic environment variables (TRACING_ENABLED, PROFILING_ENABLED, etc.)
-	// These are handled by promexporter and are shared across all exporters
-	if err := promexporter_config.ApplyGenericEnvVars(&config.BaseConfig); err != nil {
+	if err := promexporter_config.ApplyGenericEnvVars(&cfg.BaseConfig); err != nil {
 		return nil, fmt.Errorf("failed to apply generic environment variables: %w", err)
 	}
 
-	// Printer configuration
-	if host := os.Getenv("BROTHER_EXPORTER_PRINTER_HOST"); host != "" {
-		config.Printer.Host = host
-	} else {
-		config.Printer.Host = "192.168.1.100"
-	}
+	applyEnvVars(&cfg)
+	setDefaults(&cfg)
 
-	if community := os.Getenv("BROTHER_EXPORTER_PRINTER_COMMUNITY"); community != "" {
-		config.Printer.Community = community
-	} else {
-		config.Printer.Community = "public"
-	}
-
-	if printerType := os.Getenv("BROTHER_EXPORTER_PRINTER_TYPE"); printerType != "" {
-		config.Printer.Type = printerType
-	} else {
-		config.Printer.Type = "laser"
-	}
-
-	// Set defaults for any missing values
-	setDefaults(config)
-
-	// Validate configuration
-	if err := config.Validate(); err != nil {
+	if err := cfg.Validate(); err != nil {
 		return nil, fmt.Errorf("configuration validation failed: %w", err)
 	}
 
-	return config, nil
+	return &cfg, nil
+}
+
+// applyEnvVars overlays Brother-exporter environment variables onto cfg.
+// Only variables that are set (non-empty) are applied.
+func applyEnvVars(cfg *Config) {
+	if host := os.Getenv("BROTHER_EXPORTER_SERVER_HOST"); host != "" {
+		cfg.Server.Host = host
+	}
+	if portStr := os.Getenv("BROTHER_EXPORTER_SERVER_PORT"); portStr != "" {
+		if port, err := parseInt(portStr); err == nil {
+			cfg.Server.Port = port
+		}
+	}
+	if level := os.Getenv("BROTHER_EXPORTER_LOG_LEVEL"); level != "" {
+		cfg.Logging.Level = level
+	}
+	if format := os.Getenv("BROTHER_EXPORTER_LOG_FORMAT"); format != "" {
+		cfg.Logging.Format = format
+	}
+	if intervalStr := os.Getenv("BROTHER_EXPORTER_METRICS_DEFAULT_INTERVAL"); intervalStr != "" {
+		if interval, err := time.ParseDuration(intervalStr); err == nil {
+			cfg.Metrics.Collection.DefaultInterval = promexporter_config.Duration{Duration: interval}
+			cfg.Metrics.Collection.DefaultIntervalSet = true
+		}
+	}
+	if host := os.Getenv("BROTHER_EXPORTER_PRINTER_HOST"); host != "" {
+		cfg.Printer.Host = host
+	}
+	if community := os.Getenv("BROTHER_EXPORTER_PRINTER_COMMUNITY"); community != "" {
+		cfg.Printer.Community = community
+	}
+	if printerType := os.Getenv("BROTHER_EXPORTER_PRINTER_TYPE"); printerType != "" {
+		cfg.Printer.Type = printerType
+	}
 }
 
 // parseInt parses a string to int

@@ -15,28 +15,6 @@ import (
 	promexporter_metrics "github.com/d0ugal/promexporter/metrics"
 )
 
-// hasEnvironmentVariables checks if any BROTHER_EXPORTER_* environment variables are set
-func hasEnvironmentVariables() bool {
-	envVars := []string{
-		"BROTHER_EXPORTER_SERVER_HOST",
-		"BROTHER_EXPORTER_SERVER_PORT",
-		"BROTHER_EXPORTER_LOG_LEVEL",
-		"BROTHER_EXPORTER_LOG_FORMAT",
-		"BROTHER_EXPORTER_METRICS_DEFAULT_INTERVAL",
-		"BROTHER_EXPORTER_PRINTER_HOST",
-		"BROTHER_EXPORTER_PRINTER_COMMUNITY",
-		"BROTHER_EXPORTER_PRINTER_TYPE",
-	}
-
-	for _, envVar := range envVars {
-		if os.Getenv(envVar) != "" {
-			return true
-		}
-	}
-
-	return false
-}
-
 func main() {
 	// Parse command line flags
 	var showVersion bool
@@ -49,7 +27,7 @@ func main() {
 	)
 
 	flag.StringVar(&configPath, "config", "config.yaml", "Path to configuration file")
-	flag.BoolVar(&configFromEnv, "config-from-env", false, "Load configuration from environment variables only")
+	flag.BoolVar(&configFromEnv, "config-from-env", false, "Deprecated: env vars are always applied; this flag is a no-op")
 	flag.Parse()
 
 	// Show version if requested
@@ -60,26 +38,17 @@ func main() {
 		os.Exit(0)
 	}
 
-	// Use environment variable if config flag is not provided
-	if configPath == "config.yaml" && !configFromEnv {
+	if configPath == "config.yaml" {
 		if envConfig := os.Getenv("CONFIG_PATH"); envConfig != "" {
 			configPath = envConfig
 		}
 	}
 
-	// Check if we should use environment-only configuration
-	if !configFromEnv {
-		// Check explicit flag first
-		if os.Getenv("BROTHER_EXPORTER_CONFIG_FROM_ENV") == "true" {
-			configFromEnv = true
-		} else if hasEnvironmentVariables() {
-			// Auto-detect environment variables and use them
-			configFromEnv = true
-		}
+	if configFromEnv || os.Getenv("BROTHER_EXPORTER_CONFIG_FROM_ENV") == "true" {
+		fmt.Fprintln(os.Stderr, "Warning: --config-from-env / BROTHER_EXPORTER_CONFIG_FROM_ENV is deprecated and has no effect. Env vars are always applied on top of yaml config.")
 	}
 
-	// Load configuration
-	cfg, err := config.LoadConfig(configPath, configFromEnv)
+	cfg, err := config.LoadConfig(configPath)
 	if err != nil {
 		slog.Error("Failed to load configuration", "error", err)
 		os.Exit(1)
