@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.66](https://github.com/d0ugal/brother-exporter/compare/v1.12.65...v1.12.66) (2026-04-26)
+
+
+### Bug Fixes
+
+* use RELEASE_TOKEN in auto-format workflow to trigger CI ([14edf74](https://github.com/d0ugal/brother-exporter/commit/14edf747a2723f9e7a1602fd5e84a847ba2163b0))
+
 ## [1.12.65](https://github.com/d0ugal/brother-exporter/compare/v1.12.64...v1.12.65) (2026-04-26)
 
 
