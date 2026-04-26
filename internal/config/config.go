@@ -62,29 +62,36 @@ func applyEnvVars(cfg *Config) {
 	if host := os.Getenv("BROTHER_EXPORTER_SERVER_HOST"); host != "" {
 		cfg.Server.Host = host
 	}
+
 	if portStr := os.Getenv("BROTHER_EXPORTER_SERVER_PORT"); portStr != "" {
 		if port, err := parseInt(portStr); err == nil {
 			cfg.Server.Port = port
 		}
 	}
+
 	if level := os.Getenv("BROTHER_EXPORTER_LOG_LEVEL"); level != "" {
 		cfg.Logging.Level = level
 	}
+
 	if format := os.Getenv("BROTHER_EXPORTER_LOG_FORMAT"); format != "" {
 		cfg.Logging.Format = format
 	}
+
 	if intervalStr := os.Getenv("BROTHER_EXPORTER_METRICS_DEFAULT_INTERVAL"); intervalStr != "" {
 		if interval, err := time.ParseDuration(intervalStr); err == nil {
 			cfg.Metrics.Collection.DefaultInterval = promexporter_config.Duration{Duration: interval}
 			cfg.Metrics.Collection.DefaultIntervalSet = true
 		}
 	}
+
 	if host := os.Getenv("BROTHER_EXPORTER_PRINTER_HOST"); host != "" {
 		cfg.Printer.Host = host
 	}
+
 	if community := os.Getenv("BROTHER_EXPORTER_PRINTER_COMMUNITY"); community != "" {
 		cfg.Printer.Community = community
 	}
+
 	if printerType := os.Getenv("BROTHER_EXPORTER_PRINTER_TYPE"); printerType != "" {
 		cfg.Printer.Type = printerType
 	}
