@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.67](https://github.com/d0ugal/brother-exporter/compare/v1.12.66...v1.12.67) (2026-04-27)
+
+
+### Bug Fixes
+
+* Update module github.com/mattn/go-isatty to v0.0.22 ([85ab5a9](https://github.com/d0ugal/brother-exporter/commit/85ab5a99c848bfa61ec9be28dacca0f35fa6c91b))
+
 ## [1.12.66](https://github.com/d0ugal/brother-exporter/compare/v1.12.65...v1.12.66) (2026-04-26)
 
 
