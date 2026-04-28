@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.68](https://github.com/d0ugal/brother-exporter/compare/v1.12.67...v1.12.68) (2026-04-28)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to 7cedc36 ([da1c5eb](https://github.com/d0ugal/brother-exporter/commit/da1c5eb25b7d077ea4b1fd233e80ace718d2447c))
+* Update google.golang.org/genproto/googleapis/rpc digest to 7cedc36 ([7bf35c9](https://github.com/d0ugal/brother-exporter/commit/7bf35c92c685abb5a2fe7ce9789f51a0624c2813))
+* Update module github.com/bytedance/sonic to v1.15.1 ([852ff4e](https://github.com/d0ugal/brother-exporter/commit/852ff4ea3104b1921f766893b717a9336e593f9b))
+* Update module github.com/d0ugal/promexporter to v1.14.45 ([93ee926](https://github.com/d0ugal/brother-exporter/commit/93ee9261629c572e31ee9e7ba47066dee619f5e7))
+* Update module go.mongodb.org/mongo-driver/v2 to v2.6.0 ([7e12f68](https://github.com/d0ugal/brother-exporter/commit/7e12f68c29c4b545b9c2fa0ec1093f96febe3980))
+
 ## [1.12.67](https://github.com/d0ugal/brother-exporter/compare/v1.12.66...v1.12.67) (2026-04-27)
 
 
