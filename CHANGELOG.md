@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.69](https://github.com/d0ugal/brother-exporter/compare/v1.12.68...v1.12.69) (2026-04-30)
+
+
+### Bug Fixes
+
+* Update module github.com/cloudwego/base64x to v0.1.7 ([fc6dc30](https://github.com/d0ugal/brother-exporter/commit/fc6dc309a19294b20ac6b561e26f9bd0f0b560a2))
+* Update module github.com/d0ugal/promexporter to v1.14.46 ([1fed4d5](https://github.com/d0ugal/brother-exporter/commit/1fed4d58fb5073fd0ff68fd0d87f8929fb2ec0b0))
+
 ## [1.12.68](https://github.com/d0ugal/brother-exporter/compare/v1.12.67...v1.12.68) (2026-04-28)
 
 
