@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.70](https://github.com/d0ugal/brother-exporter/compare/v1.12.69...v1.12.70) (2026-05-01)
+
+
+### Bug Fixes
+
+* Update module github.com/d0ugal/promexporter to v1.14.47 ([ec865d6](https://github.com/d0ugal/brother-exporter/commit/ec865d69a621baa3dbfd1aa90b2c765a022780e2))
+* Update module github.com/pelletier/go-toml/v2 to v2.3.1 ([acb6e5a](https://github.com/d0ugal/brother-exporter/commit/acb6e5ae6fc10f582fbd0359e999799d9bd6ab0f))
+
 ## [1.12.69](https://github.com/d0ugal/brother-exporter/compare/v1.12.68...v1.12.69) (2026-04-30)
 
 
