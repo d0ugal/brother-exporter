@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.76](https://github.com/d0ugal/brother-exporter/compare/v1.12.75...v1.12.76) (2026-05-06)
+
+
+### Bug Fixes
+
+* Update module github.com/grafana/pyroscope-go to v1.3.0 ([d642cdd](https://github.com/d0ugal/brother-exporter/commit/d642cdd0b824ec5f2be98468c653a5fdc9e76c21))
+* Update module github.com/grafana/pyroscope-go/godeltaprof to v0.1.10 ([b1292bf](https://github.com/d0ugal/brother-exporter/commit/b1292bfbee829fdbe8f29c04fe82128e12f168c5))
+
 ## [1.12.75](https://github.com/d0ugal/brother-exporter/compare/v1.12.74...v1.12.75) (2026-05-05)
 
 
