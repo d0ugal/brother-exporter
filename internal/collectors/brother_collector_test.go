@@ -3,6 +3,9 @@ package collectors
 import (
 	"testing"
 
+	"github.com/d0ugal/brother-exporter/internal/metrics"
+	promexporter_metrics "github.com/d0ugal/promexporter/metrics"
+	"github.com/prometheus/client_golang/prometheus"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -36,4 +39,24 @@ func TestBrotherCollector_ColorMappings(t *testing.T) {
 	assert.Contains(t, InkColors, "cyan")
 	assert.Contains(t, InkColors, "magenta")
 	assert.Contains(t, InkColors, "yellow")
+}
+
+// TestPrinterConnectionErrors_LabelsMatchRegistry guards against the label-name
+// mismatch between the registry definition (host, error_type) and the call
+// sites in handleCollectionError / the connect-error path. If the labels
+// drift again, prometheus.Labels.With() panics here.
+func TestPrinterConnectionErrors_LabelsMatchRegistry(t *testing.T) {
+	baseRegistry := promexporter_metrics.NewRegistry("brother_exporter_info_test")
+	brotherMetrics := metrics.NewBrotherRegistry(baseRegistry)
+
+	assert.NotPanics(t, func() {
+		brotherMetrics.PrinterConnectionErrors.With(prometheus.Labels{
+			"host":       "test-host",
+			"error_type": "connect",
+		}).Inc()
+		brotherMetrics.PrinterConnectionErrors.With(prometheus.Labels{
+			"host":       "test-host",
+			"error_type": "deviceinfo",
+		}).Inc()
+	})
 }
