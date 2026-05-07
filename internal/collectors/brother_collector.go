@@ -106,8 +106,8 @@ func (bc *BrotherCollector) handleCollectionError(err error, operation string) {
 	if err != nil {
 		slog.Error("Failed to collect "+operation, "error", err)
 		bc.metrics.PrinterConnectionErrors.With(prometheus.Labels{
-			"host":      bc.config.Printer.Host,
-			"operation": operation,
+			"host":       bc.config.Printer.Host,
+			"error_type": operation,
 		}).Inc()
 	}
 }
@@ -350,8 +350,8 @@ func (bc *BrotherCollector) collectMetrics(ctx context.Context) {
 			"host": bc.config.Printer.Host,
 		}).Set(0)
 		bc.metrics.PrinterConnectionErrors.With(prometheus.Labels{
-			"host":      bc.config.Printer.Host,
-			"operation": "connect",
+			"host":       bc.config.Printer.Host,
+			"error_type": "connect",
 		}).Inc()
 
 		return
