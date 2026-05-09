@@ -21,13 +21,9 @@ func main() {
 	flag.BoolVar(&showVersion, "version", false, "Show version information")
 	flag.BoolVar(&showVersion, "v", false, "Show version information")
 
-	var (
-		configPath    string
-		configFromEnv bool
-	)
+	var configPath string
 
 	flag.StringVar(&configPath, "config", "config.yaml", "Path to configuration file")
-	flag.BoolVar(&configFromEnv, "config-from-env", false, "Deprecated: env vars are always applied; this flag is a no-op")
 	flag.Parse()
 
 	// Show version if requested
@@ -42,10 +38,6 @@ func main() {
 		if envConfig := os.Getenv("CONFIG_PATH"); envConfig != "" {
 			configPath = envConfig
 		}
-	}
-
-	if configFromEnv || os.Getenv("BROTHER_EXPORTER_CONFIG_FROM_ENV") == "true" {
-		fmt.Fprintln(os.Stderr, "Warning: --config-from-env / BROTHER_EXPORTER_CONFIG_FROM_ENV is deprecated and has no effect. Env vars are always applied on top of yaml config.")
 	}
 
 	cfg, err := config.LoadConfig(configPath)
