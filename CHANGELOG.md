@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.78](https://github.com/d0ugal/brother-exporter/compare/v1.12.77...v1.12.78) (2026-05-11)
+
+
+### Bug Fixes
+
+* align PrinterConnectionErrors label with registered name ([6295b47](https://github.com/d0ugal/brother-exporter/commit/6295b47b163148fa9fb6e70d25b5cbd7b59617a5))
+* Update go toolchain directive to v1.26.3 ([1b3ec29](https://github.com/d0ugal/brother-exporter/commit/1b3ec290370a6c97cfce5bc0d9d8d2c32af1fe90))
+* Update google.golang.org/genproto/googleapis/api digest to 3700d41 ([5681356](https://github.com/d0ugal/brother-exporter/commit/56813565248a6c1cc411c451b6bd87302c463867))
+* Update google.golang.org/genproto/googleapis/rpc digest to 3700d41 ([e261a08](https://github.com/d0ugal/brother-exporter/commit/e261a08bd064aad6994a863c741b33a26953b494))
+* Update module github.com/d0ugal/promexporter to v1.14.52 ([38c659a](https://github.com/d0ugal/brother-exporter/commit/38c659a7450bca9eca5127a6ad6cb3e55e4d1f80))
+* Update module github.com/d0ugal/promexporter to v1.14.53 ([0911a2a](https://github.com/d0ugal/brother-exporter/commit/0911a2a3116a38ea0b0d27c23306eafc82501ac7))
+* Update module github.com/d0ugal/promexporter to v1.14.54 ([6d9ec2c](https://github.com/d0ugal/brother-exporter/commit/6d9ec2c7ccfad79b932545a243828f9233ece1b2))
+* Update module github.com/quic-go/quic-go to v0.59.1 ([b2af6d3](https://github.com/d0ugal/brother-exporter/commit/b2af6d35358fa29789eb608802493a67c27ae098))
+* Update module golang.org/x/arch to v0.27.0 ([40e07fe](https://github.com/d0ugal/brother-exporter/commit/40e07fecb9e409ad606a3b23b6b6afb32026281a))
+* Update module golang.org/x/crypto to v0.51.0 ([c980fc0](https://github.com/d0ugal/brother-exporter/commit/c980fc0ce9ec773786ac422e3c379b639e84662d))
+* Update module golang.org/x/net to v0.54.0 ([70a233b](https://github.com/d0ugal/brother-exporter/commit/70a233bd39c90e7729d5a552c47b5844c95b3ea0))
+* Update module golang.org/x/sys to v0.44.0 ([f496393](https://github.com/d0ugal/brother-exporter/commit/f496393909fd9cddfd9e3bada4f615825f8dd32b))
+* Update module golang.org/x/text to v0.37.0 ([d9e625f](https://github.com/d0ugal/brother-exporter/commit/d9e625f942bdec523c7917b2c5b3a43ba7c67382))
+
 ## [1.12.77](https://github.com/d0ugal/brother-exporter/compare/v1.12.76...v1.12.77) (2026-05-07)
 
 
