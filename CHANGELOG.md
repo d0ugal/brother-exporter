@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.80](https://github.com/d0ugal/brother-exporter/compare/v1.12.79...v1.12.80) (2026-05-15)
+
+
+### Bug Fixes
+
+* Update module google.golang.org/grpc to v1.81.1 ([028aa0e](https://github.com/d0ugal/brother-exporter/commit/028aa0e44bf8891865aec3f44eaf725aae69e270))
+
 ## [1.12.79](https://github.com/d0ugal/brother-exporter/compare/v1.12.78...v1.12.79) (2026-05-12)
 
 
