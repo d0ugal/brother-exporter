@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.83](https://github.com/d0ugal/brother-exporter/compare/v1.12.82...v1.12.83) (2026-05-22)
+
+
+### Bug Fixes
+
+* Update module github.com/d0ugal/promexporter to v1.14.57 ([808c707](https://github.com/d0ugal/brother-exporter/commit/808c70719e7b74e95710ab95cb715df64986f451))
+* Update module golang.org/x/crypto to v0.52.0 ([f9fae81](https://github.com/d0ugal/brother-exporter/commit/f9fae81dae4f5b3ebae41d4a72a8698c8cb08ac1))
+* Update module golang.org/x/sys to v0.45.0 ([c158ce4](https://github.com/d0ugal/brother-exporter/commit/c158ce4d67dec5967ac47e8cc6c39ffd59870400))
+
 ## [1.12.82](https://github.com/d0ugal/brother-exporter/compare/v1.12.81...v1.12.82) (2026-05-19)
 
 
