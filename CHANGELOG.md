@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.86](https://github.com/d0ugal/brother-exporter/compare/v1.12.85...v1.12.86) (2026-05-27)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to 0a33c5d ([76847f0](https://github.com/d0ugal/brother-exporter/commit/76847f08d3a714db9a10582e5ef7f0ec798f2b7c))
+* Update google.golang.org/genproto/googleapis/api digest to 3dc84a4 ([20d179b](https://github.com/d0ugal/brother-exporter/commit/20d179beca6792fc848ffe23b5df8c423bf9527e))
+* Update google.golang.org/genproto/googleapis/api digest to 7f3bc5b ([8324dfe](https://github.com/d0ugal/brother-exporter/commit/8324dfe86747b12ca8c2d9ab1e13c8e9d628d0b0))
+* Update google.golang.org/genproto/googleapis/rpc digest to 0a33c5d ([772ac03](https://github.com/d0ugal/brother-exporter/commit/772ac0349bd64e77b1b5800bdbf4c9a6d67fbab8))
+* Update google.golang.org/genproto/googleapis/rpc digest to 3dc84a4 ([61d2454](https://github.com/d0ugal/brother-exporter/commit/61d2454539bf2dc2e2104c49dc50c7e27e40704a))
+* Update google.golang.org/genproto/googleapis/rpc digest to 9641223 ([d2d1b44](https://github.com/d0ugal/brother-exporter/commit/d2d1b44044776e97ea2498a935aa91838b9745a2))
+* Update module github.com/d0ugal/promexporter to v1.14.59 ([db2a130](https://github.com/d0ugal/brother-exporter/commit/db2a13000959fb51b51f2412ac84b5507338e728))
+
 ## [1.12.85](https://github.com/d0ugal/brother-exporter/compare/v1.12.84...v1.12.85) (2026-05-22)
 
 
