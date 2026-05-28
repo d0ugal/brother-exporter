@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.87](https://github.com/d0ugal/brother-exporter/compare/v1.12.86...v1.12.87) (2026-05-28)
+
+
+### Bug Fixes
+
+* Update module github.com/d0ugal/promexporter to v1.14.60 ([0f91a0d](https://github.com/d0ugal/brother-exporter/commit/0f91a0d717938afa27d1fdc97f9f3617fae440f9))
+* Update module github.com/grafana/pyroscope-go to v1.3.1 ([a6653da](https://github.com/d0ugal/brother-exporter/commit/a6653daad84e2c0f1cc1e0a82b7d1061843234da))
+* Update opentelemetry-go monorepo to v1.44.0 ([bc2ff5a](https://github.com/d0ugal/brother-exporter/commit/bc2ff5abaa2a193e28be43839e538c77f6ef50c9))
+* Update opentelemetry-go-contrib monorepo to v0.69.0 ([18ba011](https://github.com/d0ugal/brother-exporter/commit/18ba0112a5b92e376b770195bf6b1088ffc4d4dd))
+
 ## [1.12.86](https://github.com/d0ugal/brother-exporter/compare/v1.12.85...v1.12.86) (2026-05-27)
 
 
