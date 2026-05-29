@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.88](https://github.com/d0ugal/brother-exporter/compare/v1.12.87...v1.12.88) (2026-05-29)
+
+
+### Bug Fixes
+
+* Update module github.com/d0ugal/promexporter to v1.14.61 ([fe0a352](https://github.com/d0ugal/brother-exporter/commit/fe0a35238a0ecc0afe42f72a58ed31a0477a9674))
+* Update module github.com/prometheus/common to v0.68.0 ([106e198](https://github.com/d0ugal/brother-exporter/commit/106e1983efcee336dd0ac1e781063fe451ebb1a2))
+
 ## [1.12.87](https://github.com/d0ugal/brother-exporter/compare/v1.12.86...v1.12.87) (2026-05-28)
 
 
