@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.89](https://github.com/d0ugal/brother-exporter/compare/v1.12.88...v1.12.89) (2026-06-03)
+
+
+### Bug Fixes
+
+* Update go toolchain directive to v1.26.4 ([57c8dd9](https://github.com/d0ugal/brother-exporter/commit/57c8dd942c71be9b2f8a5bc1fdd6223597283db2))
+* Update module github.com/d0ugal/promexporter to v1.14.62 ([79fa8e0](https://github.com/d0ugal/brother-exporter/commit/79fa8e0e79ab3a24bdb40243786fdc7e66002f93))
+* Update module github.com/go-playground/validator/v10 to v10.30.3 ([df6ea49](https://github.com/d0ugal/brother-exporter/commit/df6ea49f4155c63b74a4baeaf6322d160ced24e7))
+* Update module github.com/prometheus/common to v0.68.1 ([725f578](https://github.com/d0ugal/brother-exporter/commit/725f578d52494c4cb48b9ddbfcbc93d9600d9c92))
+
 ## [1.12.88](https://github.com/d0ugal/brother-exporter/compare/v1.12.87...v1.12.88) (2026-05-29)
 
 
