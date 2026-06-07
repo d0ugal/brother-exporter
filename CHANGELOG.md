@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.92](https://github.com/d0ugal/brother-exporter/compare/v1.12.91...v1.12.92) (2026-06-07)
+
+
+### Bug Fixes
+
+* Update module github.com/quic-go/quic-go to v0.60.0 ([5716027](https://github.com/d0ugal/brother-exporter/commit/5716027aa3f7417b81d7ac233a104c01c620c4ff))
+
 ## [1.12.91](https://github.com/d0ugal/brother-exporter/compare/v1.12.90...v1.12.91) (2026-06-05)
 
 
