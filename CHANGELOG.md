@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.93](https://github.com/d0ugal/brother-exporter/compare/v1.12.92...v1.12.93) (2026-06-10)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to 4308a22 ([e3b7ee5](https://github.com/d0ugal/brother-exporter/commit/e3b7ee548103a3b2c486705adc53d00c46a779cf))
+* Update google.golang.org/genproto/googleapis/rpc digest to 4308a22 ([ea7579d](https://github.com/d0ugal/brother-exporter/commit/ea7579d906382864184d0c05ec393145597845a2))
+* Update module golang.org/x/arch to v0.28.0 ([60862d0](https://github.com/d0ugal/brother-exporter/commit/60862d0d9e80f884391d9d9c71c337c63724328f))
+* Update module golang.org/x/crypto to v0.53.0 ([790e19c](https://github.com/d0ugal/brother-exporter/commit/790e19cfb9fa7619e74f19561f7c9538430c9e86))
+* Update module golang.org/x/sys to v0.46.0 ([d8c3491](https://github.com/d0ugal/brother-exporter/commit/d8c349188563aea616d6df76cb2b216fe60a00bd))
+
 ## [1.12.92](https://github.com/d0ugal/brother-exporter/compare/v1.12.91...v1.12.92) (2026-06-07)
 
 
