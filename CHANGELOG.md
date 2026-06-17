@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.95](https://github.com/d0ugal/brother-exporter/compare/v1.12.94...v1.12.95) (2026-06-17)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/rpc digest to 62b3387 ([24a2671](https://github.com/d0ugal/brother-exporter/commit/24a2671248f0d52a8435a9e726cabbd9d20b1e95))
+* Update module github.com/cenkalti/backoff/v5 to v6 ([9d17513](https://github.com/d0ugal/brother-exporter/commit/9d1751342ff74033fe7a96e5636c96f468d3f3d6))
+* Update module github.com/pelletier/go-toml/v2 to v2.4.0 ([c311d7c](https://github.com/d0ugal/brother-exporter/commit/c311d7c2a38e0ddfe04d810edc70934c35f9e0f7))
+* Update module github.com/prometheus/common to v0.69.0 ([106eb05](https://github.com/d0ugal/brother-exporter/commit/106eb058ecc3c8a30b3608f91c7b0861b37cff3d))
+* Update module go.mongodb.org/mongo-driver/v2 to v2.6.1 ([5247f22](https://github.com/d0ugal/brother-exporter/commit/5247f2254ef5669b549d31eddb51bac4535f85da))
+* Update module go.mongodb.org/mongo-driver/v2 to v2.7.0 ([0e681e3](https://github.com/d0ugal/brother-exporter/commit/0e681e36c247b47a790e3dd4f1bc21a17af724a4))
+
 ## [1.12.94](https://github.com/d0ugal/brother-exporter/compare/v1.12.93...v1.12.94) (2026-06-16)
 
 
