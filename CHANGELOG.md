@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.97](https://github.com/d0ugal/brother-exporter/compare/v1.12.96...v1.12.97) (2026-06-24)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to 1f2690b ([a32556b](https://github.com/d0ugal/brother-exporter/commit/a32556bc1de7c6526870d4564356254e7b134d50))
+* Update google.golang.org/genproto/googleapis/api digest to b703f56 ([78e36c8](https://github.com/d0ugal/brother-exporter/commit/78e36c88cf8b9659f0a1dcfd80e9d43c37bd050c))
+* Update google.golang.org/genproto/googleapis/rpc digest to b703f56 ([bc62355](https://github.com/d0ugal/brother-exporter/commit/bc6235588843a06bd6002bdb2c5d69aaef1e1ad1))
+* Update module github.com/pelletier/go-toml/v2 to v2.4.1 ([d2eb4e9](https://github.com/d0ugal/brother-exporter/commit/d2eb4e9a3e82c0793bd0e08de03196c24d7fbd28))
+* Update module github.com/pelletier/go-toml/v2 to v2.4.2 ([33dcd5c](https://github.com/d0ugal/brother-exporter/commit/33dcd5c931a6fa828eab8c7e45071c857fa3d9ca))
+
 ## [1.12.96](https://github.com/d0ugal/brother-exporter/compare/v1.12.95...v1.12.96) (2026-06-19)
 
 
