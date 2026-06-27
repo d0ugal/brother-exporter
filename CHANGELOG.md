@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.98](https://github.com/d0ugal/brother-exporter/compare/v1.12.97...v1.12.98) (2026-06-27)
+
+
+### Bug Fixes
+
+* Update module github.com/prometheus/procfs to v0.21.0 ([94d1965](https://github.com/d0ugal/brother-exporter/commit/94d1965e41da70d6853607a48c66422d7fc59469))
+
 ## [1.12.97](https://github.com/d0ugal/brother-exporter/compare/v1.12.96...v1.12.97) (2026-06-24)
 
 
