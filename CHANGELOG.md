@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.99](https://github.com/d0ugal/brother-exporter/compare/v1.12.98...v1.12.99) (2026-07-01)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to 925bb5d ([ba9bcd0](https://github.com/d0ugal/brother-exporter/commit/ba9bcd0db6c36d8383b9e2292022fde13af3f082))
+* Update google.golang.org/genproto/googleapis/rpc digest to 925bb5d ([fe51f5f](https://github.com/d0ugal/brother-exporter/commit/fe51f5f24dc0c9c5333c29cefea22945f2f63383))
+* Update module github.com/cenkalti/backoff/v5 to v7 ([0302513](https://github.com/d0ugal/brother-exporter/commit/030251380a2c0127c5692746e0211094acceec00))
+* Update module github.com/klauspost/compress to v1.18.7 ([e2f6993](https://github.com/d0ugal/brother-exporter/commit/e2f6993bf2664ac12fb0e98539372f7aafe8605b))
+* Update module github.com/klauspost/cpuid/v2 to v2.4.0 ([a08a7d4](https://github.com/d0ugal/brother-exporter/commit/a08a7d4a883764f63095d15cc193c9d38e7b9f1b))
+* Update module github.com/prometheus/procfs to v0.21.1 ([9fafeda](https://github.com/d0ugal/brother-exporter/commit/9fafeda5a24590402e15afb81a0237e7a2c08ac6))
+* Update module google.golang.org/grpc to v1.82.0 ([5f9354d](https://github.com/d0ugal/brother-exporter/commit/5f9354deab28b702cc3a1c4f525302d481e05f42))
+
 ## [1.12.98](https://github.com/d0ugal/brother-exporter/compare/v1.12.97...v1.12.98) (2026-06-27)
 
 
