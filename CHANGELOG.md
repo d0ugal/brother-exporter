@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.100](https://github.com/d0ugal/brother-exporter/compare/v1.12.99...v1.12.100) (2026-07-02)
+
+
+### Bug Fixes
+
+* Update module github.com/klauspost/compress to v1.19.0 ([cd0d90e](https://github.com/d0ugal/brother-exporter/commit/cd0d90e0ea093442ff40a99cec3d11bfd5d4090a))
+
 ## [1.12.99](https://github.com/d0ugal/brother-exporter/compare/v1.12.98...v1.12.99) (2026-07-01)
 
 
