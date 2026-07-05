@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.101](https://github.com/d0ugal/brother-exporter/compare/v1.12.100...v1.12.101) (2026-07-05)
+
+
+### Bug Fixes
+
+* Update module github.com/grafana/pyroscope-go to v1.4.0 ([e4d6284](https://github.com/d0ugal/brother-exporter/commit/e4d628438837844d23c511b1b0f14b2e7528dc93))
+* Update module github.com/pelletier/go-toml/v2 to v2.4.3 ([b43fed2](https://github.com/d0ugal/brother-exporter/commit/b43fed2e257484e65f2d1fb2bad0ff3918e4e50e))
+
 ## [1.12.100](https://github.com/d0ugal/brother-exporter/compare/v1.12.99...v1.12.100) (2026-07-02)
 
 
