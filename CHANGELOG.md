@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.102](https://github.com/d0ugal/brother-exporter/compare/v1.12.101...v1.12.102) (2026-07-07)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to f0a9213 ([f95c598](https://github.com/d0ugal/brother-exporter/commit/f95c59804e34d0304a2b73fe6c2f0b403bf1403b))
+* Update google.golang.org/genproto/googleapis/rpc digest to f0a9213 ([3586d71](https://github.com/d0ugal/brother-exporter/commit/3586d711de756d85764508c72293fc72a0cfe5f1))
+* Update module golang.org/x/text to v0.39.0 ([54398b2](https://github.com/d0ugal/brother-exporter/commit/54398b2677d38ced09ebf777a299b1f137bd21d0))
+
 ## [1.12.101](https://github.com/d0ugal/brother-exporter/compare/v1.12.100...v1.12.101) (2026-07-05)
 
 
