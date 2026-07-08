@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.103](https://github.com/d0ugal/brother-exporter/compare/v1.12.102...v1.12.103) (2026-07-08)
+
+
+### Bug Fixes
+
+* Update go toolchain directive to v1.26.5 ([f62a6ee](https://github.com/d0ugal/brother-exporter/commit/f62a6eeb6504e2bb68209eca58360cd80e474108))
+* Update module github.com/d0ugal/promexporter to v1.14.65 ([7b1f730](https://github.com/d0ugal/brother-exporter/commit/7b1f73099345222f1672767fa056efd38c180fcb))
+
 ## [1.12.102](https://github.com/d0ugal/brother-exporter/compare/v1.12.101...v1.12.102) (2026-07-07)
 
 
