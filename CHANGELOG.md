@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.104](https://github.com/d0ugal/brother-exporter/compare/v1.12.103...v1.12.104) (2026-07-10)
+
+
+### Bug Fixes
+
+* Update module github.com/d0ugal/promexporter to v1.14.66 ([6970fa9](https://github.com/d0ugal/brother-exporter/commit/6970fa9d13109218682336949ade8d5c6cee24a5))
+* Update module github.com/grafana/pyroscope-go to v1.4.1 ([cc76781](https://github.com/d0ugal/brother-exporter/commit/cc767816d6d8d98da7abae915cc6d7fa60c4823a))
+* Update module github.com/grafana/pyroscope-go/godeltaprof to v0.1.12 ([e6425d7](https://github.com/d0ugal/brother-exporter/commit/e6425d7938fc554455a7b4f2c28691aab4ab0548))
+* Update module github.com/prometheus/common to v0.70.0 ([91bc45e](https://github.com/d0ugal/brother-exporter/commit/91bc45ec727e06ccf62cb7ddd36c98e33caeaeff))
+* Update module go.mongodb.org/mongo-driver/v2 to v2.8.0 ([a88e3f4](https://github.com/d0ugal/brother-exporter/commit/a88e3f46297903bd69cd5bb849089958a46b804e))
+* Update module golang.org/x/arch to v0.29.0 ([3dc2c16](https://github.com/d0ugal/brother-exporter/commit/3dc2c1672dbf95bf23a53ff40c53614dcdb834aa))
+* Update module golang.org/x/crypto to v0.54.0 ([e9172cd](https://github.com/d0ugal/brother-exporter/commit/e9172cd1d5a716be33ef631118c75efb7e41189b))
+* Update module golang.org/x/net to v0.57.0 ([c3e47fc](https://github.com/d0ugal/brother-exporter/commit/c3e47fcdde3b8d2a0805c7ed8873890475387aa5))
+* Update module golang.org/x/sys to v0.47.0 ([136173a](https://github.com/d0ugal/brother-exporter/commit/136173a1fc40c71bb4f2d63e72ec2b52123646d4))
+
 ## [1.12.103](https://github.com/d0ugal/brother-exporter/compare/v1.12.102...v1.12.103) (2026-07-08)
 
 
