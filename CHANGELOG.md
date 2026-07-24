@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.107](https://github.com/d0ugal/brother-exporter/compare/v1.12.106...v1.12.107) (2026-07-24)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to 0afa2a6 ([ea7cb51](https://github.com/d0ugal/brother-exporter/commit/ea7cb515d44f64232e9be2e47968d64820851ce5))
+* Update google.golang.org/genproto/googleapis/api digest to 3fe39f3 ([966ba24](https://github.com/d0ugal/brother-exporter/commit/966ba24644e44046352c5b163a4d871f8a92f715))
+* Update google.golang.org/genproto/googleapis/api digest to e059f2f ([5ef6eba](https://github.com/d0ugal/brother-exporter/commit/5ef6eba8764e2b0333ffd7a8613cb74273ec6af9))
+* Update google.golang.org/genproto/googleapis/rpc digest to 0afa2a6 ([0a59d97](https://github.com/d0ugal/brother-exporter/commit/0a59d97c837e6f865ee326edd14a06ba133c0349))
+* Update google.golang.org/genproto/googleapis/rpc digest to 3fe39f3 ([6915a03](https://github.com/d0ugal/brother-exporter/commit/6915a032f72f0383154efe44df94972c8b9391b0))
+* Update module github.com/gabriel-vasile/mimetype to v1.4.14 ([0e31197](https://github.com/d0ugal/brother-exporter/commit/0e311972000b373a734d764be207b1d8cc7a958a))
+* Update module github.com/gabriel-vasile/mimetype to v1.4.15 ([0f36afc](https://github.com/d0ugal/brother-exporter/commit/0f36afce8a4308e4d9d81cf875f0d50413259fee))
+* Update module github.com/go-logr/logr to v1.4.4 ([5401207](https://github.com/d0ugal/brother-exporter/commit/5401207b7a1f8f47d9919b2135da2c047cdc85e0))
+* Update module github.com/gosnmp/gosnmp to v1.44.0 ([232955a](https://github.com/d0ugal/brother-exporter/commit/232955a6b99b7319e092bba2fa59151522e64c1a))
+* Update module github.com/klauspost/compress to v1.19.1 ([c9b0f7a](https://github.com/d0ugal/brother-exporter/commit/c9b0f7abef4e90431213557936ff9590f3240391))
+* Update module github.com/leodido/go-urn to v1.5.0 ([853f958](https://github.com/d0ugal/brother-exporter/commit/853f95886909721179dcc61f5a50ff306b0f90e4))
+* Update module github.com/mattn/go-isatty to v0.0.23 ([d3b1854](https://github.com/d0ugal/brother-exporter/commit/d3b1854f3aa652cfe7f849910dafa0184adbaf22))
+* Update module github.com/mattn/go-isatty to v0.0.24 ([bf78c0c](https://github.com/d0ugal/brother-exporter/commit/bf78c0c498a81a97c94e8ae3f8c70e86d582583f))
+* Update module github.com/prometheus/client_golang to v1.24.0 ([4c67b6d](https://github.com/d0ugal/brother-exporter/commit/4c67b6da322987f9e9031ea5a711cecf5ce5a71e))
+* Update module github.com/prometheus/common to v0.70.1 ([6f4d22a](https://github.com/d0ugal/brother-exporter/commit/6f4d22a2d3c843c6cd23f94d6e43712565331ef6))
+* Update module go.opentelemetry.io/proto/otlp to v1.11.0 ([4df67ba](https://github.com/d0ugal/brother-exporter/commit/4df67badf62bd45ea07b8ba473c81b70854d591e))
+
 ## [1.12.106](https://github.com/d0ugal/brother-exporter/compare/v1.12.105...v1.12.106) (2026-07-16)
 
 
