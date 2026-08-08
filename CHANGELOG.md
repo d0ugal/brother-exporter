@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.108](https://github.com/d0ugal/brother-exporter/compare/v1.12.107...v1.12.108) (2026-08-08)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to 6ac0973 ([630b663](https://github.com/d0ugal/brother-exporter/commit/630b6636a0f88be9a9d5e2227191d6a4b987a763))
+* Update google.golang.org/genproto/googleapis/api digest to c8921c7 ([65628af](https://github.com/d0ugal/brother-exporter/commit/65628af8fefa403a0eac455f3b623ad2398edc84))
+* Update google.golang.org/genproto/googleapis/rpc digest to 6ac0973 ([b54dcbd](https://github.com/d0ugal/brother-exporter/commit/b54dcbd527fae74f9a5347a2cc5d95195ec2d91b))
+* Update google.golang.org/genproto/googleapis/rpc digest to c8921c7 ([c94c758](https://github.com/d0ugal/brother-exporter/commit/c94c7588c20b9b94e8894843768fbbc85f498254))
+* Update module github.com/d0ugal/promexporter to v1.14.68 ([771516b](https://github.com/d0ugal/brother-exporter/commit/771516bb27e2810edc23c1ebb6927580eb914779))
+* Update module github.com/grpc-ecosystem/grpc-gateway/v2 to v2.30.0 ([76d84a4](https://github.com/d0ugal/brother-exporter/commit/76d84a49d0bcac3222fe44e4b031a215474b29f2))
+* Update module github.com/klauspost/compress to v1.19.2 ([4eb2aa6](https://github.com/d0ugal/brother-exporter/commit/4eb2aa6fe5942eac24fb15e181dd68bddab99684))
+* Update module github.com/ugorji/go/codec to v1.3.2 ([dcd62df](https://github.com/d0ugal/brother-exporter/commit/dcd62df1d6c2b99612b4b490936b4e3b3ef4ad49))
+* Update module golang.org/x/arch to v0.30.0 ([8cd9e4a](https://github.com/d0ugal/brother-exporter/commit/8cd9e4a141424e63623240ea600f65eef2bbe9e6))
+* Update opentelemetry-go monorepo to v1.45.0 ([ad00481](https://github.com/d0ugal/brother-exporter/commit/ad004818f9fcfa67341516c54f9763cc021aa74a))
+* Update opentelemetry-go-contrib monorepo to v0.70.0 ([bbb7680](https://github.com/d0ugal/brother-exporter/commit/bbb7680267a9a2dd3deed9a2e2779e53ed9651e8))
+
 ## [1.12.107](https://github.com/d0ugal/brother-exporter/compare/v1.12.106...v1.12.107) (2026-07-30)
 
 
