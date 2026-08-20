@@ -8,7 +8,7 @@ require (
 	github.com/d0ugal/promexporter v1.14.69
 	github.com/gosnmp/gosnmp v1.44.0
 	github.com/prometheus/client_golang v1.24.1
-	github.com/stretchr/testify v1.12.0
+	github.com/stretchr/testify v1.12.1
 	go.opentelemetry.io/otel v1.45.0
 	gopkg.in/yaml.v3 v3.0.1
 )
@@ -62,6 +62,7 @@ require (
 	go.opentelemetry.io/otel/sdk/metric v1.45.0 // indirect
 	go.opentelemetry.io/otel/trace v1.45.0 // indirect
 	go.opentelemetry.io/proto/otlp v1.11.0 // indirect
+	go.yaml.in/yaml/v3 v3.0.5 // indirect
 	golang.org/x/arch v0.30.0 // indirect
 	golang.org/x/crypto v0.55.0 // indirect
 	golang.org/x/net v0.58.0 // indirect
