@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.109](https://github.com/d0ugal/brother-exporter/compare/v1.12.108...v1.12.109) (2026-08-21)
+
+
+### Bug Fixes
+
+* Update go toolchain directive to v1.26.6 ([d8c1cfd](https://github.com/d0ugal/brother-exporter/commit/d8c1cfdc1d8ad8d03a6a987d70473e9b4c4ee1dd))
+* Update go toolchain directive to v1.27.0 ([50e50aa](https://github.com/d0ugal/brother-exporter/commit/50e50aac1c99e26fcacef9b899411ef1fc0b011a))
+* Update google.golang.org/genproto/googleapis/api digest to 08b0e42 ([ff7e1e5](https://github.com/d0ugal/brother-exporter/commit/ff7e1e5aca92cbbc2cc41977d32545192c15c2ca))
+* Update google.golang.org/genproto/googleapis/api digest to 1b09341 ([794e828](https://github.com/d0ugal/brother-exporter/commit/794e828c85c8c4633a13cb3077e063eb0afdee94))
+* Update google.golang.org/genproto/googleapis/api digest to ac3dfec ([450aaef](https://github.com/d0ugal/brother-exporter/commit/450aaefa50e4db8b73ca96f62ca01fcb29c1013e))
+* Update google.golang.org/genproto/googleapis/rpc digest to 08b0e42 ([ede95c9](https://github.com/d0ugal/brother-exporter/commit/ede95c9c80b65859dcab24634798df55e8803134))
+* Update google.golang.org/genproto/googleapis/rpc digest to 1b09341 ([da7090c](https://github.com/d0ugal/brother-exporter/commit/da7090c3a3b35ee24e22d5af478a060d3e15b52f))
+* Update google.golang.org/genproto/googleapis/rpc digest to ac3dfec ([f1c3e77](https://github.com/d0ugal/brother-exporter/commit/f1c3e775969716bd36ee79b47da20ec0c024265f))
+* Update module github.com/d0ugal/promexporter to v1.14.69 ([83e4bfd](https://github.com/d0ugal/brother-exporter/commit/83e4bfd846fdbfdac517d8ea127741957ef25fc9))
+* Update module github.com/stretchr/testify to v1.12.0 ([7cf4ca1](https://github.com/d0ugal/brother-exporter/commit/7cf4ca1b0a68e0e487967db97b8b7025a111fac5))
+* Update module github.com/stretchr/testify to v1.12.1 ([3b4866e](https://github.com/d0ugal/brother-exporter/commit/3b4866e57eb3f467e828b7477ced1884f0296677))
+* Update module golang.org/x/net to v0.58.0 ([02f77a7](https://github.com/d0ugal/brother-exporter/commit/02f77a7fc255c27721407956e37a2b32ecf6a985))
+* Update module google.golang.org/grpc to v1.83.1 ([a5ff4e6](https://github.com/d0ugal/brother-exporter/commit/a5ff4e688da73eaea88bd993cb5932b89c8421ea))
+
 ## [1.12.108](https://github.com/d0ugal/brother-exporter/compare/v1.12.107...v1.12.108) (2026-08-12)
 
 
