@@ -2,6 +2,47 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.109](https://github.com/d0ugal/brother-exporter/compare/v1.12.108...v1.12.109) (2026-09-05)
+
+
+### Bug Fixes
+
+* Update go toolchain directive to v1.26.6 ([d8c1cfd](https://github.com/d0ugal/brother-exporter/commit/d8c1cfdc1d8ad8d03a6a987d70473e9b4c4ee1dd))
+* Update go toolchain directive to v1.27.0 ([50e50aa](https://github.com/d0ugal/brother-exporter/commit/50e50aac1c99e26fcacef9b899411ef1fc0b011a))
+* Update go toolchain directive to v1.27.1 ([5e38727](https://github.com/d0ugal/brother-exporter/commit/5e38727fdb59fa8c3c2725a591f613da0c6f175c))
+* Update google.golang.org/genproto/googleapis/api digest to 08b0e42 ([ff7e1e5](https://github.com/d0ugal/brother-exporter/commit/ff7e1e5aca92cbbc2cc41977d32545192c15c2ca))
+* Update google.golang.org/genproto/googleapis/api digest to 18b4a75 ([38477da](https://github.com/d0ugal/brother-exporter/commit/38477dacf3ac9926683c4ec4e25090ae21b33088))
+* Update google.golang.org/genproto/googleapis/api digest to 1b09341 ([794e828](https://github.com/d0ugal/brother-exporter/commit/794e828c85c8c4633a13cb3077e063eb0afdee94))
+* Update google.golang.org/genproto/googleapis/api digest to ac3dfec ([450aaef](https://github.com/d0ugal/brother-exporter/commit/450aaefa50e4db8b73ca96f62ca01fcb29c1013e))
+* Update google.golang.org/genproto/googleapis/api digest to d0f1323 ([29f4d2f](https://github.com/d0ugal/brother-exporter/commit/29f4d2feae8ec07da48bab0795d93923bb798873))
+* Update google.golang.org/genproto/googleapis/api digest to da73d73 ([4f1d573](https://github.com/d0ugal/brother-exporter/commit/4f1d573445b6921da168477e6321243ba0956ccd))
+* Update google.golang.org/genproto/googleapis/rpc digest to 08b0e42 ([ede95c9](https://github.com/d0ugal/brother-exporter/commit/ede95c9c80b65859dcab24634798df55e8803134))
+* Update google.golang.org/genproto/googleapis/rpc digest to 18b4a75 ([885a87b](https://github.com/d0ugal/brother-exporter/commit/885a87b307e8a95eda51acda9ef4b9eb1f590125))
+* Update google.golang.org/genproto/googleapis/rpc digest to 1b09341 ([da7090c](https://github.com/d0ugal/brother-exporter/commit/da7090c3a3b35ee24e22d5af478a060d3e15b52f))
+* Update google.golang.org/genproto/googleapis/rpc digest to ac3dfec ([f1c3e77](https://github.com/d0ugal/brother-exporter/commit/f1c3e775969716bd36ee79b47da20ec0c024265f))
+* Update google.golang.org/genproto/googleapis/rpc digest to d0f1323 ([d9b89e4](https://github.com/d0ugal/brother-exporter/commit/d9b89e488a637377af7fbb155f066fed0a0539aa))
+* Update google.golang.org/genproto/googleapis/rpc digest to da73d73 ([ba199f8](https://github.com/d0ugal/brother-exporter/commit/ba199f87abb6897d9b6ea1f0772f39189ba71d98))
+* Update module github.com/bytedance/sonic to v1.15.3 ([65be133](https://github.com/d0ugal/brother-exporter/commit/65be1335624329c787e02b73a4f7fde9ef8b0ee6))
+* Update module github.com/d0ugal/promexporter to v1.14.69 ([83e4bfd](https://github.com/d0ugal/brother-exporter/commit/83e4bfd846fdbfdac517d8ea127741957ef25fc9))
+* Update module github.com/gin-contrib/sse to v1.1.2 ([9ba5d05](https://github.com/d0ugal/brother-exporter/commit/9ba5d0550ae716df1a83369ed8d1293c35952b1c))
+* Update module github.com/go-playground/validator/v10 to v10.30.4 ([a123784](https://github.com/d0ugal/brother-exporter/commit/a123784a2a8ee30175b316d2e21cb778096feafd))
+* Update module github.com/klauspost/compress to v1.20.0 ([084c7a2](https://github.com/d0ugal/brother-exporter/commit/084c7a29d23704bddc1b0051d9130bfec89694f3))
+* Update module github.com/prometheus/client_model to v0.6.3 ([06f8f13](https://github.com/d0ugal/brother-exporter/commit/06f8f137923ce12fc6308ce29e8532e47d4ccd36))
+* Update module github.com/prometheus/common to v0.71.0 ([a91da25](https://github.com/d0ugal/brother-exporter/commit/a91da25035f806a99b68db26f2a916358d4a49ae))
+* Update module github.com/prometheus/procfs to v0.22.0 ([72e7dcc](https://github.com/d0ugal/brother-exporter/commit/72e7dcc50d6f340aa78e8f0860487b9acd94d1a5))
+* Update module github.com/quic-go/quic-go to v0.62.0 ([6f7cbf5](https://github.com/d0ugal/brother-exporter/commit/6f7cbf540a3e394293a926c91146b6fe0776498e))
+* Update module github.com/stretchr/testify to v1.12.0 ([7cf4ca1](https://github.com/d0ugal/brother-exporter/commit/7cf4ca1b0a68e0e487967db97b8b7025a111fac5))
+* Update module github.com/stretchr/testify to v1.12.1 ([3b4866e](https://github.com/d0ugal/brother-exporter/commit/3b4866e57eb3f467e828b7477ced1884f0296677))
+* Update module go.mongodb.org/mongo-driver/v2 to v2.8.1 ([0336002](https://github.com/d0ugal/brother-exporter/commit/03360021d25a4453a597ba11545d13accddc73a6))
+* Update module go.mongodb.org/mongo-driver/v2 to v2.8.2 ([6d6081e](https://github.com/d0ugal/brother-exporter/commit/6d6081eb488a89900236437be58ac9f2a958fcbe))
+* Update module go.mongodb.org/mongo-driver/v2 to v2.9.0 ([76259fb](https://github.com/d0ugal/brother-exporter/commit/76259fb4eecf1269c200cbffe2f3b49a9728448d))
+* Update module golang.org/x/crypto to v0.56.0 ([71265f3](https://github.com/d0ugal/brother-exporter/commit/71265f39742d937484ce21eb81573711b6c1693c))
+* Update module golang.org/x/net to v0.58.0 ([02f77a7](https://github.com/d0ugal/brother-exporter/commit/02f77a7fc255c27721407956e37a2b32ecf6a985))
+* Update module google.golang.org/grpc to v1.83.1 ([a5ff4e6](https://github.com/d0ugal/brother-exporter/commit/a5ff4e688da73eaea88bd993cb5932b89c8421ea))
+* Update module google.golang.org/grpc to v1.83.2 ([70238aa](https://github.com/d0ugal/brother-exporter/commit/70238aa0d66ce5fd0a991a1559e2eeee3742de6a))
+* Update opentelemetry-go monorepo to v1.46.0 ([83e5842](https://github.com/d0ugal/brother-exporter/commit/83e5842775f02c078ee20969cf0108a719e08f22))
+* Update opentelemetry-go-contrib monorepo to v0.71.0 ([b4a93cb](https://github.com/d0ugal/brother-exporter/commit/b4a93cba2b5fb3cad924696e769b263898933ee8))
+
 ## [1.12.108](https://github.com/d0ugal/brother-exporter/compare/v1.12.107...v1.12.108) (2026-08-12)
 
 
