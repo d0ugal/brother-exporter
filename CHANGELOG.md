@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.110](https://github.com/d0ugal/brother-exporter/compare/v1.12.109...v1.12.110) (2026-09-12)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to f61a6ca ([8d64a53](https://github.com/d0ugal/brother-exporter/commit/8d64a53fb5d236d64ac3b0e872291328c47aa365))
+* Update google.golang.org/genproto/googleapis/api digest to f8649dd ([7ee8daf](https://github.com/d0ugal/brother-exporter/commit/7ee8daf5abfb8d7d5b4549a76872b2f059fc9f29))
+* Update google.golang.org/genproto/googleapis/rpc digest to f61a6ca ([631bc09](https://github.com/d0ugal/brother-exporter/commit/631bc09a809c4709d03e23905977225018c5403e))
+* Update google.golang.org/genproto/googleapis/rpc digest to f8649dd ([c4b1949](https://github.com/d0ugal/brother-exporter/commit/c4b19495a1567fb96d37c11faabe87c17db270e2))
+* Update module github.com/bytedance/sonic to v1.15.4 ([30d2dd8](https://github.com/d0ugal/brother-exporter/commit/30d2dd84a59269d3bfa9b8849f9db4e0719c64c9))
+* Update module go.mongodb.org/mongo-driver/v2 to v2.9.1 ([e523de9](https://github.com/d0ugal/brother-exporter/commit/e523de90d5203a7abac88940aea563164fc4c885))
+* Update module golang.org/x/arch to v0.31.0 ([4fbbac4](https://github.com/d0ugal/brother-exporter/commit/4fbbac429767b3db435009e2e9eb60ff65a1205c))
+* Update module golang.org/x/crypto to v0.57.0 ([05476b0](https://github.com/d0ugal/brother-exporter/commit/05476b0c8b97fddadee313e4c12b7dfae4ae94fa))
+* Update module golang.org/x/net to v0.59.0 ([59d3c86](https://github.com/d0ugal/brother-exporter/commit/59d3c863bef2ba15e8a0fef67e0b54863d53cefc))
+
 ## [1.12.109](https://github.com/d0ugal/brother-exporter/compare/v1.12.108...v1.12.109) (2026-09-05)
 
 
