@@ -6,7 +6,7 @@ toolchain go1.27.1
 
 require (
 	github.com/d0ugal/promexporter v1.14.69
-	github.com/gosnmp/gosnmp v1.44.0
+	github.com/gosnmp/gosnmp v1.45.0
 	github.com/prometheus/client_golang v1.24.1
 	github.com/stretchr/testify v1.12.1
 	go.opentelemetry.io/otel v1.46.0
