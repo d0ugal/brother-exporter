@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.111](https://github.com/d0ugal/brother-exporter/compare/v1.12.110...v1.12.111) (2026-09-22)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to b142276 ([08115aa](https://github.com/d0ugal/brother-exporter/commit/08115aae89314395ad4f9b8ed30efcf975eab2b9))
+* Update google.golang.org/genproto/googleapis/api digest to cecb647 ([0cec7d0](https://github.com/d0ugal/brother-exporter/commit/0cec7d0f50a9120b329013d3b2a1855eee022786))
+* Update google.golang.org/genproto/googleapis/api digest to eeb232e ([de2e51c](https://github.com/d0ugal/brother-exporter/commit/de2e51c51bd9a5a9127307e3cfa2b449903340fb))
+* Update google.golang.org/genproto/googleapis/rpc digest to cecb647 ([b68af82](https://github.com/d0ugal/brother-exporter/commit/b68af82685741a6029683616f9490c9b4967af7a))
+* Update module github.com/go-playground/universal-translator to v0.18.2 ([1ee38b6](https://github.com/d0ugal/brother-exporter/commit/1ee38b6f2fe0853aaec2a4bc333381246a7f0e82))
+* Update module github.com/go-playground/validator/v10 to v10.30.5 ([338e315](https://github.com/d0ugal/brother-exporter/commit/338e315c3c3ec3b1ab2eb59a50045d0474634010))
+* Update module github.com/gosnmp/gosnmp to v1.45.0 ([63f4914](https://github.com/d0ugal/brother-exporter/commit/63f49145dea2cb76d05bedb56bdffdd9f4baf773))
+
 ## [1.12.110](https://github.com/d0ugal/brother-exporter/compare/v1.12.109...v1.12.110) (2026-09-12)
 
 
