@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.112](https://github.com/d0ugal/brother-exporter/compare/v1.12.111...v1.12.112) (2026-09-25)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/rpc digest to b142276 ([69e4b3c](https://github.com/d0ugal/brother-exporter/commit/69e4b3c1e14044f2645cd56f289469386593df5f))
+* Update module github.com/klauspost/compress to v1.20.1 ([6883f9f](https://github.com/d0ugal/brother-exporter/commit/6883f9f43ba9fd8eb710d94f7b338c34f80206a0))
+* Update module github.com/quic-go/quic-go to v0.63.0 ([291e939](https://github.com/d0ugal/brother-exporter/commit/291e939c5b6871b8ae71d36d710744121a58cab0))
+
 ## [1.12.111](https://github.com/d0ugal/brother-exporter/compare/v1.12.110...v1.12.111) (2026-09-22)
 
 
