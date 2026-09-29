@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.112](https://github.com/d0ugal/brother-exporter/compare/v1.12.111...v1.12.112) (2026-09-29)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/rpc digest to b142276 ([69e4b3c](https://github.com/d0ugal/brother-exporter/commit/69e4b3c1e14044f2645cd56f289469386593df5f))
+* Update module github.com/go-playground/locales to v0.14.2 ([f418e7d](https://github.com/d0ugal/brother-exporter/commit/f418e7d67194deaf34f7746f3b231d31417079bc))
+* Update module github.com/goccy/go-json to v0.11.1 ([f6323e6](https://github.com/d0ugal/brother-exporter/commit/f6323e6a50bdea091b6f8f154b2373d6a6e2b056))
+* Update module github.com/grpc-ecosystem/grpc-gateway/v2 to v2.31.0 ([6d658bc](https://github.com/d0ugal/brother-exporter/commit/6d658bc91591f396a6a6caa670e811b71b928d85))
+* Update module github.com/klauspost/compress to v1.20.1 ([6883f9f](https://github.com/d0ugal/brother-exporter/commit/6883f9f43ba9fd8eb710d94f7b338c34f80206a0))
+* Update module github.com/quic-go/quic-go to v0.63.0 ([291e939](https://github.com/d0ugal/brother-exporter/commit/291e939c5b6871b8ae71d36d710744121a58cab0))
+
 ## [1.12.111](https://github.com/d0ugal/brother-exporter/compare/v1.12.110...v1.12.111) (2026-09-22)
 
 
