@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.113](https://github.com/d0ugal/brother-exporter/compare/v1.12.112...v1.12.113) (2026-10-02)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to 8a89bd6 ([fec6a0e](https://github.com/d0ugal/brother-exporter/commit/fec6a0e35b8a1b50504e4e7a3bbbb853d64fb370))
+* Update google.golang.org/genproto/googleapis/rpc digest to 8a89bd6 ([98d77fb](https://github.com/d0ugal/brother-exporter/commit/98d77fb0930bf8c7ebc6a5226702516c906d6ea5))
+* Update module github.com/d0ugal/promexporter to v1.14.70 ([0769bca](https://github.com/d0ugal/brother-exporter/commit/0769bca7bc15701e47b891a6645519177a6142fd))
+* Update module github.com/d0ugal/promexporter to v1.14.71 ([9d2b2b3](https://github.com/d0ugal/brother-exporter/commit/9d2b2b3aa0c377fa85324acaf3209d50bee5a0a3))
+* Update module github.com/goccy/go-json to v0.11.2 ([d5ffb45](https://github.com/d0ugal/brother-exporter/commit/d5ffb45122e27d81b62368a44bfbead3e6547170))
+* Update module github.com/grafana/pyroscope-go to v1.4.3 ([71b17dc](https://github.com/d0ugal/brother-exporter/commit/71b17dca51f12bbac26a9e990bb5bc9ec23120c1))
+* Update module github.com/prometheus/common to v0.72.0 ([29e01fb](https://github.com/d0ugal/brother-exporter/commit/29e01fb7c88b03374adcbf8c1dd811d4f211cb3d))
+* Update module go.opentelemetry.io/proto/otlp to v1.11.1 ([64ede58](https://github.com/d0ugal/brother-exporter/commit/64ede581235c7ad3d2899f428e645259cd53a273))
+* Update opentelemetry-go monorepo to v1.47.0 ([6e18c5f](https://github.com/d0ugal/brother-exporter/commit/6e18c5fcc7fd7a92b1244a35c9322dad71ca9a52))
+* Update opentelemetry-go-contrib monorepo to v0.72.0 ([d6f96ee](https://github.com/d0ugal/brother-exporter/commit/d6f96ee3ca3e81d7bfee3303027d13821aff895a))
+
 ## [1.12.112](https://github.com/d0ugal/brother-exporter/compare/v1.12.111...v1.12.112) (2026-09-29)
 
 
