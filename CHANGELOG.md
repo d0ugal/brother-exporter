@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.114](https://github.com/d0ugal/brother-exporter/compare/v1.12.113...v1.12.114) (2026-10-07)
+
+
+### Bug Fixes
+
+* Update module go.mongodb.org/mongo-driver/v2 to v2.9.2 ([4484c00](https://github.com/d0ugal/brother-exporter/commit/4484c009a97cb4c084a5440f02279755040f5eea))
+
 ## [1.12.113](https://github.com/d0ugal/brother-exporter/compare/v1.12.112...v1.12.113) (2026-10-06)
 
 
