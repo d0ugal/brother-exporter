@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.115](https://github.com/d0ugal/brother-exporter/compare/v1.12.114...v1.12.115) (2026-10-13)
+
+
+### Bug Fixes
+
+* Update go toolchain directive to v1.27.2 ([b5f2266](https://github.com/d0ugal/brother-exporter/commit/b5f2266762f45fdad7cdb4d781013091bd4286ce))
+* Update google.golang.org/genproto/googleapis/api digest to 4341edf ([77475cf](https://github.com/d0ugal/brother-exporter/commit/77475cff22926b516caa4703489fad866d464f6c))
+* Update google.golang.org/genproto/googleapis/rpc digest to 4341edf ([3b6542d](https://github.com/d0ugal/brother-exporter/commit/3b6542de62fa78c42be8a114490bf9671dd81013))
+* Update module github.com/klauspost/compress to v1.20.3 ([f67a3b3](https://github.com/d0ugal/brother-exporter/commit/f67a3b32c4e2f4562e70273728c883e861278c1a))
+* Update module github.com/prometheus/client_golang to v1.25.0 ([74143cf](https://github.com/d0ugal/brother-exporter/commit/74143cf8cd3d9bcc24bbaee9c37e755067744e44))
+* Update module github.com/prometheus/common to v0.72.1 ([5d7b13b](https://github.com/d0ugal/brother-exporter/commit/5d7b13b95fb77d24f98afa85ea3c2eb75d19aaf7))
+* Update module golang.org/x/arch to v0.32.0 ([5d483a2](https://github.com/d0ugal/brother-exporter/commit/5d483a2bb8538d3058b51a0509542f13264683bc))
+* Update module golang.org/x/crypto to v0.58.0 ([402c442](https://github.com/d0ugal/brother-exporter/commit/402c44222e68b8b4d149f4651e6568d7c84f96f7))
+* Update module golang.org/x/net to v0.60.0 ([3df1078](https://github.com/d0ugal/brother-exporter/commit/3df1078202b5b710dba82709970128f0d668de60))
+* Update module golang.org/x/net to v0.61.0 ([5f6b0ae](https://github.com/d0ugal/brother-exporter/commit/5f6b0ae91747f61bc5b05d536aca9cd02954cc69))
+
 ## [1.12.114](https://github.com/d0ugal/brother-exporter/compare/v1.12.113...v1.12.114) (2026-10-07)
 
 
