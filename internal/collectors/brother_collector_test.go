@@ -3,9 +3,11 @@ package collectors
 import (
 	"testing"
 
+	"github.com/d0ugal/brother-exporter/internal/config"
 	"github.com/d0ugal/brother-exporter/internal/metrics"
 	promexporter_metrics "github.com/d0ugal/promexporter/metrics"
 	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/testutil"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -59,4 +61,29 @@ func TestPrinterConnectionErrors_LabelsMatchRegistry(t *testing.T) {
 			"error_type": "deviceinfo",
 		}).Inc()
 	})
+}
+
+func TestPrinterUnreachable(t *testing.T) {
+	assert.True(t, printerUnreachable(true, true, true))
+	assert.False(t, printerUnreachable(false, false, false))
+	assert.False(t, printerUnreachable(true, false, true))
+}
+
+func TestSetConnectionStatus(t *testing.T) {
+	baseRegistry := promexporter_metrics.NewRegistry("brother_exporter_info_test_status")
+	brotherMetrics := metrics.NewBrotherRegistry(baseRegistry)
+	bc := &BrotherCollector{
+		config:  &config.Config{Printer: config.PrinterConfig{Host: "test-host"}},
+		metrics: brotherMetrics,
+	}
+	gauge := brotherMetrics.PrinterConnectionStatus.With(prometheus.Labels{"host": "test-host"})
+
+	bc.setConnectionStatus(false)
+	assert.InDelta(t, 0.0, testutil.ToFloat64(gauge), 0)
+
+	bc.setConnectionStatus(true)
+	assert.InDelta(t, 1.0, testutil.ToFloat64(gauge), 0)
+
+	bc.setConnectionStatus(!printerUnreachable(true, true, true))
+	assert.InDelta(t, 0.0, testutil.ToFloat64(gauge), 0)
 }
