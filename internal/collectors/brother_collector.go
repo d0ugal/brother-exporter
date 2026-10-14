@@ -102,14 +102,38 @@ func calculateStatusFromLevel(level float64) (status string, statusValue float64
 }
 
 // handleCollectionError is a helper function for the repetitive error handling pattern in collectMetrics
-func (bc *BrotherCollector) handleCollectionError(err error, operation string) {
+func (bc *BrotherCollector) handleCollectionError(err error, operation string) bool {
 	if err != nil {
 		slog.Error("Failed to collect "+operation, "error", err)
 		bc.metrics.PrinterConnectionErrors.With(prometheus.Labels{
 			"host":       bc.config.Printer.Host,
 			"error_type": operation,
 		}).Inc()
+
+		return true
 	}
+
+	return false
+}
+
+// setConnectionStatus reports whether the printer answered this collection
+// cycle: 1 when reachable, 0 otherwise.
+func (bc *BrotherCollector) setConnectionStatus(reachable bool) {
+	value := 0.0
+	if reachable {
+		value = 1.0
+	}
+
+	bc.metrics.PrinterConnectionStatus.With(prometheus.Labels{
+		"host": bc.config.Printer.Host,
+	}).Set(value)
+}
+
+// printerUnreachable reports whether every core probe (info, status, uptime)
+// failed in a cycle. SNMP runs over UDP, so connect() succeeds even when the
+// printer is offline; the probes timing out is the real signal.
+func printerUnreachable(infoFailed, statusFailed, uptimeFailed bool) bool {
+	return infoFailed && statusFailed && uptimeFailed
 }
 
 // collectColorLevelsWithStatus collects level and status metrics for each color using the specified OID base
@@ -359,21 +383,19 @@ func (bc *BrotherCollector) collectMetrics(ctx context.Context) {
 
 	defer bc.disconnect(spanCtx)
 
-	// Set connection status
-	bc.metrics.PrinterConnectionStatus.With(prometheus.Labels{
-		"host": bc.config.Printer.Host,
-	}).Set(1)
-
 	// Reuse spanCtx from above for child operations
 
 	// Collect printer information
-	bc.handleCollectionError(bc.collectPrinterInfo(spanCtx), "printer info")
+	infoFailed := bc.handleCollectionError(bc.collectPrinterInfo(spanCtx), "printer info")
 
 	// Collect printer status
-	bc.handleCollectionError(bc.collectPrinterStatus(spanCtx), "printer status")
+	statusFailed := bc.handleCollectionError(bc.collectPrinterStatus(spanCtx), "printer status")
 
 	// Collect printer uptime
-	bc.handleCollectionError(bc.collectPrinterUptime(spanCtx), "printer uptime")
+	uptimeFailed := bc.handleCollectionError(bc.collectPrinterUptime(spanCtx), "printer uptime")
+
+	// SNMP is UDP, so a successful connect does not mean the printer answered.
+	bc.setConnectionStatus(!printerUnreachable(infoFailed, statusFailed, uptimeFailed))
 
 	// Collect Brother-specific metrics (these work better than standard MIB)
 	if err := bc.collectBrotherSpecificMetrics(spanCtx); err != nil {
