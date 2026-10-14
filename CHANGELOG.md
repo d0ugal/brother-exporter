@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.116](https://github.com/d0ugal/brother-exporter/compare/v1.12.115...v1.12.116) (2026-10-14)
+
+
+### Bug Fixes
+
+* report connection status 0 when printer probes all fail ([e6cbe8e](https://github.com/d0ugal/brother-exporter/commit/e6cbe8ef5d55bcf55a5afc70fa8652a233db2262))
+
 ## [1.12.115](https://github.com/d0ugal/brother-exporter/compare/v1.12.114...v1.12.115) (2026-10-13)
 
 
