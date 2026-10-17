@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.117](https://github.com/d0ugal/brother-exporter/compare/v1.12.116...v1.12.117) (2026-10-17)
+
+
+### Bug Fixes
+
+* Update module github.com/d0ugal/promexporter to v1.14.72 ([3f8f9c7](https://github.com/d0ugal/brother-exporter/commit/3f8f9c707ac0af18c9f4b9748563de369890556f))
+* Update module github.com/gabriel-vasile/mimetype to v1.4.16 ([d4980e2](https://github.com/d0ugal/brother-exporter/commit/d4980e290e9b33e755b44bcd823b0fd66d2a65be))
+* Update module github.com/grpc-ecosystem/grpc-gateway/v2 to v2.32.0 ([5e2e3b2](https://github.com/d0ugal/brother-exporter/commit/5e2e3b2dd297cd9bdf14e0f59b1790b448f654e1))
+* Update module github.com/klauspost/cpuid/v2 to v2.4.1 ([e50c098](https://github.com/d0ugal/brother-exporter/commit/e50c0982724f0b26645a1b6035df26b591b7085c))
+* Update module github.com/quic-go/quic-go to v0.64.0 ([aa436d8](https://github.com/d0ugal/brother-exporter/commit/aa436d895797e10df699fde46903d8486fd10bd1))
+
 ## [1.12.116](https://github.com/d0ugal/brother-exporter/compare/v1.12.115...v1.12.116) (2026-10-14)
 
 
