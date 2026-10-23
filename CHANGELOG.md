@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.118](https://github.com/d0ugal/brother-exporter/compare/v1.12.117...v1.12.118) (2026-10-23)
+
+
+### Bug Fixes
+
+* Update go toolchain directive to v1.27.3 ([65ed9ea](https://github.com/d0ugal/brother-exporter/commit/65ed9ea9928707cf3a1be5d87e6552a3b30fdbc0))
+* Update google.golang.org/genproto/googleapis/api digest to ce908d2 ([bd7a406](https://github.com/d0ugal/brother-exporter/commit/bd7a406d6ff8dd52e4cd9b7989fabf16589c881d))
+* Update google.golang.org/genproto/googleapis/rpc digest to ce908d2 ([e0daad0](https://github.com/d0ugal/brother-exporter/commit/e0daad0707423bdb4ac914bf4a5408642693074d))
+* Update module github.com/bytedance/sonic/loader to v0.5.3 ([2b195b5](https://github.com/d0ugal/brother-exporter/commit/2b195b528fe16007b63e6c364cccf087a89094a9))
+* Update module github.com/d0ugal/promexporter to v1.14.73 ([1bd07c2](https://github.com/d0ugal/brother-exporter/commit/1bd07c228ef996c585a1288b56f0d0c2cb7ad90f))
+* Update module github.com/gosnmp/gosnmp to v1.46.0 ([266adbe](https://github.com/d0ugal/brother-exporter/commit/266adbeaed0c664d14719db3147b6214912afa05))
+* Update module github.com/prometheus/procfs to v0.23.0 ([131297f](https://github.com/d0ugal/brother-exporter/commit/131297f4220c84050e484f41d072d97ba1a18d50))
+* Update module github.com/quic-go/quic-go to v0.64.1 ([c090362](https://github.com/d0ugal/brother-exporter/commit/c09036223389dcbe733e268798a02eadc5258d75))
+
 ## [1.12.117](https://github.com/d0ugal/brother-exporter/compare/v1.12.116...v1.12.117) (2026-10-17)
 
 
