@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.119](https://github.com/d0ugal/brother-exporter/compare/v1.12.118...v1.12.119) (2026-10-24)
+
+
+### Bug Fixes
+
+* Update module github.com/gosnmp/gosnmp to v1.47.0 ([4002aab](https://github.com/d0ugal/brother-exporter/commit/4002aaba3701a60e9bb9b3590dbb8eeb767047de))
+
 ## [1.12.118](https://github.com/d0ugal/brother-exporter/compare/v1.12.117...v1.12.118) (2026-10-23)
 
 
