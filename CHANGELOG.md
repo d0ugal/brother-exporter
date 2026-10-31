@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.121](https://github.com/d0ugal/brother-exporter/compare/v1.12.120...v1.12.121) (2026-10-31)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/rpc digest to 2ffab32 ([62e3ffe](https://github.com/d0ugal/brother-exporter/commit/62e3ffebf696e95d7e810103320cb0d165ec74cb))
+* Update module github.com/bytedance/sonic to v1.15.5 ([82ce295](https://github.com/d0ugal/brother-exporter/commit/82ce295f6c50da56e4ff778820794b6f1d7905f9))
+* Update module github.com/gin-contrib/sse to v1.2.0 ([140cae4](https://github.com/d0ugal/brother-exporter/commit/140cae48b38fa0774b03ddbe669b39515ad38be3))
+* Update module github.com/goccy/go-json to v0.12.0 ([1d7e8f3](https://github.com/d0ugal/brother-exporter/commit/1d7e8f3bac5bf6ba979a87d2e044d0458815be89))
+* Update module github.com/grpc-ecosystem/grpc-gateway/v2 to v2.33.0 ([74de6d7](https://github.com/d0ugal/brother-exporter/commit/74de6d7111b71e53ce6e18fcffbdc41430844b1e))
+* Update module github.com/hashicorp/go-uuid to v1.0.4 ([71f4dbb](https://github.com/d0ugal/brother-exporter/commit/71f4dbbece7bf3f101773cdbc6b1c7c72f816e34))
+* Update module github.com/pandatix/go-abnf to v0.5.3 ([79879d2](https://github.com/d0ugal/brother-exporter/commit/79879d2de9a7092dc318573c55de444896e36d33))
+* Update module github.com/pandatix/go-abnf to v0.5.4 ([894d5ef](https://github.com/d0ugal/brother-exporter/commit/894d5eff4c1827361af257acc71ac57fa3d4c64b))
+* Update module github.com/prometheus/common to v0.73.0 ([082393d](https://github.com/d0ugal/brother-exporter/commit/082393ddb2b8be0c84a3948c70825a4544ee0fef))
+* Update module github.com/prometheus/common to v0.73.1 ([c130a1a](https://github.com/d0ugal/brother-exporter/commit/c130a1a591128f5a992550aed37e09da1b9fea09))
+* Update module golang.org/x/net to v0.62.0 ([23bd038](https://github.com/d0ugal/brother-exporter/commit/23bd038bcd500930f3dce07e6fdbe669e9090ca9))
+* Update module google.golang.org/grpc to v1.85.0 ([5291982](https://github.com/d0ugal/brother-exporter/commit/529198220fe0d4bbf5fe4eca3d9e0d0811a1b863))
+
 ## [1.12.120](https://github.com/d0ugal/brother-exporter/compare/v1.12.119...v1.12.120) (2026-10-27)
 
 
