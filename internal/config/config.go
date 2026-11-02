@@ -13,7 +13,7 @@ import (
 type Duration = promexporter_config.Duration
 
 type Config struct {
-	promexporter_config.BaseConfig
+	promexporter_config.BaseConfig `yaml:",inline"`
 
 	Printer PrinterConfig `yaml:"printer"`
 }
