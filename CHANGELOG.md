@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.122](https://github.com/d0ugal/brother-exporter/compare/v1.12.121...v1.12.122) (2026-11-06)
+
+
+### Bug Fixes
+
+* inline embedded BaseConfig so yaml.v3 parses server/logging/metrics ([456b381](https://github.com/d0ugal/brother-exporter/commit/456b381be459be994c812f55f67bc52e87383af6))
+* skip auto-format for fork pull requests ([d5469fb](https://github.com/d0ugal/brother-exporter/commit/d5469fb49e353c1bf1bcaaa2a0863b691b59f434))
+* Update google.golang.org/genproto/googleapis/api digest to d1e00e9 ([06fc26b](https://github.com/d0ugal/brother-exporter/commit/06fc26beab6437287d4bd91fead4fa33f82986da))
+* Update google.golang.org/genproto/googleapis/rpc digest to d1e00e9 ([052b722](https://github.com/d0ugal/brother-exporter/commit/052b7228e9cb04b1aa0de084d7a03d45bdaaa239))
+* Update module github.com/klauspost/cpuid/v2 to v2.4.2 ([7272cf3](https://github.com/d0ugal/brother-exporter/commit/7272cf37cbae70fddb98b25a2d82598290433996))
+* Update module go.mongodb.org/mongo-driver/v2 to v2.9.3 ([ef92a0f](https://github.com/d0ugal/brother-exporter/commit/ef92a0f3f991d260ff3c0d33c9889234d05fb20b))
+* Update module go.yaml.in/yaml/v3 to v3.0.6 ([738c78c](https://github.com/d0ugal/brother-exporter/commit/738c78c0ad32a9196620d40d8637a8c23acb2258))
+* Update module go.yaml.in/yaml/v3 to v4 ([f642023](https://github.com/d0ugal/brother-exporter/commit/f642023b2b90c51c4964910b84c19179b6869070))
+
 ## [1.12.121](https://github.com/d0ugal/brother-exporter/compare/v1.12.120...v1.12.121) (2026-11-03)
 
 
