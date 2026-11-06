@@ -8,6 +8,8 @@ on:
 
 jobs:
   format:
+    # Fork pull requests cannot access RELEASE_TOKEN or be updated by this job.
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     permissions:
       contents: write
