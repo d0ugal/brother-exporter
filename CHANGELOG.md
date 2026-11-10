@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.123](https://github.com/d0ugal/brother-exporter/compare/v1.12.122...v1.12.123) (2026-11-10)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to 09e21b2 ([dc43516](https://github.com/d0ugal/brother-exporter/commit/dc4351660a56a7aeebd7bb38ed2aec50164fed54))
+* Update module github.com/gin-contrib/sse to v1.2.1 ([b0cc3b5](https://github.com/d0ugal/brother-exporter/commit/b0cc3b518625128ae838dabcd5986e3e4a56774e))
+* Update module github.com/klauspost/compress to v1.20.4 ([ea443f8](https://github.com/d0ugal/brother-exporter/commit/ea443f8fc207edb01031444383250b79c7c38a0b))
+* Update module go.mongodb.org/mongo-driver/v2 to v2.10.0 ([cdeede7](https://github.com/d0ugal/brother-exporter/commit/cdeede7c48d27ea12d5b9b01ed5c88fb7d5ca794))
+* Update module golang.org/x/arch to v0.33.0 ([48de644](https://github.com/d0ugal/brother-exporter/commit/48de64479f78d5e484d13376ccadbe4e2886a3a5))
+
 ## [1.12.122](https://github.com/d0ugal/brother-exporter/compare/v1.12.121...v1.12.122) (2026-11-06)
 
 
