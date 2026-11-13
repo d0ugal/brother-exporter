@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.124](https://github.com/d0ugal/brother-exporter/compare/v1.12.123...v1.12.124) (2026-11-13)
+
+
+### Bug Fixes
+
+* Update go toolchain directive to v1.27.4 ([bfbccb1](https://github.com/d0ugal/brother-exporter/commit/bfbccb1cbae0405e341a9df91295f6717a8877ce))
+* Update google.golang.org/genproto/googleapis/rpc digest to 09e21b2 ([f9533be](https://github.com/d0ugal/brother-exporter/commit/f9533be1c0b9662b08a4a4ca0f5b5586ced077fe))
+* Update module github.com/d0ugal/promexporter to v1.14.76 ([59c75e3](https://github.com/d0ugal/brother-exporter/commit/59c75e3b256332a4fe80aa39a3b8f933de4b1f5c))
+* Update module github.com/d0ugal/promexporter to v1.14.77 ([8521fe9](https://github.com/d0ugal/brother-exporter/commit/8521fe91a2c69c884e09a1ec44bda38d340e75bf))
+* Update module github.com/grafana/pyroscope-go to v1.5.0 ([dcf5052](https://github.com/d0ugal/brother-exporter/commit/dcf50527cabfc4c43d4b807eb2cef1c2dc89b572))
+* Update module github.com/prometheus/common to v0.74.0 ([28bd54e](https://github.com/d0ugal/brother-exporter/commit/28bd54e19e1b46ebf8971e4df68bb3e03189a0be))
+* Update module golang.org/x/crypto to v0.59.0 ([8fbdc24](https://github.com/d0ugal/brother-exporter/commit/8fbdc24a25947b409a3bc7e5ca4e2f1c5f93f9c9))
+
 ## [1.12.123](https://github.com/d0ugal/brother-exporter/compare/v1.12.122...v1.12.123) (2026-11-10)
 
 
