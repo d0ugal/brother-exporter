@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.125](https://github.com/d0ugal/brother-exporter/compare/v1.12.124...v1.12.125) (2026-11-17)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/rpc digest to fd2c768 ([39fc1b7](https://github.com/d0ugal/brother-exporter/commit/39fc1b7e7922083bdfe7dfe2f45f54eead9b4cb0))
+* Update module github.com/grpc-ecosystem/grpc-gateway/v2 to v2.34.0 ([9ebfcc5](https://github.com/d0ugal/brother-exporter/commit/9ebfcc58e6dd1f59eb8939686de5cf51b724075e))
+
 ## [1.12.124](https://github.com/d0ugal/brother-exporter/compare/v1.12.123...v1.12.124) (2026-11-17)
 
 
