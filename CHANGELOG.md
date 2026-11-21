@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.127](https://github.com/d0ugal/brother-exporter/compare/v1.12.126...v1.12.127) (2026-11-21)
+
+
+### Bug Fixes
+
+* Update module github.com/d0ugal/promexporter to v1.14.78 ([517c14f](https://github.com/d0ugal/brother-exporter/commit/517c14f9140424277e1e5eb6370918eea274b16d))
+* Update module github.com/klauspost/compress to v1.20.5 ([a48aeca](https://github.com/d0ugal/brother-exporter/commit/a48aeca9db4c7614182509197bc3188afe806e35))
+
 ## [1.12.126](https://github.com/d0ugal/brother-exporter/compare/v1.12.125...v1.12.126) (2026-11-20)
 
 
