@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.127](https://github.com/d0ugal/brother-exporter/compare/v1.12.126...v1.12.127) (2026-11-24)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to 1e707ab ([962e56d](https://github.com/d0ugal/brother-exporter/commit/962e56dbfc1672220a80f84a48745d709acd3d07))
+* Update module github.com/d0ugal/promexporter to v1.14.78 ([517c14f](https://github.com/d0ugal/brother-exporter/commit/517c14f9140424277e1e5eb6370918eea274b16d))
+* Update module github.com/klauspost/compress to v1.20.5 ([a48aeca](https://github.com/d0ugal/brother-exporter/commit/a48aeca9db4c7614182509197bc3188afe806e35))
+* Update module go.opentelemetry.io/auto/sdk to v1.2.2 ([7a59464](https://github.com/d0ugal/brother-exporter/commit/7a5946464d0d1540f67b90649a696a16402b5896))
+
 ## [1.12.126](https://github.com/d0ugal/brother-exporter/compare/v1.12.125...v1.12.126) (2026-11-20)
 
 
